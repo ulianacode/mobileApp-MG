@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 30,
     height: 'auto', // Ajust everithing to phone screen size
-    width: '90%', 
+    width: '90%',
     backgroundColor: 'white',
   },
   icon: {
@@ -58,10 +58,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
   },
-  miniiconmail: {
-
-    marginRight: 10,
-  },
   miniicon: {
     width: 20,
     height: 20,
@@ -79,8 +75,13 @@ const styles = StyleSheet.create({
     marginTop: 0,
     bottom: 20,
   },
-  loginLinkContainer: {
-    marginBottom: 0,
+  regLinkContainer: {
+    marginBottom: 15,
+    alignItems: 'center',
+
+  },
+  recoverLinkContainer: {
+    marginBottom: -10,
     alignItems: 'center',
 
   },
