@@ -4,16 +4,19 @@ import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../../components/BackButton/BackButton';
 
-const RegistrationScreen = () => {
+const LoginScreen = () => {
     const navigation = useNavigation();
     const handleBackPress = () => {
         navigation.navigate('Feed');
     };
-    const handleBottomBoxPress = () => {
-        Alert.alert('Registration');
+    const handleRecoverPress = () => {
+        Alert.alert('Recover Password');
     };
     const handleLoginPress = () => {
-        navigation.navigate('Login');
+        Alert.alert('Login');
+    };
+    const handleRegPress = () => {
+        navigation.navigate('Registration');
         
     };
 
@@ -24,16 +27,6 @@ const RegistrationScreen = () => {
                 <Image source={require('../../assets/logo.png')} style={styles.icon} />
             </View>
             <View style={styles.boxContainer}>
-                <View style={styles.fieldContainer}>
-                    <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/icons/mail.png')} style={styles.miniiconmail} />
-                        <Text style={styles.label}>Почта</Text>
-                    </View>
-                    <View style={styles.inputContainer}>
-                        <TextInput style={styles.input} placeholder="Введите почту" />
-                    </View>
-                    <View style={styles.line} />
-                </View>
                 <View style={styles.fieldContainer}>
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/man.png')} style={styles.miniicon} />
@@ -54,11 +47,14 @@ const RegistrationScreen = () => {
                     </View>
                     <View style={styles.line} />
                 </View>
-                <TouchableOpacity onPress={handleLoginPress} style={styles.loginLinkContainer}>
-                    <Text style={styles.loginLinkText}>Уже есть аккаунт? Войти</Text>
+                <TouchableOpacity onPress={handleRegPress} style={styles.regLinkContainer}>
+                    <Text style={styles.loginLinkText}>Ещё нет аккаунта? Регистрация</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={handleBottomBoxPress} style={styles.bottomBoxContainer}>
-                <Text style={styles.bottomBoxText}>Регистрация</Text>
+                <TouchableOpacity onPress={handleRecoverPress} style={styles.recoverLinkContainer}>
+                    <Text style={styles.loginLinkText}>Не помню пароль</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={handleLoginPress} style={styles.bottomBoxContainer}>
+                <Text style={styles.bottomBoxText}>Вход</Text>
               </TouchableOpacity>
             </View>
       </View>
@@ -66,4 +62,4 @@ const RegistrationScreen = () => {
   );
 };
 
-export default RegistrationScreen;
+export default LoginScreen;

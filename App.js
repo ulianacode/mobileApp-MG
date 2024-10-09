@@ -1,8 +1,14 @@
 // src/App.js
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
 import FeedScreen from './screens/FeedScreen/FeedScreen';
+import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen';
+import LoginScreen from './screens/LoginScreen/LoginScreen';
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -10,7 +16,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Display LoadingScreen for 1 second
+    }, 2000); // Display LoadingScreen for 2 seconds
 
     return () => clearTimeout(timer);
   }, []);
@@ -18,7 +24,17 @@ export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
-      {isLoading ? <LoadingScreen /> : <FeedScreen />}
+      {isLoading ? (
+        <LoadingScreen />
+      ) : (
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Feed" screenOptions= {{headerShown: false}}>
+            <Stack.Screen name="Feed" component={FeedScreen} />
+            <Stack.Screen name="Registration" component={RegistrationScreen} />
+            <Stack.Screen name="Login" component={LoginScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      )}
     </SafeAreaView>
   );
 }

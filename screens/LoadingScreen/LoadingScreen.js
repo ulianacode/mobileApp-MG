@@ -1,4 +1,3 @@
-// src/screens/LoadingScreen/LoadingScreen.js
 import React from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import styles from './styles';
