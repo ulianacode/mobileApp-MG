@@ -8,7 +8,7 @@ const SearchBar = () => {
   const navigation = useNavigation();
 
   const handlePeoplePress = () => {
-    navigation.navigate('Registration');
+    navigation.navigate('Profile');
   };
 
   return (
