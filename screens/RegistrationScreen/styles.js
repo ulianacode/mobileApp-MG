@@ -45,7 +45,6 @@ const styles = StyleSheet.create({
     top: 30,
   },
   labelContainer: {
-
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom: 0,
@@ -59,7 +58,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   miniiconmail: {
-
     marginRight: 10,
   },
   miniicon: {
