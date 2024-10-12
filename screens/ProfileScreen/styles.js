@@ -50,35 +50,37 @@ const styles = StyleSheet.create({
   lineHeight: 20,
  },
  miniiconmail: {
-    marginRight: 10,
-    width: 23,
-    height: 20,
+    marginRight: 5,
+    marginLeft: -2.5,
+    width: 30,
+    height: 25,
   },
 
  miniiconplanet: {
-    marginRight: 10,
+    marginRight: 8,
     width: 25,
     height: 25,
   },
 
   miniicongender: {
-    marginRight: 5,
-    width: 30,
-    height: 24,
+    marginRight: 9,
+    width: 25,
+    height: 25,
   },
 
   miniiconstar: {
     marginRight: 10,
     width: 23,
     height: 23,
-    marginLeft: 5,
+    marginLeft: 0,
     marginBottom: 5,
   },
 
   miniiconabout: {
-  width: 25,
-  height: 25,
+  width: 21,
+  height: 21,
   marginRight: 10,
+  marginLeft: 1,
   },
 
  line: {
@@ -86,7 +88,7 @@ const styles = StyleSheet.create({
   width: '150%', 
   backgroundColor: '#F26430',
   marginVertical: 5, 
-  marginLeft: -20,
+  marginLeft: -25,
  }, 
 
  avatarContainer: {

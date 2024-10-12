@@ -52,7 +52,7 @@ const ProfileScreen = () => {
                 <View style={styles.fieldContainer}>
                 <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/icons/mail.png')} style={styles.miniiconmail} />
+                        <Image source={require('../../assets/mail2.png')} style={styles.miniiconmail} />
                         <Text style={styles.label}>aesdfvghbjnkml@yan.hru</Text>
                     </View>
                 </View>
@@ -68,7 +68,7 @@ const ProfileScreen = () => {
                 <View style={styles.fieldContainer}>
                 <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/woman.png')} style={styles.miniicongender} />
+                        <Image source={require('../../assets/gender1.png')} style={styles.miniicongender} />
                         <Text style={styles.label}>Женщина</Text>
                     </View>
                 </View>
