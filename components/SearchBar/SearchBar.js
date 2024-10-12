@@ -11,6 +11,7 @@ const SearchBar = () => {
     navigation.navigate('Profile');
   };
 
+
   return (
     <View style={styles.searchContainer}>
       <TouchableOpacity onPress={handlePeoplePress}>

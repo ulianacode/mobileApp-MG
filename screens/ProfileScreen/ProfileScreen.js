@@ -44,42 +44,42 @@ const ProfileScreen = () => {
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/aboutme.png')} style={styles.miniicon} />
+                        <Image source={require('../../assets/aboutme.png')} style={styles.miniiconabout} />
                         <Text style={styles.label}>Обо мне</Text>
                     </View>
-                    <View style={styles.line} />
                 </View>
                 
                 <View style={styles.fieldContainer}>
+                <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/icons/mail.png')} style={styles.miniicon} />
+                        <Image source={require('../../assets/icons/mail.png')} style={styles.miniiconmail} />
                         <Text style={styles.label}>aesdfvghbjnkml@yan.hru</Text>
                     </View>
-                    <View style={styles.line} />
                 </View>
                 
                 <View style={styles.fieldContainer}>
+                <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/icons/planet.png')} style={styles.miniicon} />
+                        <Image source={require('../../assets/icons/planet.png')} style={styles.miniiconplanet} />
                         <Text style={styles.label}>Воронеж</Text>
                     </View>
-                    <View style={styles.line} />
                 </View>
                 
                 <View style={styles.fieldContainer}>
+                <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/woman.png')} style={styles.miniicon} />
+                        <Image source={require('../../assets/woman.png')} style={styles.miniicongender} />
                         <Text style={styles.label}>Женщина</Text>
                     </View>
-                    <View style={styles.line} />
                 </View>
                 
                 <View style={styles.fieldContainer}>
+                <View style={styles.line} />
                     <View style={styles.labelContainer}>
-                        <Image source={require('../../assets/blackstar.png')} style={styles.miniicon} />
+                        <Image source={require('../../assets/blackstar.png')} style={styles.miniiconstar} />
                         <Text style={styles.label}>Рейтинг</Text>
+                        <Text style={styles.label}></Text>
                     </View>
-                    <View style={styles.line} />
                 </View>
             </View>
         </View>
