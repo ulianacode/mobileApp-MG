@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    top: 70,
+    top:  0,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 20,
