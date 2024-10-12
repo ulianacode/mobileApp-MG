@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     overflow: 'hidden',
     marginTop: 60,
+    top: -60,
   },
   eventDetails: {
     backgroundColor: '#F26430',
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     position: 'absolute',
     top: 7,
-    left: 375,
+    right: 0,
   },
   starsText: {
     color: '#FFFFFF',
@@ -82,7 +83,7 @@ const styles = StyleSheet.create({
   starIcon: {
     width: 15,
     height: 15,
-    right: 15,
+    marginRight: 13,
   },
   dateText: {
     color: '#FFFFFF',
