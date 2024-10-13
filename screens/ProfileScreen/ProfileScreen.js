@@ -70,16 +70,26 @@ const ProfileScreen = ({ route }) => {
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
+<<<<<<< HEAD
                         <Image source={require('../../assets/aboutme.png')} style={styles.miniiconabout} />
                         <Text style={styles.label}>{userData.aboutMe || '-'}</Text>
+=======
+                        <Image source={require('../../assets/icons/aboutme.png')} style={styles.miniiconabout} />
+                        <Text style={styles.label}>Обо мне</Text>
+>>>>>>> 2d9968cec4cc9d32897876f73f9b0d2de0343fa6
                     </View>
                 </View>
 
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
+<<<<<<< HEAD
                         <Image source={require('../../assets/mail2.png')} style={styles.miniiconmail} />
                         <Text style={styles.label}>{userData.email || '-'}</Text>
+=======
+                        <Image source={require('../../assets/icons/mail.png')} style={styles.miniiconmail} />
+                        <Text style={styles.label}>aesdfvghbjnkml@yan.hru</Text>
+>>>>>>> 2d9968cec4cc9d32897876f73f9b0d2de0343fa6
                     </View>
                 </View>
 
@@ -94,16 +104,27 @@ const ProfileScreen = ({ route }) => {
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
+<<<<<<< HEAD
                         <Image source={require('../../assets/gender1.png')} style={styles.miniicongender} />
                         <Text style={styles.label}>{userData.gender || '-'}</Text>
+=======
+                        <Image source={require('../../assets/icons/gender.png')} style={styles.miniicongender} />
+                        <Text style={styles.label}>Женщина</Text>
+>>>>>>> 2d9968cec4cc9d32897876f73f9b0d2de0343fa6
                     </View>
                 </View>
 
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
+<<<<<<< HEAD
                         <Image source={require('../../assets/blackstar.png')} style={styles.miniiconstar} />
                         <Text style={styles.label}>{userData.averageRating || '-'}</Text>
+=======
+                        <Image source={require('../../assets/icons/blackstar.png')} style={styles.miniiconstar} />
+                        <Text style={styles.label}>Рейтинг</Text>
+                        <Text style={styles.label}></Text>
+>>>>>>> 2d9968cec4cc9d32897876f73f9b0d2de0343fa6
                     </View>
                 </View>
             </View>

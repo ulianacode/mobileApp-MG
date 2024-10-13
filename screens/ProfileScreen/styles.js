@@ -52,20 +52,20 @@ const styles = StyleSheet.create({
  miniiconmail: {
     marginRight: 5,
     marginLeft: -2.5,
-    width: 30,
-    height: 25,
+    width: 28,
+    height: 23,
   },
 
  miniiconplanet: {
     marginRight: 8,
-    width: 25,
-    height: 25,
+    width: 23,
+    height: 23,
   },
 
   miniicongender: {
-    marginRight: 9,
-    width: 25,
-    height: 25,
+    marginRight: 8,
+    width: 23,
+    height: 23,
   },
 
   miniiconstar: {
@@ -77,9 +77,9 @@ const styles = StyleSheet.create({
   },
 
   miniiconabout: {
-  width: 21,
-  height: 21,
-  marginRight: 10,
+  width: 23,
+  height: 22,
+  marginRight: 7,
   marginLeft: 1,
   },
 
