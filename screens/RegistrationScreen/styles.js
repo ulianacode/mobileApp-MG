@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   bottomBoxText: {
     bottom: 2,
-    fontSize: 24,
+    fontSize: 22,
     fontFamily: 'Inter_700Bold', // Ensure you have this font loaded
   },
 
@@ -59,6 +59,8 @@ const styles = StyleSheet.create({
   },
   miniiconmail: {
     marginRight: 10,
+    width: 25,
+    height: 25,
   },
   miniicon: {
     width: 20,
