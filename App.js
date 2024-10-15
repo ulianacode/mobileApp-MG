@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,7 +7,8 @@ import FeedScreen from './screens/FeedScreen/FeedScreen';
 import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
-
+import { auth } from './variables/ip';
+console.log(auth.status);
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -22,7 +22,8 @@ export default function App() {
     return () => clearTimeout(timer);
   }, []);
 
-  return (
+  return ( 
+    
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar style="auto" />
       {isLoading ? (

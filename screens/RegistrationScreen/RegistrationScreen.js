@@ -4,6 +4,7 @@ import axios from 'axios';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import BackButton from '../../components/BackButton/BackButton';
+import { API_URL, tokens } from '../../variables/ip';
 
 const RegistrationScreen = () => {
     const navigation = useNavigation();
@@ -21,7 +22,7 @@ const RegistrationScreen = () => {
 
     const handleRegistration = async () => {
         try {
-            const response = await axios.post('http://25.17.98.51:8082/v1/users', {
+            const response = await axios.post(`http://${API_URL}:8082/v1/users`, {
                 email,
                 username,
                 password
