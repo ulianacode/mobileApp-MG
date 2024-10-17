@@ -8,6 +8,7 @@ import FeedScreen from './screens/FeedScreen/FeedScreen';
 import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
+import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,7 @@ export default function App() {
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="AddingEventCard" component={AddingEventCard} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
