@@ -8,7 +8,9 @@ import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen'
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
 import { auth } from './variables/ip';
+import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 console.log(auth.status);
+
 const Stack = createStackNavigator();
 
 export default function App() {
@@ -35,6 +37,7 @@ export default function App() {
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
+            <Stack.Screen name="AddingEventCard" component={AddingEventCard} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

@@ -1,24 +1,52 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Alert, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ExitButton from '../../components/ExitButton/ExitButton';
 import BackButton from '../../components/BackButton/BackButton';
+import axios from 'axios'; 
+import { API_URL } from '../../variables/ip';
 
-const ProfileScreen = () => {
+const ProfileScreen = ({ route }) => {
     const navigation = useNavigation();
-    
+    const [userData, setUserData] = useState(null);
+
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get(`http://${API_URL}/v1/users/user1`);
+                setUserData(response.data);
+            } catch (error) {
+                console.error('Ошибка при получении данных профиля:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []); 
+
     const handleBackPress = () => {
         navigation.navigate('Feed');
     };
-    
+
     const handleExitPress = () => {
         navigation.navigate('Login');
     };
-    
+
     const handleComplaintPress = () => {
         Alert.alert('Жалоба');
     };
+
+    if (!userData) {
+        return (
+            <View style={styles.container}>
+                <BackButton onPress={handleBackPress} />
+                <ExitButton onPress={handleExitPress} />
+                <Text>Загрузка профиля...</Text>
+            </View>
+        );
+    }
+
+    const avatarSource = userData.profileImage && userData.profileImage !== '' ? { uri: userData.profileImage } : require('../../assets/nonavatar.png');
 
     return (
         <View style={styles.container}>
@@ -31,54 +59,54 @@ const ProfileScreen = () => {
                         style={styles.iconTopRight} 
                     />
                 </TouchableOpacity>
-                
+
                 <View style={styles.avatarContainer}>
                     <Image 
-                        source={require('../../assets/avatar.png')} 
+                        source={avatarSource} 
                         style={styles.avatar}
                     />
-                    <Text style={styles.name}>Имя Фамилия</Text>
-                    <Text style={styles.nickname}>@nickname</Text>
+                    <Text style={styles.name}>{userData.displayName || '-'}</Text>
+                    <Text style={styles.nickname}>@{userData.username || '-'}</Text>
                 </View>
-                
                 <View style={styles.fieldContainer}>
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
+
                         <Image source={require('../../assets/icons/aboutme.png')} style={styles.miniiconabout} />
-                        <Text style={styles.label}>Обо мне</Text>
+                        <Text style={styles.label}>{userData.aboutMe || '-'}</Text>
                     </View>
                 </View>
-                
+
                 <View style={styles.fieldContainer}>
-                <View style={styles.line} />
+                    <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/mail.png')} style={styles.miniiconmail} />
-                        <Text style={styles.label}>aesdfvghbjnkml@yan.hru</Text>
+                        <Text style={styles.label}>{userData.email || '-'}</Text>
+
                     </View>
                 </View>
-                
+
                 <View style={styles.fieldContainer}>
-                <View style={styles.line} />
+                    <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/planet.png')} style={styles.miniiconplanet} />
-                        <Text style={styles.label}>Воронеж</Text>
+                        <Text style={styles.label}>{userData.city || '-'}</Text>
                     </View>
                 </View>
-                
+
                 <View style={styles.fieldContainer}>
-                <View style={styles.line} />
+                    <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/gender.png')} style={styles.miniicongender} />
-                        <Text style={styles.label}>Женщина</Text>
+                        <Text style={styles.label}>{userData.gender || '-'}</Text>
                     </View>
                 </View>
-                
+
                 <View style={styles.fieldContainer}>
-                <View style={styles.line} />
+                    <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/blackstar.png')} style={styles.miniiconstar} />
-                        <Text style={styles.label}>Рейтинг</Text>
-                        <Text style={styles.label}></Text>
+                        <Text style={styles.label}>{userData.averageRating || '-'}</Text>
                     </View>
                 </View>
             </View>

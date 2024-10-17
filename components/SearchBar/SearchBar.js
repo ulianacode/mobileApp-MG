@@ -10,16 +10,21 @@ const SearchBar = () => {
   const handlePeoplePress = () => {
     navigation.navigate('Profile');
   };
+  const handleEarthPress = () => {
+    navigation.navigate('AddingEventCard');
+  };
 
   return (
     <View style={styles.searchContainer}>
       <TouchableOpacity onPress={handlePeoplePress}>
         <Image source={require('../../assets/icons/people.png')} style={styles.icon} />
       </TouchableOpacity>
+      <TouchableOpacity onPress={handleEarthPress}>
       <View style={styles.planetContainer}>
-        <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
-        <Text style={[styles.cityText, styles.interBold]}>Москва</Text>
-      </View>
+              <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
+              <Text style={[styles.cityText, styles.interBold]}>Москва</Text>
+        </View>
+      </TouchableOpacity>
       <TextInput style={styles.searchInput} />
       <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
     </View>
