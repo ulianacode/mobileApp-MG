@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
 
   },
   recoverLinkContainer: {
-    marginBottom: -10,
+    marginTop: 20,
     alignItems: 'center',
 
   },
@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#F26430',
     textDecorationLine: 'underline',
-    top: 25,
+    top: 30,
   },
 });
 

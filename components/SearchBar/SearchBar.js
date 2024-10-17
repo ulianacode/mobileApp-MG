@@ -1,8 +1,8 @@
-// src/components/SearchBar/SearchBar.js
 import React from 'react';
 import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from './styles';
+import { auth } from '../../variables/ip';
 
 const SearchBar = () => {
   const navigation = useNavigation();
@@ -13,7 +13,6 @@ const SearchBar = () => {
   const handleEarthPress = () => {
     navigation.navigate('AddingEventCard');
   };
-
 
   return (
     <View style={styles.searchContainer}>
