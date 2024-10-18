@@ -5,7 +5,8 @@ import { useNavigation } from '@react-navigation/native';
 import ExitButton from '../../components/ExitButton/ExitButton';
 import BackButton from '../../components/BackButton/BackButton';
 import axios from 'axios'; 
-import { API_URL } from '../../variables/ip';
+import { API_URL, tokens} from '../../variables/ip';
+
 
 const ProfileScreen = ({ route }) => {
     const navigation = useNavigation();
@@ -14,7 +15,13 @@ const ProfileScreen = ({ route }) => {
     useEffect(() => {
         const fetchUserData = async () => {
             try {
-                const response = await axios.get(`http://${API_URL}/v1/users/user1`);
+                const accessToken = tokens.accessToken;
+                const username = tokens.username;
+                const response = await axios.get(`http://${API_URL}:8082/v1/users/${username}`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`, 
+                    },
+                });
                 setUserData(response.data);
             } catch (error) {
                 console.error('Ошибка при получении данных профиля:', error);

@@ -37,8 +37,8 @@ const refreshTokens = async () => {
 
 const scheduleTokenRefresh = (accessTokenExpiresIn, refreshTokenExpiresIn) => {
   // Convert expiration times to milliseconds
-  const accessTokenTimeout = accessTokenExpiresIn * 1000;
-  const refreshTokenTimeout = refreshTokenExpiresIn * 1000;
+  const accessTokenTimeout = accessTokenExpiresIn * 1000 - 2000;
+  const refreshTokenTimeout = refreshTokenExpiresIn * 1000 - 2000;
 
   // Schedule the access token refresh
   setTimeout(refreshTokens, accessTokenTimeout);
