@@ -8,7 +8,7 @@ const SearchBar = () => {
   const navigation = useNavigation();
 
   const handlePeoplePress = () => {
-    navigation.navigate('MyProfileEdit');
+    navigation.navigate('MyProfile');
   };
   const handleEarthPress = () => {
     navigation.navigate('AddingEventCard');

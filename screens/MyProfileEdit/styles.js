@@ -20,7 +20,6 @@ const styles = StyleSheet.create({
  bottomBoxText: {
     bottom: 2,
     fontSize: 24,
-    fontFamily: 'Inter_700Bold',
   },
  icon: {
     width: '100%', 
@@ -168,7 +167,6 @@ bottomBoxContainer: {
   bottomBoxText: {
     bottom: 2,
     fontSize: 22,
-    fontFamily: 'Inter_700Bold', // Ensure you have this font loaded
   },
   
 });

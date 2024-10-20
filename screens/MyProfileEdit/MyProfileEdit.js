@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput } from 'react-native';
+import { View, Text, Image, TouchableOpacity, TextInput, Alert } from 'react-native';
 import styles from './styles';
 import { useNavigation } from '@react-navigation/native';
 import ExitButton from '../../components/ExitButton/ExitButton';
@@ -10,6 +10,10 @@ import { API_URL, tokens } from '../../variables/ip';
 const MyProfileEdit = ({ route }) => {
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
+    const [displayName, setDisplayName] = useState('');
+    const [aboutMe, setAboutMe] = useState('');
+    const [city, setCity] = useState('');
+    const [gender, setGender] = useState('');
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -21,14 +25,19 @@ const MyProfileEdit = ({ route }) => {
                         Authorization: `Bearer ${accessToken}`, 
                     },
                 });
-                setUserData(response.data);
+                const user = response.data;
+                setUserData(user);
+                setDisplayName(user.displayName);
+                setAboutMe(user.aboutMe);
+                setCity(user.city);
+                setGender(user.gender);
             } catch (error) {
                 console.error('Ошибка при получении данных профиля:', error);
             }
         };
 
         fetchUserData();
-    }, []); 
+    }, []);
 
     const handleBackPress = () => {
         navigation.navigate('Feed');
@@ -38,9 +47,36 @@ const MyProfileEdit = ({ route }) => {
         navigation.navigate('Login');
     };
 
-    const SavePress = () => {
-        navigation.navigate('MyProfile');
+    const SavePress = async () => {
+        try {
+    
+            console.log('Отправка данных:', { displayName, aboutMe, city, gender }, 
+                
+                
+            );
+    
+            const response = await axios.patch(
+                `http://${API_URL}:8082/v1/users`,
+                { displayName, aboutMe, city, gender },
+                {
+                    headers: {
+                        Authorization: `Bearer ${tokens.accessToken}`
+                    },
+                }
+            );
+    
+            if (response.status === 200) {
+                navigation.navigate('MyProfile');
+            } else {
+                console.error('Ошибка при сохранении данных на сервере:', response);
+                Alert.alert('Не удалось сохранить данные на сервере.');
+            }
+        } catch (error) {
+            console.error('Ошибка при сохранении данных:', error.response?.data || error.message);
+            Alert.alert('Ошибка при сохранении данных на сервере.');
+        }
     };
+    
 
     const ExitPress = () => {
         navigation.navigate('MyProfile');
@@ -101,10 +137,12 @@ const MyProfileEdit = ({ route }) => {
                         <Image source={require('../../assets/namesurname.png')} style={styles.miniiconprofile} />
                         
                         <TextInput
-                            maxLength={24}
+                            maxLength={32}
                             style={styles.label}
                             placeholder="Имя и фамилия"
-                            value={userData.displayName}
+                            value={displayName}
+                            onChangeText={setDisplayName} 
+                             keyboardType="default"
                         />
                     </View>
                 </View>
@@ -113,12 +151,12 @@ const MyProfileEdit = ({ route }) => {
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/aboutme.png')} style={styles.miniiconabout} />
-
                         <TextInput
-                            maxLength={24}
+                            maxLength={500}
                             style={styles.label}
                             placeholder="Обо мне"
-                            value={userData.aboutMe}
+                            value={aboutMe}
+                            onChangeText={setAboutMe} 
                         />
                     </View>
                 </View>
@@ -127,12 +165,12 @@ const MyProfileEdit = ({ route }) => {
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/planet.png')} style={styles.miniiconplanet} />
-                        
                         <TextInput
                             maxLength={24}
                             style={styles.label}
                             placeholder="Город"
-                            value={userData.city}
+                            value={city}
+                            onChangeText={setCity} 
                         />
                     </View>
                 </View>
@@ -141,20 +179,18 @@ const MyProfileEdit = ({ route }) => {
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/gender.png')} style={styles.miniicongender} />
-
                         <TextInput
                             maxLength={24}
                             style={styles.label}
                             placeholder="Гендер"
-                            value={userData.gender}
+                            value={gender}
+                            onChangeText={setGender} 
                         />
                     </View>
                 </View>
-
             </View>
         </View>
     );
 };
 
 export default MyProfileEdit;
-
