@@ -7,6 +7,8 @@ import FeedScreen from './screens/FeedScreen/FeedScreen';
 import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
+import MyProfileScreen from './screens/MyProfileScreen/MyProfileScreen';
+import MyProfileEdit from './screens/MyProfileEdit/MyProfileEdit';
 import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 console.log(auth.status);
@@ -38,6 +40,8 @@ export default function App() {
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="AddingEventCard" component={AddingEventCard} />
+            <Stack.Screen name="MyProfile" component={MyProfileScreen} />
+            <Stack.Screen name="MyProfileEdit" component={MyProfileEdit} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
