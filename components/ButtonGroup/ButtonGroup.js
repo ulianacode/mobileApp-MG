@@ -13,6 +13,7 @@ const ButtonGroup = () => {
   };
 
   return (
+    <View style={styles.conteiner}>
     <View style={styles.buttonContainer}>
       <TouchableOpacity
         style={[
@@ -39,7 +40,8 @@ const ButtonGroup = () => {
       >
         <Text style={[styles.buttonText, styles.interBold]}>Мои мероприятия</Text>
       </TouchableOpacity>
-
+      </View>
+      <View style={styles.conteinerStatusBar}>
       {showImage && (
         <TouchableOpacity onPress={handleMenuPress}>
           <Image
@@ -60,10 +62,11 @@ const ButtonGroup = () => {
             <Text style={styles.statusOption}>Хочу посетить</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => alert('Вы выбрали вариант 4')}>
-            <Text style={styles.statusOption}>Прошедшие</Text>
+            <Text style={styles.lastStatusOption}>Прошедшие</Text>
           </TouchableOpacity>
         </View>
       )}
+      </View>
     </View>
   );
 };
