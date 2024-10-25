@@ -15,7 +15,7 @@ const AddEventForm = () => {
     const [eventImage, setEventImage] = useState(null); 
 
     const handleCreateEvent = async () => {
-        if (!title || !startDateTime || !endDateTime || !address || !description) {
+        if (!startDateTime || !endDateTime || !address || !description) {
             Alert.alert('Ошибка', 'Пожалуйста, заполните все поля.');
             return;
         }
@@ -53,10 +53,10 @@ const AddEventForm = () => {
     return (
         <View style={styles.boxContainer}>
             {[
-                { label: 'Название', value: title, setter: setEventName },
-                { label: 'Дата начала (ДД.ММ.ГГГГ чч:мм)', value: startDateTime, setter: setStartDate },
-                { label: 'Дата конца (ДД.ММ.ГГГГ чч:мм)', value: endDateTime, setter: setEndDate },
-                { label: 'Адрес', value: address, setter: setAddress },
+                { label: 'Название *', value: title, setter: setEventName },
+                { label: 'Дата начала (ДД.ММ.ГГГГ чч:мм) *', value: startDateTime, setter: setStartDate },
+                { label: 'Дата конца (ДД.ММ.ГГГГ чч:мм) *', value: endDateTime, setter: setEndDate },
+                { label: 'Адрес *', value: address, setter: setAddress },
                 { label: 'Описание', value: description, setter: setDescription },
             ].map((field, index) => (
                 <View key={index} style={styles.fieldContainer}>
