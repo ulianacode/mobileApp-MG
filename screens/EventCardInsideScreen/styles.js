@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 16,
         height: 40,
-        marginTop: -20,
+        marginTop: -25,
         width: '100%',
         backgroundColor: '#F8936E',
         borderRadius: 10,
@@ -85,7 +85,6 @@ const styles = StyleSheet.create({
         color: '#000',
         paddingHorizontal: 10,       
         paddingVertical: 5,     
-        backgroundColor: '#FBF6F4',
         borderRadius: 10,
         textAlign: 'center', 
         fontWeight: 'semibold',
@@ -95,9 +94,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#000',
         paddingHorizontal: 10,       
-        paddingVertical: 5,  
-        marginLeft: 35,   
-        backgroundColor: '#FBF6F4',
+        paddingVertical: 5,    
         borderRadius: 10,
         textAlign: 'center', 
         fontWeight: 'semibold',
@@ -106,8 +103,7 @@ const styles = StyleSheet.create({
     infoTextTitle: {
         fontSize: 16,
         color: '#000',
-        width: 190,
-        paddingHorizontal: 10,       
+        width: 155,      
         paddingVertical: 5,     
         backgroundColor: '#FBF6F4',
         borderRadius: 10,
@@ -115,10 +111,42 @@ const styles = StyleSheet.create({
         fontWeight: 'semibold',
     },
 
-    infonumAndRating: {
+    infoNum: {
+        backgroundColor: '#FBF6F4',
         flexDirection: 'row',
+        borderRadius: 10,
+    },
+    infoRating: {
+        backgroundColor: '#FBF6F4',
+        flexDirection: 'row',
+        borderRadius: 10,
+        marginLeft: 20,
+    },
+
+    infoNumAndRating: {
+        flexDirection: 'row',    
+    },
+
+    infoTitle: {
+        backgroundColor: '#FBF6F4',
+        flexDirection: 'row',
+        borderRadius: 10,
     },
     
+    miniicon: {
+        width:18,
+        height: 13,
+        marginLeft: 13, 
+        marginTop: 10,
+      },
+
+    miniicontitle: {
+        width:20,
+        height: 20,
+        marginLeft: 13, 
+        marginTop: 5,
+    },
+
     description: {
         paddingHorizontal: 15,       
         paddingVertical: 5,     
@@ -172,6 +200,123 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         color: '#000',
         fontWeight: 'semibold',
+    },
+    chatContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent:  'space-between',
+        backgroundColor: '#FBF6F4',
+        borderRadius: 30,
+        left: 0,
+        height: 50,
+        width: 100,
+        marginLeft: 130,
+    },
+    chatIcon: {
+        left: 20,
+    },
+    rateButton: {
+        backgroundColor: '#F26430',
+        padding: 10,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    rateButtonText: {
+        color: '#FFF',
+        fontSize: 16,
+        fontWeight: 'bold',
+    },
+
+    ratingContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor: '#FBF6F4',
+        borderRadius: 30,
+        left: -50,
+        height: 80,
+        width: 300,
+        marginVertical: 50,
+    },
+    ratingText: {
+        fontSize: 20,
+        marginBottom: 5,
+        marginLeft: 50,
+        color: '#000',
+    },
+    starsContainer: {
+        flexDirection: 'row',
+        marginLeft: 50,
+        marginBottom: 10,
+    },
+    star: {
+        width: 30,
+        height: 30,
+        marginHorizontal: 5,
+    },
+
+    starOkContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent:  'space-between',
+        backgroundColor: '#FBF6F4',
+        borderRadius: 30,
+        height: 80,
+        width: 100,
+        right: -40,
+        top: 50,
+    },
+    starOkIcon: {
+        left: 20,
+    },
+    ratingAndOkContainer: {
+        flexDirection: 'row',
+    },
+    ratingDisplayContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        backgroundColor: '#FBF6F4',
+        borderRadius: 30,
+        height: 50,
+        width: 250,
+        left: 80,
+        marginTop: 330,
+    },
+    singleStarContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginLeft: 5,
+    },
+    singleStar: {
+        width: 30,
+        height: 30,
+        marginRight: 5,
+    },
+    ratingNumber: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        color: '#FBF6F4',
+        left: -24,
+    },
+
+    nonParticipationContainer: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        backgroundColor: '#FBF6F4',
+        borderRadius: 30,
+        height: 35,
+        width: 220,
+        left: 90,
+        marginVertical: 350,
+    },
+    nonParticipationText:{
+        fontSize: 18,
+        marginBottom: 5,
+        marginLeft: 0,
+        color: '#000',
+        fontWeight: 'semi-bold',
     },
   });
 
