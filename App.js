@@ -12,7 +12,9 @@ import MyProfileEdit from './screens/MyProfileEdit/MyProfileEdit';
 import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
-// привет тимошка
+import EventCardInsideScreen from './screens/EventCardInsideScreen/EventCardInsideScreen';
+
+
 console.log(auth.status);
 
 const Stack = createStackNavigator();
@@ -45,6 +47,7 @@ export default function App() {
             <Stack.Screen name="MyProfile" component={MyProfileScreen} />
             <Stack.Screen name="MyProfileEdit" component={MyProfileEdit} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="EventCardInsideScreen" component={EventCardInsideScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
