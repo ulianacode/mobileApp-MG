@@ -11,7 +11,7 @@ const SearchBar = () => {
     navigation.navigate('MyProfile');
   };
   const handleEarthPress = () => {
-    navigation.navigate('ChatScreen');
+    navigation.navigate('AddingEventCard');
   };
 
   return (
