@@ -6,7 +6,7 @@ const EventCardInsideScreen = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [rating, setRating] = useState(0);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
-    const [participantStatus, setParticipantStatus] = useState(2); // 1 for participating, 2 for not participating
+    const [participantStatus, setParticipantStatus] = useState(1); 
     const eventStartDate = new Date('2022-10-04T20:12:00');
     const eventEndDate = new Date('2024-10-04T22:00:00');
     const currentDate = new Date('2025-10-04T22:00:00');
@@ -30,17 +30,22 @@ const EventCardInsideScreen = () => {
     };
 
     let headerText = '';
+    let headerBackgroundColor = '#D9D9D9'; 
+
     if (eventStartDate > currentDate) {
         headerText = 'Ещё не началось';
+        headerBackgroundColor = '#D9D9D9';
     } else if (eventStartDate <= currentDate && eventEndDate >= currentDate) {
         headerText = 'Идёт сейчас';
+        headerBackgroundColor = '#F26430';
     } else if (eventEndDate < currentDate) {
         headerText = 'Уже закончилось';
+        headerBackgroundColor = '#ADA5A1';
     }
 
     return (
         <ScrollView style={styles.container}>
-            <View style={styles.header}>
+            <View style={[styles.header, { backgroundColor: headerBackgroundColor }]}>
                 <Text style={styles.headerText}>{headerText}</Text>
             </View>
 
@@ -75,7 +80,7 @@ const EventCardInsideScreen = () => {
             </View>
 
             <Text style={styles.description}>
-                Lorem ipsum dolor sit amet consectetur...
+                Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consecteturLorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur......
             </Text>
 
          
@@ -87,17 +92,22 @@ const EventCardInsideScreen = () => {
                             {isChecked && <Text style={styles.checkboxText}>✔</Text>}
                         </View>
                     </Pressable>
-                    <TouchableOpacity onPress={handleChatPress} style={styles.chatContainer}>
-                        <Image source={require('../../assets/icons/chat.png')} style={styles.chatIcon} />
-                    </TouchableOpacity>
                 </View>
             )}
 
             
             {eventStartDate <= currentDate && eventEndDate >= currentDate && participantStatus === 1 && (
+                <View style={styles.participationContainer}>
+                <Pressable onPress={handleParticipationToggle} style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Участвую</Text>
+                    <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
+                        {isChecked && <Text style={styles.checkboxText}>✔</Text>}
+                    </View>
+                </Pressable>
                 <TouchableOpacity onPress={handleChatPress} style={styles.chatContainer}>
                     <Image source={require('../../assets/icons/chat.png')} style={styles.chatIcon} />
                 </TouchableOpacity>
+            </View>
             )}
 
         

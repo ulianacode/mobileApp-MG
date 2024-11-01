@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F26430',
         width: '100%',
         
+        
     },
     header: {
         alignItems: 'center',
@@ -14,7 +15,7 @@ const styles = StyleSheet.create({
         marginBottom: 14,
         width: '100%',
         backgroundColor: '#D9D9D9',
-        borderRadius: 10,
+        borderRadius: 0,
         height: 40,
     },
     headerText: {
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
         lineHeight: 20,
         color: '#FBF6F4',
         marginBottom: 16,
+        flexGrow: 1,
     },
     participationContainer: {
       flexDirection: 'row',
@@ -174,7 +176,7 @@ const styles = StyleSheet.create({
         left: -20,
         height: 50,
         width: 210,
-        marginVertical: 50,
+        marginVertical: 0,
     },
     checkbox: {
         width: 24,
@@ -281,7 +283,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: 250,
         left: 80,
-        marginTop: 330,
+        marginBottom: 20,
     },
     singleStarContainer: {
         flexDirection: 'row',
@@ -303,21 +305,21 @@ const styles = StyleSheet.create({
     nonParticipationContainer: {
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         backgroundColor: '#FBF6F4',
         borderRadius: 30,
         height: 35,
         width: 220,
-        left: 90,
-        marginVertical: 350,
+        alignSelf: 'center', // Центрирует по горизонтали
+        marginBottom: 20, // Отступ от нижней границы экрана
     },
-    nonParticipationText:{
+    nonParticipationText: {
         fontSize: 18,
         marginBottom: 5,
-        marginLeft: 0,
         color: '#000',
-        fontWeight: 'semi-bold',
+        fontWeight: '600',
     },
+    
   });
 
   export default styles;
