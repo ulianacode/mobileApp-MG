@@ -12,6 +12,7 @@ import MyProfileEdit from './screens/MyProfileEdit/MyProfileEdit';
 import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
+// привет тимошка
 console.log(auth.status);
 
 const Stack = createStackNavigator();
