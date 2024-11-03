@@ -17,6 +17,8 @@ const MyProfileScreen = ({ route }) => {
             try {
                 const accessToken = tokens.accessToken;
                 const username = tokens.username;
+                console.log('Access Token:', accessToken);
+                console.log('Username:', username);
                 const response = await axios.get(`http://${API_URL}:8082/v1/users/${username}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`, 

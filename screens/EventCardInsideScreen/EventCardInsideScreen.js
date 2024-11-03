@@ -1,15 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Alert, ScrollView, Pressable, TouchableOpacity } from 'react-native';
 import styles from './styles';
+import axios from 'axios';
+import BackButton from '../../components/BackButton/BackButton';
+import { useNavigation } from '@react-navigation/native';
+import { API_URL, tokens} from '../../variables/ip';
 
 const EventCardInsideScreen = () => {
     const [isChecked, setIsChecked] = useState(false);
+    const navigation = useNavigation();
     const [rating, setRating] = useState(0);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
     const [participantStatus, setParticipantStatus] = useState(1); 
     const eventStartDate = new Date('2022-10-04T20:12:00');
     const eventEndDate = new Date('2024-10-04T22:00:00');
     const currentDate = new Date('2025-10-04T22:00:00');
+
+    
 
     const handleChatPress = () => {
         Alert.alert('Чат');
@@ -19,8 +26,12 @@ const EventCardInsideScreen = () => {
         setRating(star);
     };
 
+    const handleBackPress = () => {
+        navigation.navigate('Feed');
+    };
+
     const handleOkRatingPress = () => {
-        setRatingSubmitted(true);
+        submitRating(); 
     };
 
     const handleParticipationToggle = () => {
@@ -28,6 +39,52 @@ const EventCardInsideScreen = () => {
         setIsChecked(!isChecked);
         setParticipantStatus(newStatus);
     };
+
+    
+
+    useEffect(() => {
+        const fetchEventData  = async () => {
+            try {
+                const accessToken = tokens.accessToken;
+
+
+                console.log('Access Token:', accessToken);
+    
+
+                const response = await axios.get(`http://${API_URL}:8083/v1/events/3`, {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`, 
+                    },
+                }); 
+            } catch (error) {
+                console.error('Ошибка при получении данных мероприятия', error);
+            }
+        };
+
+        fetchEventData();
+    }, []); 
+
+        const submitRating = async () => {
+            try {
+                const accessToken = tokens.accessToken;
+                const eventId = 4;
+                const score = rating;
+                console.log(score);
+
+                const response = await axios.post(`http://${API_URL}:8082/v1/grades`, 
+                    { eventId, score}, 
+                    {
+                    headers: {
+                        Authorization: `Bearer ${accessToken}`,
+                    },
+                });
+                console.log('Рейтинг успешно отправлен:', response.data);
+                setRatingSubmitted(true);
+            } catch (error) {
+                console.error('Ошибка при отправке рейтинга:', error);
+            }
+        };
+
 
     let headerText = '';
     let headerBackgroundColor = '#D9D9D9'; 
@@ -45,9 +102,12 @@ const EventCardInsideScreen = () => {
 
     return (
         <ScrollView style={styles.container}>
+            
             <View style={[styles.header, { backgroundColor: headerBackgroundColor }]}>
                 <Text style={styles.headerText}>{headerText}</Text>
             </View>
+
+            <BackButton onPress={handleBackPress} />
 
             <View style={styles.dater}>
                 <Text style={styles.dateText}>4 Октября 20:00 - 4 Октября 22:00</Text>
@@ -70,7 +130,7 @@ const EventCardInsideScreen = () => {
                     </View>
                     <View style={styles.infoRating}>
                         <Image source={require('../../assets/aprove.png')} style={styles.miniicon} />
-                        <Text style={styles.infoTextRating}>4.5</Text>
+                        <Text style={styles.infoTextRating}>{rating.toFixed(1)}</Text>
                     </View>
                 </View>
                 <View style={styles.infoTitle}>
