@@ -23,6 +23,8 @@ const EventCardInsideScreen = () => {
 
     
 
+    
+
     const handleChatPress = () => {
         Alert.alert('Чат');
     };
@@ -39,32 +41,10 @@ const EventCardInsideScreen = () => {
         submitRating(); 
     };
 
-    
-    const handleParticipationToggle = async () => {
-        const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
-        const eventId = 6; 
-        try {
-            const accessToken = tokens.accessToken;
-            const response = await axios.post(
-                `http://${API_URL}:8083/v1/events/7`,
-                {eventId, userStatus},
-                {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`,
-                    },
-                }
-            );
 
-            setParticipantStatus(userStatus);
-            setIsChecked(!isChecked);
-            
-        } catch (error) {
-            console.error("Ошибка при обновлении статуса участия:", error);
-        }
-    };
+    
 
     useEffect(() => {
-        
         const fetchEventData  = async () => {
             try {
                 const accessToken = tokens.accessToken;
