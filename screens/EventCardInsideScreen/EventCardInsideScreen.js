@@ -43,7 +43,7 @@ const EventCardInsideScreen = () => {
     const handleParticipationToggle = async () => {
         const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
         const eventId = 6; 
-
+        // коммент
         try {
             const accessToken = tokens.accessToken;
             const response = await axios.post(
