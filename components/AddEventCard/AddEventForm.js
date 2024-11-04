@@ -15,14 +15,15 @@ const AddEventForm = () => {
     const [eventImage, setEventImage] = useState(null); 
 
     const handleCreateEvent = async () => {
-        if (!startDateTime || !endDateTime || !address || !description) {
-            Alert.alert('Ошибка', 'Пожалуйста, заполните все поля.');
+        if (!title || !startDateTime || !endDateTime || !address) {
+            Alert.alert('Ошибка', 'Пожалуйста, заполните все обязательные поля.');
             return;
         }
 
         try {
             const response = await axios.post(`http://${API_URL}:8083/v1/events`, 
-                { title,
+                { 
+                title,
                 startDateTime,  
                 endDateTime,     
                 address,
