@@ -11,10 +11,17 @@ const EventCardInsideScreen = () => {
     const navigation = useNavigation();
     const [rating, setRating] = useState(0);
     const [ratingSubmitted, setRatingSubmitted] = useState(false);
-    const [participantStatus, setParticipantStatus] = useState(1); 
-    const eventStartDate = new Date('2022-10-04T20:12:00');
-    const eventEndDate = new Date('2024-10-04T22:00:00');
-    const currentDate = new Date('2025-10-04T22:00:00');
+    const [participantStatus, setParticipantStatus] = useState("NOT_APPROVED");
+
+    const [averageRating, setAverageRating] = useState(0);
+    const [userGrade, setUserGrade] = useState(0);
+
+
+    const eventStartDate = new Date('2024-11-04T00:07:00');
+    const eventEndDate = new Date('2024-11-04T00:09:00');
+    const currentDate = new Date('2024-11-04T00:10:00');
+
+    
 
     
 
@@ -34,11 +41,6 @@ const EventCardInsideScreen = () => {
         submitRating(); 
     };
 
-    const handleParticipationToggle = () => {
-        const newStatus = isChecked ? 2 : 1;
-        setIsChecked(!isChecked);
-        setParticipantStatus(newStatus);
-    };
 
     
 
@@ -51,11 +53,22 @@ const EventCardInsideScreen = () => {
                 console.log('Access Token:', accessToken);
     
 
-                const response = await axios.get(`http://${API_URL}:8083/v1/events/3`, {
+                const response = await axios.get(`http://${API_URL}:8083/v1/events/7`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`, 
                     },
                 }); 
+                const { userStatus, userGrade, userProfile } = response.data;
+                const { averageRating } = userProfile;
+
+                setIsChecked(userStatus === "APPROVED");
+                setParticipantStatus(userStatus);
+
+                console.log(response.data)
+
+                setAverageRating(averageRating);
+                setUserGrade(userGrade);
+
             } catch (error) {
                 console.error('Ошибка при получении данных мероприятия', error);
             }
@@ -67,7 +80,7 @@ const EventCardInsideScreen = () => {
         const submitRating = async () => {
             try {
                 const accessToken = tokens.accessToken;
-                const eventId = 4;
+                const eventId = 7;
                 const score = rating;
                 console.log(score);
 
@@ -120,9 +133,7 @@ const EventCardInsideScreen = () => {
             <View style={styles.imagesContainer}>
                 <Image source={require('../../assets/icons/example.png')} style={styles.image} />
                 <Image source={require('../../assets/icons/example.png')} style={styles.image} />
-            </View>
-
-            <View style={styles.infoContainer}>
+            </View><View style={styles.infoContainer}>
                 <View style={styles.infoNumAndRating}>
                     <View style={styles.infoNum}>
                         <Image source={require('../../assets/aprove.png')} style={styles.miniicon} />
@@ -130,7 +141,7 @@ const EventCardInsideScreen = () => {
                     </View>
                     <View style={styles.infoRating}>
                         <Image source={require('../../assets/aprove.png')} style={styles.miniicon} />
-                        <Text style={styles.infoTextRating}>{rating.toFixed(1)}</Text>
+                        <Text style={styles.infoTextRating}>{averageRating.toFixed(1)}</Text>
                     </View>
                 </View>
                 <View style={styles.infoTitle}>
@@ -149,35 +160,39 @@ const EventCardInsideScreen = () => {
                     <Pressable onPress={handleParticipationToggle} style={styles.checkboxContainer}>
                         <Text style={styles.label}>Участвую</Text>
                         <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
-                            {isChecked && <Text style={styles.checkboxText}>✔</Text>}
+                            {isChecked && <Text style={styles.checkboxText}>✔️</Text>}
                         </View>
                     </Pressable>
+                    {participantStatus === "APPROVED" && (
+                    <TouchableOpacity onPress={handleChatPress} style={styles.chatContainer}>
+                        <Image source={require('../../assets/icons/chat.png')} style={styles.chatIcon} />
+                    </TouchableOpacity>
+                )}
                 </View>
             )}
 
             
-            {eventStartDate <= currentDate && eventEndDate >= currentDate && participantStatus === 1 && (
+            {eventStartDate <= currentDate && eventEndDate >= currentDate &&  (
                 <View style={styles.participationContainer}>
                 <Pressable onPress={handleParticipationToggle} style={styles.checkboxContainer}>
                     <Text style={styles.label}>Участвую</Text>
                     <View style={[styles.checkbox, isChecked && styles.checkboxChecked]}>
-                        {isChecked && <Text style={styles.checkboxText}>✔</Text>}
+                        {isChecked && <Text style={styles.checkboxText}>✔️</Text>}
                     </View>
                 </Pressable>
-                <TouchableOpacity onPress={handleChatPress} style={styles.chatContainer}>
-                    <Image source={require('../../assets/icons/chat.png')} style={styles.chatIcon} />
-                </TouchableOpacity>
+                {participantStatus === "APPROVED" && (
+                    <TouchableOpacity onPress={handleChatPress} style={styles.chatContainer}>
+                        <Image source={require('../../assets/icons/chat.png')} style={styles.chatIcon} />
+                    </TouchableOpacity>
+                )}
             </View>
-            )}
-
-        
-            {eventStartDate <= currentDate && eventEndDate >= currentDate && participantStatus === 2 && (
+            )}{eventStartDate <= currentDate && eventEndDate >= currentDate && participantStatus === "NOT_APPROVED" && (
                 <View style={styles.nonParticipationContainer}> 
                     <Text style={styles.nonParticipationText}>Вы не участвуете</Text>
                 </View>
             )}
 
-            {eventEndDate < currentDate && participantStatus === 1 && !ratingSubmitted && (
+            {eventEndDate < currentDate && participantStatus === "CAN_RATE" && !ratingSubmitted && (
                 <View style={styles.ratingAndOkContainer}>
                     <View style={styles.ratingContainer}>
                         <Text style={styles.ratingText}>Оцените мероприятие:</Text>
@@ -202,7 +217,7 @@ const EventCardInsideScreen = () => {
                 </View>
             )}
 
-            {eventEndDate < currentDate && participantStatus === 1 && ratingSubmitted && (
+            {eventEndDate < currentDate && participantStatus === "ALREADY_RATED" &&  (
                 <View style={styles.ratingDisplayContainer}>
                     <Text style={styles.ratingText}>Ваша оценка:</Text>
                     <View style={styles.singleStarContainer}>
@@ -210,12 +225,12 @@ const EventCardInsideScreen = () => {
                             source={require('../../assets/icons/starfill.png')}
                             style={styles.singleStar}
                         />
-                        <Text style={styles.ratingNumber}>{rating}</Text>
+                        <Text style={styles.ratingNumber}>{userGrade}</Text>
                     </View>
                 </View>
             )}
 
-            {eventEndDate < currentDate && participantStatus === 2 && (
+            {eventEndDate < currentDate && participantStatus === "NOT_APPROVED" && (
                 <View style={styles.nonParticipationContainer}> 
                     <Text style={styles.nonParticipationText}>Вы не участвовали</Text>
                 </View>
