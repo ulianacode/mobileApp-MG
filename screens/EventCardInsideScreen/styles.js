@@ -165,9 +165,7 @@ const styles = StyleSheet.create({
     participationText: {
       fontSize: 16,
       marginRight: 8,
-    },
-
-    checkboxContainer: {
+    },checkboxContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
