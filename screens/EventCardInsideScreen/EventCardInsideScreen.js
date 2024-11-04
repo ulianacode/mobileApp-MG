@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, Alert, ScrollView, Pressable, TouchableOpacity } from 'react-native';
+import { View, Text, Image, Alert, ScrollView, ActivityIndicator, Pressable, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import axios from 'axios';
 import BackButton from '../../components/BackButton/BackButton';
 import { useNavigation } from '@react-navigation/native';
 import { API_URL, tokens} from '../../variables/ip';
+
+
+
 
 const EventCardInsideScreen = () => {
     const [isChecked, setIsChecked] = useState(false);
@@ -16,14 +19,20 @@ const EventCardInsideScreen = () => {
     const [averageRating, setAverageRating] = useState(0);
     const [userGrade, setUserGrade] = useState(0);
 
+    const [username, setUserName] = useState(null);
+    const [profileImage, userProfileImage] = useState(null);
 
-    const eventStartDate = new Date('2024-11-04T00:07:00');
-    const eventEndDate = new Date('2024-11-04T00:09:00');
-    const currentDate = new Date('2024-11-04T00:10:00');
+    const [eventData, setEventData] = useState(null);
+    const [loading, setLoading] = useState(true); 
 
-    
-
-    
+    const convertToISO = (dateString) => {
+        const [datePart, timePart] = dateString.split(' ');
+      
+        const [day, month, year] = datePart.split('.');
+      
+        return `${year}-${month}-${day}T${timePart}:00`;
+      };
+      
 
     const handleChatPress = () => {
         Alert.alert('Чат');
@@ -31,7 +40,9 @@ const EventCardInsideScreen = () => {
 
     const handleRatingPress = (star) => {
         setRating(star);
+        fetchEventData();
     };
+
 
     const handleBackPress = () => {
         navigation.navigate('Feed');
@@ -39,48 +50,100 @@ const EventCardInsideScreen = () => {
 
     const handleOkRatingPress = () => {
         submitRating(); 
+        fetchEventData();
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+      
+        const day = date.getDate();
+        const month = date.getMonth(); 
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+      
+
+        const months = [
+          'Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня',
+          'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря'
+        ];
+      
+        return `${day} ${months[month]} ${hours}:${minutes}`;
+      };
 
     
+    const getCurrentDateInMoscowTimezone = () => {
+        const currentDate = new Date();
+      
+        const moscowOffset = 3 * 60; 
+        const utcDate = currentDate.getTime() + (currentDate.getTimezoneOffset() * 60000); 
+        const moscowDate = new Date(utcDate + (moscowOffset * 60000)); 
+      
 
-    useEffect(() => {
-        const fetchEventData  = async () => {
-            try {
-                const accessToken = tokens.accessToken;
-
-
-                console.log('Access Token:', accessToken);
+        const isoString = moscowDate.toISOString(); 
+        return isoString.slice(0, -5);
+      };
     
+      const handleParticipationToggle = async () => {
+        const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
+        const eventId = 10; 
 
-                const response = await axios.get(`http://${API_URL}:8083/v1/events/7`, {
+        try {
+            const accessToken = tokens.accessToken;
+            const response = await axios.post(
+                `http://${API_URL}:8083/v1/events/10`,
+                {eventId, userStatus},
+                {
                     headers: {
-                        Authorization: `Bearer ${accessToken}`, 
+                        Authorization: `Bearer ${accessToken}`,
                     },
-                }); 
-                const { userStatus, userGrade, userProfile } = response.data;
-                const { averageRating } = userProfile;
+                }
+            );
 
-                setIsChecked(userStatus === "APPROVED");
-                setParticipantStatus(userStatus);
+            setParticipantStatus(userStatus);
+            setIsChecked(!isChecked);
+            await fetchEventData();
+            
+        } catch (error) {
+            console.error("Ошибка при обновлении статуса участия:", error);
+        }
+    };
 
-                console.log(response.data)
+    
+    const fetchEventData = async () => {
+        try {
+            const accessToken = tokens.accessToken;
 
-                setAverageRating(averageRating);
-                setUserGrade(userGrade);
+            const response = await axios.get(`http://${API_URL}:8083/v1/events/10`, {
+                headers: {
+                    Authorization: `Bearer ${accessToken}`,
+                },
+            });
 
-            } catch (error) {
-                console.error('Ошибка при получении данных мероприятия', error);
-            }
-        };
+            setEventData(response.data);
+            const { userStatus, userGrade, userProfile } = response.data;
+            const { averageRating } = userProfile;
+            const { username } = userProfile;
+            const { profileImage } = userProfile;
 
-        fetchEventData();
-    }, []); 
+            setUserName(username);
+            userProfileImage(profileImage);
+            setIsChecked(userStatus === "APPROVED");
+            setParticipantStatus(userStatus);
+            setAverageRating(averageRating);
+            setUserGrade(userGrade);
+        } catch (error) {
+            console.error('Ошибка при получении данных мероприятия', error);
+        } finally {
+            setLoading(false); 
+        }
+    };
+
+ 
 
         const submitRating = async () => {
             try {
                 const accessToken = tokens.accessToken;
-                const eventId = 7;
+                const eventId = 10;
                 const score = rating;
                 console.log(score);
 
@@ -93,12 +156,25 @@ const EventCardInsideScreen = () => {
                 });
                 console.log('Рейтинг успешно отправлен:', response.data);
                 setRatingSubmitted(true);
+                await fetchEventData();
             } catch (error) {
                 console.error('Ошибка при отправке рейтинга:', error);
             }
         };
 
+    useEffect(() => {
+        fetchEventData();
+    }, []); 
 
+
+    const currentDate = getCurrentDateInMoscowTimezone();
+    const eventStartDate = eventData?.startDateTime ? convertToISO(eventData.startDateTime) : null;
+    const eventEndDate = eventData?.endDateTime ? convertToISO(eventData.endDateTime) : null;
+
+    const formattedStartDate = eventStartDate ? formatDate(eventStartDate) : '';
+    const formattedEndDate = eventEndDate ? formatDate(eventEndDate) : '';
+
+    
     let headerText = '';
     let headerBackgroundColor = '#D9D9D9'; 
 
@@ -113,6 +189,16 @@ const EventCardInsideScreen = () => {
         headerBackgroundColor = '#ADA5A1';
     }
 
+    if (loading) {
+        return <ActivityIndicator size="large" color="#0000ff" />;
+    }
+    if (!eventData) {
+        return <Text style={styles.errorText}>Данные мероприятия недоступны</Text>;
+    }
+
+    const avatarSource = eventData.eventImage && eventData.eventImage !== '' ? { uri: eventData.eventImage } : require('../../assets/nonavatar.png');
+    const avatarProfileSource = profileImage && profileImage !== '' ? { uri: profileImage } : require('../../assets/nonavatar.png');
+
     return (
         <ScrollView style={styles.container}>
             
@@ -123,21 +209,21 @@ const EventCardInsideScreen = () => {
             <BackButton onPress={handleBackPress} />
 
             <View style={styles.dater}>
-                <Text style={styles.dateText}>4 Октября 20:00 - 4 Октября 22:00</Text>
+                <Text style={styles.dateText}>{formattedStartDate} - {formattedEndDate}</Text>
             </View>
 
             <View style={styles.namer}>
-                <Text style={styles.title}>Название мероприятия</Text>
+                <Text style={styles.title}>{eventData.title}</Text>
             </View>
 
             <View style={styles.imagesContainer}>
                 <Image source={require('../../assets/icons/example.png')} style={styles.image} />
-                <Image source={require('../../assets/icons/example.png')} style={styles.image} />
+                <Image source={avatarSource} style={styles.image} />
             </View><View style={styles.infoContainer}>
                 <View style={styles.infoNumAndRating}>
                     <View style={styles.infoNum}>
                         <Image source={require('../../assets/aprove.png')} style={styles.miniicon} />
-                        <Text style={styles.infoTextAprove}>1,923</Text>
+                        <Text style={styles.infoTextAprove}>{eventData.approvalCount}</Text>
                     </View>
                     <View style={styles.infoRating}>
                         <Image source={require('../../assets/aprove.png')} style={styles.miniicon} />
@@ -145,13 +231,13 @@ const EventCardInsideScreen = () => {
                     </View>
                 </View>
                 <View style={styles.infoTitle}>
-                    <Image source={require('../../assets/logoevent.png')} style={styles.miniicontitle} />
-                    <Text style={styles.infoTextTitle}>T-BANK</Text>
+                    <Image source={avatarProfileSource} style={styles.miniicontitle} />
+                    <Text style={styles.infoTextTitle}>{username}</Text>
                 </View>
             </View>
 
             <Text style={styles.description}>
-                Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consecteturLorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur...Lorem ipsum dolor sit amet consectetur......
+                {eventData.description}
             </Text>
 
          
