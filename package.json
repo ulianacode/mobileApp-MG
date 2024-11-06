@@ -6,16 +6,19 @@
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "postinstall": "rn-nodeify --hack --install"
   },
   "dependencies": {
     "@expo-google-fonts/inter": "^0.2.3",
     "@expo/metro-runtime": "~3.2.3",
     "@react-native-community/checkbox": "^0.5.17",
     "@react-native-community/datetimepicker": "^8.2.0",
+    "@react-native-community/netinfo": "^11.4.1",
     "@react-navigation/native": "^6.1.18",
     "@react-navigation/native-stack": "^6.11.0",
     "@react-navigation/stack": "^6.4.1",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.7",
     "expo": "~51.0.28",
     "expo-status-bar": "~1.12.1",
@@ -28,10 +31,15 @@
     "react-native-safe-area-context": "^4.11.0",
     "react-native-screens": "^3.34.0",
     "react-native-sensitive-info": "^5.5.8",
-    "react-native-web": "~0.19.10"
+    "react-native-web": "~0.19.10",
+    "react-native-websocket": "^1.0.2",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
+    "text-encoding": "^0.7.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.20.0",
+    "rn-nodeify": "^10.3.0"
   },
   "private": true
 }

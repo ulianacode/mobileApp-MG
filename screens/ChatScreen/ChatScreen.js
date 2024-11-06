@@ -1,79 +1,173 @@
-import React, { useState } from 'react';
-import { View, Text, Image, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, TextInput, TouchableOpacity, Image, Text, FlatList, ActivityIndicator } from 'react-native';
+import { Client } from '@stomp/stompjs';
 import styles from './styles';
-import BackButton from '../../components/BackButton/BackButton';
 import { useNavigation } from '@react-navigation/native';
+import BackButton from '../../components/BackButton/BackButton';
+import { API_URL, tokens } from '../../variables/ip';  // Импорт токенов
 
-const initialMessages = [
-  { id: '1', user: 'DoraTheExplorer', text: 'Я с тобою как в раю для тебя живу для тебя пою...', time: '23:09', isCurrentUser: false, avatar: require('../../assets/icons/chatavatar.png') },
-  { id: '2', user: 'Homelander2004', text: 'Ты кому звонишь? Ты кому звонишь...', time: '23:10', isCurrentUser: true, avatar: require('../../assets/icons/chatavatar.png') },
-  { id: '3', user: 'DoraTheExplorer', text: 'Привет, но ты проходишь мимо...', time: '23:11', isCurrentUser: false, avatar: require('../../assets/icons/chatavatar.png') },
-  { id: '4', user: 'Homelander2004', text: 'Лови мой каждый импульс...', time: '23:12', isCurrentUser: true, avatar: require('../../assets/icons/chatavatar.png') },
-  { id: '5', user: 'DoraTheExplorer', text: 'Безразличен, но я не влюблена...', time: '23:13', isCurrentUser: false, avatar: require('../../assets/icons/chatavatar.png') },
-  { id: '6', user: 'Homelander2004', text: 'Ой ёй, потеряла голову...', time: '23:16', isCurrentUser: true, avatar: require('../../assets/icons/chatavatar.png') },
-];
+export default function ChatScreen() {
+    const [connected, setConnected] = useState(false);
+    const [messages, setMessages] = useState([]);
+    const [stompClient, setStompClient] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [messageInput, setMessageInput] = useState('');
+    const navigation = useNavigation();
+    const flatListRef = useRef(null);
+    const eventId = 4;
 
-const ChatScreen = () => {
-  const navigation = useNavigation();
-  const [messages, setMessages] = useState(initialMessages);
-  const [message, setMessage] = useState('');
+    const loadMessages = () => {
+        if (stompClient && connected) {
+            stompClient.publish({
+                destination: '/chatapp/getChatHistory',  // Новый путь для получения истории сообщений
+                body: JSON.stringify(eventId),
+            });
+        }
+    };
 
-  const handleBackPress = () => {
-    navigation.navigate('Feed');
-  };
+    useEffect(() => {
+        const client = new Client({
+            brokerURL: `ws://${API_URL}:8083/meet-and-greet-chat`,  // Новый эндпоинт
+            forceBinaryWSFrames: true,
+            appendMissingNULLonIncoming: true,
+            reconnectDelay: 500,
+            debug: (str) => {
+                console.log(`WebSocket debug: ${str}`);
+            },
+            onConnect: () => {
+                setConnected(true);
+                setLoading(false);
+            },
+            onWebSocketError: (error) => {
+                console.error('WebSocket connection error:', error);
+            },
+            onStompError: (frame) => {
+                console.error('STOMP error:', frame.headers['message']);
+                console.error('Details:', frame.body);
+            },
+            onDisconnect: () => {
+                setConnected(false);
+                setLoading(true);
+            },
+        });
 
-  const handleSend = () => {
-    if (message.trim()) {
-      const newMessage = {
-        id: (messages.length + 1).toString(),
-        user: 'Homelander2004',
-        text: message,
-        time: new Date().toLocaleTimeString().slice(0, 5),
-        isCurrentUser: true,
-        avatar: require('../../assets/icons/chatavatar.png'),
-      };
-      setMessages([...messages, newMessage]);
-      setMessage('');
-    }
-  };
+        setStompClient(client);
+        client.activate();
 
-  const renderMessage = ({ item }) => (
-    <View style={[styles.messageContainer, item.isCurrentUser ? styles.rightMessage : styles.leftMessage]}>
-      <Image source={item.avatar} style={styles.avatar} />
-      <View style={styles.messageContent}>
-        <Text style={styles.username}>{`@${item.user}`}</Text>
-        <View style={[styles.messageBubble, { backgroundColor: item.isCurrentUser ? '#F26430' : '#F8936E' }]}>
-          <Text style={styles.messageText}>{item.text}</Text>
-          <Text style={styles.messageTime}>{item.time}</Text>
+        return () => {
+            client.deactivate();
+            setConnected(false);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (stompClient && connected) {
+            const chatHistorySubscription = stompClient.subscribe('/topic/chatHistory', (message) => {
+                const parsedMessages = JSON.parse(message.body);
+                if (Array.isArray(parsedMessages)) {
+                    setMessages(parsedMessages);
+                } else {
+                    setMessages((prevMessages) => [...prevMessages, parsedMessages]);
+                }
+            });
+
+            loadMessages();
+
+            return () => {
+                chatHistorySubscription.unsubscribe();
+            };
+        }
+    }, [stompClient, connected]);
+
+    const handleBackPress = () => {
+        navigation.navigate('Feed');
+    };
+
+    const handleSend = () => {
+        if (stompClient && connected && messageInput.trim()) {
+            const newMessage = {
+                id: Math.random(),
+                content: messageInput,
+                sender: tokens.username || 'Guest',  // Используем username из токенов
+                timestamp: Date.now(),
+            };
+
+            stompClient.publish({
+                destination: '/chatapp/sendMessage',  // Новый путь для отправки сообщения
+                body: JSON.stringify({
+                    content: newMessage.content,
+                    sender: newMessage.sender,
+                    type: 'MESSAGE',
+                    eventId: eventId,
+                }),
+            });
+
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+            setMessageInput('');
+        }
+    };
+
+    const renderMessage = ({ item }) => (
+      <View style={[styles.messageContainer, item.sender === tokens.username ? styles.rightMessage : styles.leftMessage]}>
+          <Image source={require('../../assets/icons/chatavatar.png')} style={styles.avatar} />
+          <View style={styles.messageContent}>
+              <Text style={styles.username}>{`@${item.sender}`}</Text>
+              <View
+                  style={[
+                      styles.messageBubble,
+                      item.sender === tokens.username
+                          ? styles.rightMessageBubble // Оранжевый цвет для текущего пользователя
+                          : styles.leftMessageBubble, // Персиковый для чужих сообщений
+                  ]}
+              >
+                  <Text style={styles.messageText}>{item.content}</Text>
+                  <Text style={styles.messageTime}>{new Date(item.timestamp).toLocaleTimeString()}</Text>
+              </View>
+          </View>
+      </View>
+  );
+
+    return (
+        <View style={styles.container}>
+            <BackButton onPress={handleBackPress} />
+            <Text style={styles.header}>Название мероприятия</Text>
+
+            {loading ? (
+                <View style={styles.loaderContainer}>
+                    <ActivityIndicator size="large" color="#F26430" />
+                    <Text>Подключение к WebSocket...</Text>
+                </View>
+            ) : (
+                <FlatList
+                    ref={flatListRef}
+                    data={messages}
+                    renderItem={renderMessage}
+                    keyExtractor={(item, index) => (item.id ? item.id.toString() : index.toString())}
+                    contentContainerStyle={styles.chatContainer}
+                    onContentSizeChange={(contentWidth, contentHeight) => {
+                        flatListRef.current?.scrollToOffset({
+                            offset: contentHeight,
+                            animated: true,
+                        });
+                    }}
+                    onLayout={() => {
+                        flatListRef.current?.scrollToEnd({ animated: true });
+                    }}
+                    ListFooterComponent={<View style={{ height: 20 }} />}
+                />
+            )}
+
+            <View style={styles.inputContainer}>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Введите сообщение..."
+                    value={messageInput}
+                    onChangeText={(text) => setMessageInput(text)}
+                />
+                <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
+                    <Image source={require('../../assets/icons/chatsend1.png')} style={styles.iconsend} />
+                </TouchableOpacity>
+            </View>
         </View>
-      </View>
-    </View>
-  );
-
-  return (
-    <View style={styles.container}>
-      <BackButton onPress={handleBackPress} />
-      <Text style={styles.header}>Название мероприятия</Text>
-      <FlatList
-        data={messages}
-        renderItem={renderMessage}
-        keyExtractor={(item) => item.id}
-        contentContainerStyle={styles.chatContainer}
-      />
-      <View style={styles.inputContainer}>
-        <TextInput
-          style={styles.input}
-          placeholder="Введите сообщение..."
-          value={message}
-          onChangeText={setMessage}
-        />
-        <TouchableOpacity onPress={handleSend} style={styles.sendButton}>
-          <Image source={require('../../assets/icons/chatsend1.png')} style={styles.iconsend} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
-};
-
-export default ChatScreen;
-
+    );
+}
