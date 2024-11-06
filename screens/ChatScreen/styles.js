@@ -31,13 +31,18 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     flexDirection: 'row-reverse',
   },
+  messageTimeContainer: {
+    justifyContent: 'center', // Центрирование по вертикали
+    marginLeft: 5, // Отступ от облачка
+    alignItems: 'center', // Центрирование времени по вертикали
+  },
   avatar: {
     width: 30,
     height: 30,
     borderRadius: 15,
     marginRight: 10, // Для сообщений слева
     marginLeft: 10,  // Для сообщений справа
-},
+  },
   messageContent: {
     maxWidth: '75%',
     borderRadius: 15,
@@ -65,12 +70,15 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 14,
   },
-  messageTime: {
-    color: '#F8D5CE',
-    fontSize: 10,
-    textAlign: 'right',
-    marginTop: 5,
+  messageTimeContainer: {
+    justifyContent: 'center', // Центрирование по вертикали
+    marginLeft: 10, // Уменьшен отступ с левой стороны для времени
+    marginRight: 10, // Добавлен отступ с правой стороны для баланса
+    marginBottom: 10,
+    marginTop: 30,
+    alignItems: 'center', // Центрирование времени по вертикали
   },
+  
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -117,10 +125,16 @@ const styles = StyleSheet.create({
   },
   leftMessageBubble: {
     backgroundColor: '#F8936E',  // Персиковый цвет для чужих сообщений
-},
-rightMessageBubble: {
+  },
+  rightMessageBubble: {
     backgroundColor: '#F26430',  // Оранжевый для текущего пользователя
-},
+  },
+  leftMessageTime: {
+    alignSelf: 'flex-start', // Время слева
+  },
+  rightMessageTime: {
+    alignSelf: 'flex-end', // Время справа
+  },
 });
 
 export default styles;
