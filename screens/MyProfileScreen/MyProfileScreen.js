@@ -47,6 +47,10 @@ const MyProfileScreen = ({ route }) => {
         navigation.navigate('Login');
     };
 
+    const handleNotifications = () => {
+        Alert.alert('Уведомление');
+    };
+
     const handleComplaintPress = () => {
         navigation.navigate('MyProfileEdit');
     };
@@ -58,7 +62,6 @@ const MyProfileScreen = ({ route }) => {
     if (!userData) {
         return (
             <View style={styles.container}>
-                <BackButton onPress={handleBackPress} />
                 <ExitButton onPress={handleExitPress} />
                 <Text>Загрузка профиля...</Text>
             </View>
@@ -69,9 +72,19 @@ const MyProfileScreen = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <BackButton onPress={handleBackPress} />
-            <ExitButton onPress={handleExitPress} />
+            <View style={styles.headerContainer}> 
+                <BackButton onPress={handleBackPress} />
+                <TouchableOpacity onPress={handleNotifications}>
+                    <Image
+                        source={require('../../assets/icons/notification.png')}
+                        style={styles.notificationStyle}
+                    />
+                </TouchableOpacity>
+            </View>
             <View style={styles.boxContainer}>
+            <TouchableOpacity onPress={handleExitPress} style={styles.buttonContainer}>
+                <Image source={require('../../assets/exit.png')} style={styles.image} />
+            </TouchableOpacity>
                 <TouchableOpacity onPress={handleComplaintPress}>
                     <Image 
                         source={require('../../assets/edit.png')} 

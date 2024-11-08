@@ -4,13 +4,14 @@ const styles = StyleSheet.create({
  container: {
   backgroundColor: '#F26430',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   flexGrow: 1,
  },
  boxContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
+    top: 150,
     height: 'auto', 
     width: '90%',
     backgroundColor: '#FBF6F4',
@@ -143,7 +144,33 @@ bottomBoxContainer: {
     fontSize: 22,
     fontFamily: 'Inter_700Bold', // Ensure you have this font loaded
   },
-  
+  headerContainer: {
+    width: '100%',
+
+  },
+  notificationStyle: {
+    height: 31, 
+    width: 27, 
+    position: 'absolute',
+    top: 17, 
+    right: 15, 
+  },
+  exitButton: {
+    top: 15, 
+    paddingRight: 50, 
+    zIndex: 1, 
+  },
+  buttonContainer: {
+    position: 'absolute',
+    top: 15, 
+    right:  320,
+    zIndex: 1, 
+    marginTop: 0,
+  },
+  image: {
+    width: 35,
+    height:35, 
+  },
 });
 
 export default styles;

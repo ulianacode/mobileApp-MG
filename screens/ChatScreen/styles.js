@@ -13,11 +13,19 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         padding: 17,
         height: 60,
+        width: '100%', 
       },
-      chatContainer: {
-        paddingHorizontal: 5,
-        paddingBottom: 60,
-        top: 10,
+      notificationStyle: {
+        height: 28, 
+        width: 25, 
+        position: 'absolute',
+        top: 19, 
+        right: 15, 
+      },
+      headerContainer: {
+        width: '100%',
+        flexDirection: 'row',
+        position: 'relative', 
       },
       messageContainer: {
         flexDirection: 'row',

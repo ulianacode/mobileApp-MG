@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import { View, Alert, Text, Image, FlatList, TextInput, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import BackButton from '../../components/BackButton/BackButton';
 import { useNavigation } from '@react-navigation/native';
@@ -20,6 +20,10 @@ const ChatScreen = () => {
 
   const handleBackPress = () => {
     navigation.navigate('Feed');
+  };
+
+  const handleNotifications = () => {
+    Alert.alert('Уведомление');
   };
 
   const handleSend = () => {
@@ -53,7 +57,15 @@ const ChatScreen = () => {
   return (
     <View style={styles.container}>
       <BackButton onPress={handleBackPress} />
-      <Text style={styles.header}>Название мероприятия</Text>
+      <View style={styles.headerContainer}>
+        <Text style={styles.header}>Название мероприятия</Text>
+        <TouchableOpacity onPress={handleNotifications}>
+          <Image
+            source={require('../../assets/icons/notification.png')}
+            style={styles.notificationStyle}
+          />
+        </TouchableOpacity>
+      </View>
       <FlatList
         data={messages}
         renderItem={renderMessage}
