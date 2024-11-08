@@ -16,7 +16,8 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: 'black',
   },
   button2: {
     flex: 1,
@@ -24,7 +25,21 @@ const styles = StyleSheet.create({
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 0,
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  button3: {
+    flex: 0.33, 
+    backgroundColor: '#ADA5A1',
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: 'black',
+  },
+  notificationStyle: {
+    height: 28,
+    width: 25,
   },
   buttonText: {
     color: '#000000',
@@ -41,23 +56,23 @@ const styles = StyleSheet.create({
   },
   statusBar: {
     position: 'absolute',
-    top: 45, // Снижаем позицию статус-бара ближе к кнопкам
+    top: 45,
     left: -116,
     width: 150,
-    zIndex: 10, // Устанавливаем высокий zIndex, чтобы он был выше кнопок
+    zIndex: 10, 
     backgroundColor: '#FBF6F4',
     borderColor: '#000000',
     borderWidth: 3,
     borderRadius: 0,
     textAlign: 'end',
-    padding: 10, // Добавим немного padding для внутреннего отступа
+    padding: 10, 
   },
   statusOption: {
     color: '#000000',
     textAlign: 'right',
-    paddingVertical: 5, // Вертикальные отступы между текстом и границей
-    borderBottomWidth: 3, // Черная полоска между элементами
-    borderBottomColor: '#000000', // Цвет черной полоски
+    paddingVertical: 5, 
+    borderBottomWidth: 3, 
+    borderBottomColor: '#000000', 
   
   },
   lastStatusOption: {
@@ -65,10 +80,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0,
   },
   conteinerStatusBar: {
-    position: 'absolute', // Делаем его абсолютным, чтобы он перекрывал другие элементы
-    top: 53, // Начало контейнера на нуле
+    position: 'absolute', 
+    top: 53, 
     left: 373,
-    zIndex: 5, // Устанавливаем zIndex выше, чем у других элементов (но ниже статус-бара)
+    zIndex: 5, 
   },
 });
 
