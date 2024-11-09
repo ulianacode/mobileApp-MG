@@ -47,6 +47,11 @@ const MyProfileEdit = ({ route }) => {
         navigation.navigate('Login');
     };
 
+    
+    const handleNotifications = () => {
+        Alert.alert('Уведомление');
+    };
+
     const SavePress = async () => {
         try {
     
@@ -100,8 +105,15 @@ const MyProfileEdit = ({ route }) => {
 
     return (
         <View style={styles.container}>
-            <BackButton onPress={handleBackPress} />
-            <ExitButton onPress={handleExitPress} />
+           <View style={styles.headerContainer}> 
+                <BackButton onPress={handleBackPress} />
+                <TouchableOpacity onPress={handleNotifications}>
+                    <Image
+                        source={require('../../assets/icons/notification.png')}
+                        style={styles.notificationStyle}
+                    />
+                </TouchableOpacity>
+            </View>
             <View style={styles.boxContainer}>
                 <TouchableOpacity onPress={SavePress}>
                     <Image 

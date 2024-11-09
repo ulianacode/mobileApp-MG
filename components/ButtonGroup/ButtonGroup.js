@@ -14,33 +14,51 @@ const ButtonGroup = () => {
 
   return (
     <View style={styles.conteiner}>
-    <View style={styles.buttonContainer}>
-      <TouchableOpacity
+<View style={styles.buttonContainer}>
+    <TouchableOpacity
         style={[
           styles.button1,
-          selectedButton === 'recommendations' ? { backgroundColor: '#F8936E' } : selectedButton === 'myEvents' ? { backgroundColor: 'gray' } : {}
+          selectedButton === 'recommendations' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
         ]}
         onPress={() => {
-          setSelectedButton('recommendations');
-          setShowImage(false);
-          setShowStatusBar(false);
+            setSelectedButton('recommendations');
+            setShowImage(false);
+            setShowStatusBar(false);
         }}
-      >
+    >
         <Text style={[styles.buttonText, styles.interBold]}>Рекомендации</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
+    </TouchableOpacity>
+    
+    <TouchableOpacity
         style={[
           styles.button2,
-          selectedButton === 'myEvents' ? { backgroundColor: '#F8936E' } : selectedButton === 'recommendations' ? { backgroundColor: 'gray' } : {}
+          selectedButton === 'myEvents' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
         ]}
         onPress={() => {
           setSelectedButton('myEvents');
           setShowImage(true);
         }}
-      >
-        <Text style={[styles.buttonText, styles.interBold]}>Мои мероприятия</Text>
-      </TouchableOpacity>
-      </View>
+    >
+      <Text style={[styles.buttonText, styles.interBold]}>Мои мероприятия</Text>
+    </TouchableOpacity>
+
+    <TouchableOpacity
+      style={[
+        styles.button3,
+        selectedButton === 'notifications' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
+      ]}
+      onPress={() => {
+        setSelectedButton('notifications');
+        setShowImage(false);
+        setShowStatusBar(false);
+      }}
+    >
+      <Image
+            source={require('../../assets/icons/notification.png')}
+            style={styles.notificationStyle}
+          />
+    </TouchableOpacity>
+</View>
       <View style={styles.conteinerStatusBar}>
       {showImage && (
         <TouchableOpacity onPress={handleMenuPress}>

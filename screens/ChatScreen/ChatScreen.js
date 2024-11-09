@@ -148,6 +148,10 @@ export default function ChatScreen() {
     navigation.goBack();
   };
 
+  const handleNotifications = () => {
+    Alert.alert('Уведомление');
+  };
+
   const handleSend = async () => {
     if (stompClient && connected && messageInput.trim()) {
       const newMessage = {

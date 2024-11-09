@@ -4,7 +4,7 @@ const styles = StyleSheet.create({
  container: {
   backgroundColor: '#F26430',
   alignItems: 'center',
-  justifyContent: 'center',
+  justifyContent: 'flex-start',
   flexGrow: 1,
  },
  boxContainer: {
@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     height: 'auto', 
     width: '90%',
+    top: 150,
     backgroundColor: '#FBF6F4',
     paddingHorizontal: 20, 
  },
@@ -167,6 +168,17 @@ bottomBoxContainer: {
   bottomBoxText: {
     bottom: 2,
     fontSize: 22,
+  },
+  headerContainer: {
+    width: '100%',
+
+  },
+  notificationStyle: {
+    height: 31, 
+    width: 27, 
+    position: 'absolute',
+    top: 17, 
+    right: 15, 
   },
   
 });
