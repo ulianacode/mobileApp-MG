@@ -29,7 +29,7 @@ const RegistrationScreen = () => {
   const [passwordError, setPasswordError] = useState("");
 
   const handleBackPress = () => {
-    navigation.navigate("Feed");
+    navigation.goBack();
   };
 
   const handleLoginPress = () => {

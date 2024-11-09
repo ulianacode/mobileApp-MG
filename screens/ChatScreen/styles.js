@@ -32,32 +32,40 @@ const styles = StyleSheet.create({
     flexDirection: 'row-reverse',
   },
   messageTimeContainer: {
-    justifyContent: 'center', // Центрирование по вертикали
-    marginLeft: 5, // Отступ от облачка
-    alignItems: 'center', // Центрирование времени по вертикали
+    justifyContent: 'center',
+    marginLeft: 5,
+    alignItems: 'center',
   },
   avatar: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    marginRight: 10, // Для сообщений слева
-    marginLeft: 10,  // Для сообщений справа
-  },
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginRight: 10,
+    marginLeft: 10,
+    marginTop: 20,
+  },  
   messageContent: {
     maxWidth: '75%',
     borderRadius: 15,
     overflow: 'hidden',
   },
   username: {
-    color: '#000000',
     fontWeight: 'bold',
     fontSize: 14,
     marginBottom: 2,
+    color: '#000000',
+    flexWrap: 'wrap',
+  },
+  leftUsername: {
+    textAlign: 'left',
+  },
+  rightUsername: {
+    textAlign: 'right',
   },
   messageBubble: {
     padding: 10,
     borderRadius: 15,
-    backgroundColor: '#F26430', // Цвет фона сообщения
+    backgroundColor: '#F26430',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -71,12 +79,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   messageTimeContainer: {
-    justifyContent: 'center', // Центрирование по вертикали
-    marginLeft: 10, // Уменьшен отступ с левой стороны для времени
-    marginRight: 10, // Добавлен отступ с правой стороны для баланса
+    justifyContent: 'center',
+    marginLeft: 10,
+    marginRight: 10,
     marginBottom: 10,
     marginTop: 30,
-    alignItems: 'center', // Центрирование времени по вертикали
+    alignItems: 'center',
   },
   
   inputContainer: {
@@ -124,16 +132,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   leftMessageBubble: {
-    backgroundColor: '#F8936E',  // Персиковый цвет для чужих сообщений
+    backgroundColor: '#F8936E',
   },
   rightMessageBubble: {
-    backgroundColor: '#F26430',  // Оранжевый для текущего пользователя
+    backgroundColor: '#F26430',
   },
   leftMessageTime: {
-    alignSelf: 'flex-start', // Время слева
+    alignSelf: 'flex-start',
   },
   rightMessageTime: {
-    alignSelf: 'flex-end', // Время справа
+    alignSelf: 'flex-end',
   },
 });
 

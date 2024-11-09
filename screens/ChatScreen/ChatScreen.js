@@ -22,43 +22,60 @@ export default function ChatScreen() {
   const [stompClient, setStompClient] = useState(null);
   const [loading, setLoading] = useState(true);
   const [messageInput, setMessageInput] = useState("");
+  const [participants, setParticipants] = useState([]);
+  const [isMessageSent, setIsMessageSent] = useState(false);
   const route = useRoute();
-  const { eventTitle, eventId } = route.params; // Теперь eventId получаем из params
+  const { eventTitle, eventId } = route.params;
   const navigation = useNavigation();
   const flatListRef = useRef(null);
 
   const fetchChatHistory = async () => {
     try {
-      const response = await axios.get(
-        `http://${API_URL}:8083/ws/api/chatHistory`,
-        {
-          params: { eventId: eventId },
-        }
-      );
-      const chatHistoryResponse = response.data;
-      setMessages(chatHistoryResponse.messages);
+      const response = await axios.get(`http://${API_URL}:8083/chat/history`, {
+        params: { eventId: eventId },
+        headers: {
+          Authorization: `Bearer ${tokens.accessToken}`,
+        },
+      });
+      setMessages(response.data.messages);
     } catch (error) {
       console.error("Ошибка загрузки истории сообщений:", error);
     }
   };
 
+  const fetchChatParticipants = async () => {
+    try {
+      const response = await axios.get(
+        `http://${API_URL}:8083/chat/participants`,
+        {
+          params: { eventId: eventId },
+          headers: {
+            Authorization: `Bearer ${tokens.accessToken}`,
+          },
+        }
+      );
+      setParticipants(response.data);
+    } catch (error) {
+      console.error("Ошибка загрузки участников чата:", error);
+    }
+  };
+
   useEffect(() => {
     const client = new Client({
-      brokerURL: `ws://${API_URL}:8083/meet-and-greet-chat`,
+      brokerURL: `ws://${API_URL}:8083/meet-and-greet-chat?access_token=${tokens.accessToken}`,
+      
       forceBinaryWSFrames: true,
       appendMissingNULLonIncoming: true,
       reconnectDelay: 500,
-      debug: (str) => {
-        console.log(`WebSocket debug: ${str}`);
-      },
+      debug: (str) => console.log(`WebSocket debug: ${str}`),
       onConnect: () => {
         setConnected(true);
         setLoading(false);
         fetchChatHistory();
+        fetchChatParticipants();
+        handleJoinChat();
       },
-      onWebSocketError: (error) => {
-        console.error("WebSocket connection error:", error);
-      },
+      onWebSocketError: (error) => console.error("WebSocket error:", error),
       onStompError: (frame) => {
         console.error("STOMP error:", frame.headers["message"]);
         console.error("Details:", frame.body);
@@ -71,14 +88,47 @@ export default function ChatScreen() {
 
     setStompClient(client);
     client.activate();
+
     return () => {
       client.deactivate();
       setConnected(false);
     };
   }, []);
 
+  const handleJoinChat = () => {
+    if (stompClient && connected) {
+      const joinRequest = {
+        username: tokens.username || "Guest",
+        eventId: eventId,
+      };
+
+      stompClient.publish({
+        destination: "/app/joinChat",
+        body: JSON.stringify(joinRequest),
+      });
+    }
+  };
+
   useEffect(() => {
     if (stompClient && connected) {
+      const userJoinSubscription = stompClient.subscribe(
+        "/topic/joinChat",
+        (message) => {
+          const newUser = JSON.parse(message.body);
+
+          setParticipants((prevParticipants) => {
+            if (
+              !prevParticipants.some(
+                (participant) => participant.username === newUser.username
+              )
+            ) {
+              return [...prevParticipants, newUser];
+            }
+            return prevParticipants;
+          });
+        }
+      );
+
       const chatHistorySubscription = stompClient.subscribe(
         "/topic/chat",
         (message) => {
@@ -88,19 +138,20 @@ export default function ChatScreen() {
       );
 
       return () => {
+        userJoinSubscription.unsubscribe();
         chatHistorySubscription.unsubscribe();
       };
     }
   }, [stompClient, connected]);
 
   const handleBackPress = () => {
-    navigation.navigate("EventCardInsideScreen", { eventId: eventId });
+    navigation.goBack();
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (stompClient && connected && messageInput.trim()) {
       const newMessage = {
-        id: Math.random(),
+        id: Math.random().toString(),
         content: messageInput,
         sender: tokens.username || "Guest",
         timestamp: Date.now(),
@@ -116,35 +167,79 @@ export default function ChatScreen() {
       });
 
       setMessageInput("");
+      setIsMessageSent(true);
     }
   };
+
   const renderMessage = ({ item }) => {
     const messageTime = new Date(item.timestamp).toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
+      hour: "2-digit",
+      minute: "2-digit",
       hour12: false,
     });
-  
+
+    const senderProfile = participants.find(
+      (participant) => participant.username === item.sender
+    );
+    const displayName = senderProfile?.displayName || item.sender;
+
+    const avatarSource =
+      senderProfile?.profileImage && senderProfile.profileImage !== ""
+        ? { uri: senderProfile.profileImage }
+        : require("../../assets/nonavatar.png");
+
+    const handleAvatarPress = () => {
+      if (item.sender === tokens.username) {
+        navigation.navigate("MyProfile");
+      } else {
+        navigation.navigate("Profile", { username: item.sender });
+      }
+    };
+
     return (
-      <View style={[styles.messageContainer, item.sender === tokens.username ? styles.rightMessage : styles.leftMessage]}>
-        <Image source={require('../../assets/icons/chatavatar.png')} style={styles.avatar} />
+      <View
+        style={[
+          styles.messageContainer,
+          item.sender === tokens.username
+            ? styles.rightMessage
+            : styles.leftMessage,
+        ]}
+      >
+        <TouchableOpacity onPress={handleAvatarPress}>
+          <Image source={avatarSource} style={styles.avatar} />
+        </TouchableOpacity>
         <View style={styles.messageContent}>
-          <Text style={styles.username}>{`@${item.sender}`}</Text>
+          <Text
+            style={[
+              styles.username,
+              item.sender === tokens.username
+                ? styles.rightUsername
+                : styles.leftUsername,
+            ]}
+          >
+            {` ${displayName} `}
+          </Text>
           <View
             style={[
               styles.messageBubble,
-              item.sender === tokens.username ? styles.rightMessageBubble : styles.leftMessageBubble,
+              item.sender === tokens.username
+                ? styles.rightMessageBubble
+                : styles.leftMessageBubble,
             ]}
           >
             <Text style={styles.messageText}>{item.content}</Text>
           </View>
         </View>
-  
-        {/* Время рядом с облачком, отцентрировано по вертикали */}
-        <View style={[styles.messageTimeContainer, item.sender === tokens.username ? styles.rightMessageTime : styles.leftMessageTime]}>
-          <Text style={[styles.messageTime]}>
-            {messageTime}
-          </Text>
+
+        <View
+          style={[
+            styles.messageTimeContainer,
+            item.sender === tokens.username
+              ? styles.rightMessageTime
+              : styles.leftMessageTime,
+          ]}
+        >
+          <Text style={[styles.messageTime]}>{messageTime}</Text>
         </View>
       </View>
     );
@@ -157,7 +252,6 @@ export default function ChatScreen() {
 
       {loading ? (
         <View style={styles.loaderContainer}>
-          {/* Заменен текст на ActivityIndicator */}
           <ActivityIndicator size="large" color="#F26430" />
         </View>
       ) : (

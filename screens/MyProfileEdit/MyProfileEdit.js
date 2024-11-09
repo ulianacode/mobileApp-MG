@@ -40,7 +40,7 @@ const MyProfileEdit = ({ route }) => {
     }, []);
 
     const handleBackPress = () => {
-        navigation.navigate('Feed');
+        navigation.goBack();
     };
 
     const handleExitPress = () => {

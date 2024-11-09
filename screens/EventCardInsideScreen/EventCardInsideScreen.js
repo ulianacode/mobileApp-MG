@@ -52,7 +52,7 @@ const EventCardInsideScreen = () => {
   };
 
   const handleBackPress = () => {
-    navigation.navigate("Feed");
+    navigation.goBack();
   };
 
   const handleOkRatingPress = () => {

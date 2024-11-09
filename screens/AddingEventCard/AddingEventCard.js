@@ -10,7 +10,7 @@ const AddingEventCard = () => {
     const navigation = useNavigation();
 
     const handleBackPress = () => {
-        navigation.navigate('Feed');
+        navigation.goBack();
     };
 
     return (
