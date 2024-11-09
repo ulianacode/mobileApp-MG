@@ -13,7 +13,7 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('');
 
     const handleBackPress = () => {
-        navigation.navigate('Feed');
+        navigation.goBack();
     };
 
     const handleRegistrationPress = () => {

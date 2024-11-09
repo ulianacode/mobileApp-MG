@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
-import { View, Text, Image, Alert, TouchableOpacity, TextInput } from 'react-native';
-import axios from 'axios';
-import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
-import BackButton from '../../components/BackButton/BackButton';
-import { API_URL, tokens } from '../../variables/ip';
-import { validateEmail, validateUsername, validatePassword } from '../../utils/validation';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  Alert,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import axios from "axios";
+import styles from "./styles";
+import { useNavigation } from "@react-navigation/native";
+import BackButton from "../../components/BackButton/BackButton";
+import { API_URL, tokens } from "../../variables/ip";
+import {
+  validateEmail,
+  validateUsername,
+  validatePassword,
+} from "../../utils/validation";
 
 const RegistrationScreen = () => {
   const navigation = useNavigation();
@@ -18,7 +29,7 @@ const RegistrationScreen = () => {
   const [passwordError, setPasswordError] = useState("");
 
   const handleBackPress = () => {
-    navigation.navigate("Feed");
+    navigation.goBack();
   };
 
   const handleLoginPress = () => {

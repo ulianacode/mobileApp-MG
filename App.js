@@ -13,7 +13,9 @@ import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import EventCardInsideScreen from './screens/EventCardInsideScreen/EventCardInsideScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
+import {TextEncoder} from 'text-encoding';
 
+global.TextEncoder = TextEncoder;
 
 const Stack = createStackNavigator();
 

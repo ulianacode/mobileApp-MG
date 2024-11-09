@@ -13,10 +13,15 @@ const ProfileScreen = ({ route }) => {
     const [userData, setUserData] = useState(null);
 
     useEffect(() => {
+        const username = route?.params?.username || tokens.username;
+        if (!username) {
+            navigation.navigate('MyProfile');
+            return;
+        }
+
         const fetchUserData = async () => {
             try {
                 const accessToken = tokens.accessToken;
-                const username = tokens.username;
                 const response = await axios.get(`http://${API_URL}:8082/v1/users/${username}`, {
                     headers: {
                         Authorization: `Bearer ${accessToken}`, 
@@ -29,10 +34,10 @@ const ProfileScreen = ({ route }) => {
         };
 
         fetchUserData();
-    }, []); 
+    }, [navigation, route?.params?.username]);
 
     const handleBackPress = () => {
-        navigation.navigate('Feed');
+        navigation.goBack();
     };
 
     const handleExitPress = () => {
