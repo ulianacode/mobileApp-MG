@@ -1,6 +1,4 @@
-// src/components/SearchBar/styles.js
 import { StyleSheet } from 'react-native';
-
 const styles = StyleSheet.create({
   searchContainer: {
     top: 0,
@@ -21,11 +19,11 @@ const styles = StyleSheet.create({
   searchInput: {
     flex: 1,
     height: 40,
-    backgroundColor: '#FBF6F4',
+    backgroundColor: '#D3D3D3',
     borderWidth: 1,
     paddingHorizontal: 10,
     borderRadius: 40,
-    borderColor: '#FBF6F4',
+    borderColor: '#D3D3D3',
   },
   endIcon: {
     width: 30,
@@ -41,6 +39,30 @@ const styles = StyleSheet.create({
   interBold: {
     fontFamily: 'Inter_700Bold',
   },
+  dropDownPickerContainer: {
+    position: 'absolute',
+    top: 45,
+    zIndex: 10,
+    width: '30%',
+    left: '15%',
+    backgroundColor: '#FBF6F4',
+    borderRadius: 4,
+    borderColor: "transparent",
+    borderWidth: 1,
+    maxHeight: 200,
+  },
+  flatListStyle: {
+    maxHeight: 200,
+  },
+  item: {
+    padding: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  itemText: {
+    fontSize: 14,
+  },
 });
+
 
 export default styles;

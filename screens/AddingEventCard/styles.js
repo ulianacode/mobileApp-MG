@@ -1,42 +1,46 @@
-// src/screens/LoadingScreen/styles.js
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F26430',
     alignItems: 'center',
-    justifyContent: 'center',
-    flexGrow: 1,
+    justifyContent: 'flex-start',
+    flex: 1,
+    paddingTop: '13%',
+    paddingBottom: '10%',
+    paddingLeft: '5%',
+    paddingRight: '5%',
   },
   boxContainer: {
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     borderRadius: 30,
-    top: 20,
-    height: 'auto', // Ajust everithing to phone screen size
-    width: '90%', 
+    width: '100%',
     backgroundColor: 'white',
-  },
-  icon: {
-    width: 130,
-    height: 130,
+    paddingBottom: 15,
+    paddingLeft: '5%',
+    paddingRight: '5%',
+    marginBottom: 50,
+    marginTop: 20,
+    flex: 1,
   },
   bottomBoxContainer: {
-    marginTop: 30,
-    top: 32,
+    marginTop: 'auto',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
-    height: 'auto', // Ajust everithing to phone screen size
-    width: '50%', // Adjust the width as needed
+    width: '80%',
     backgroundColor: 'white',
     borderWidth: 10,
-    borderColor: '#F26430'
+    borderColor: '#F26430',
+    marginLeft: 40,
+    marginTop: 80,
+    marginBottom: -70,
   },
   bottomBoxText: {
     bottom: 2,
-    fontSize: 24,
-    fontFamily: 'Inter_700Bold', // Ensure you have this font loaded
+    fontSize: 20,
+    fontFamily: 'Inter_700Bold',
   },
   iconContainer: {
     paddingLeft: '70%',
@@ -52,8 +56,8 @@ const styles = StyleSheet.create({
   fieldContainer: {
     marginLeft: '20%',
     width: '100%',
-    marginVertical: 5,
-    top: 30,
+    marginVertical: 3,
+    top: 35,
   },
   labelContainer: {
     flexDirection: 'row',
@@ -67,11 +71,18 @@ const styles = StyleSheet.create({
   labelPhotoContainer: {
     flexDirection:'row',
     alignItems: 'center',
-    top: 35,
+    top: 45,
   },
   labelPhoto: {
     fontSize: 20,
     color: '#F26430',
+  },
+
+  fieldContainer: {
+    marginLeft: 0,
+    width: '100%',
+    marginVertical: 5,
+    top: 30,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -85,6 +96,7 @@ const styles = StyleSheet.create({
     height: 20,
     marginRight: 10,
   },
+
   input: {
     flex: 1,
     fontSize: 16,
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
   },
   modalBackground: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Затемненный фон
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -129,7 +141,7 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     fontSize: 16,
-  }
+  },
 });
 
 export default styles;
