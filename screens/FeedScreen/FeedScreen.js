@@ -1,6 +1,5 @@
-// src/screens/FeedScreen/FeedScreen.js
-import React from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, View, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
@@ -46,16 +45,33 @@ const FeedScreen = () => {
     Inter_700Bold,
   });
 
+  const [isCitiesOpen, setIsCitiesOpen] = useState(false);
+
   if (!fontsLoaded) {
     return null;
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.container} contentInsetAdjustmentBehavior="never">
-      <ButtonGroup />
-      <SearchBar />
-      <EventList />
-    </ScrollView>
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <View style={{ flex: 1 }}>
+        <ButtonGroup />
+        <SearchBar setIsCitiesOpen={setIsCitiesOpen} />
+        
+        <TouchableWithoutFeedback onPress={() => isCitiesOpen && setIsCitiesOpen(false)}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            contentInsetAdjustmentBehavior="never"
+            keyboardShouldPersistTaps="handled"
+            scrollEnabled={!isCitiesOpen}
+          >
+            <EventList />
+          </ScrollView>
+        </TouchableWithoutFeedback>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
