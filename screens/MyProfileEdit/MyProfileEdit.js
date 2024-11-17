@@ -25,7 +25,7 @@ const MyProfileEdit = ({ route }) => {
         const accessToken = tokens.accessToken;
         const username = tokens.username;
         const response = await axios.get(
-          `http://${API_URL}:8082/v1/users/${username}`,
+          `http://${API_URL}/v1/users/${username}`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -47,7 +47,7 @@ const MyProfileEdit = ({ route }) => {
       try {
         const accessToken = tokens.accessToken;
         const response = await axios.get(
-          `http://${API_URL}:8083/v1/events/cities`,
+          `http://${API_URL}/v1/events/cities`,
           {
             headers: {
               Authorization: `Bearer ${accessToken}`,
@@ -115,7 +115,7 @@ const MyProfileEdit = ({ route }) => {
       }
 
       const response = await axios.patch(
-        `http://${API_URL}:8082/v1/users`,
+        `http://${API_URL}/v1/users`,
         formData,
         {
           headers: {

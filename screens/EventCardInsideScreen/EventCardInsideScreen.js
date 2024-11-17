@@ -105,7 +105,7 @@ const EventCardInsideScreen = () => {
     try {
       const accessToken = tokens.accessToken;
       const response = await axios.post(
-        `http://${API_URL}:8083/v1/events/4`,
+        `http://${API_URL}/v1/events/4`,
         { eventId, userStatus },
         {
           headers: {
@@ -126,7 +126,7 @@ const EventCardInsideScreen = () => {
     try {
       const accessToken = tokens.accessToken;
 
-      const response = await axios.get(`http://${API_URL}:8083/v1/events/4`, {
+      const response = await axios.get(`http://${API_URL}/v1/events/4`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

@@ -33,9 +33,10 @@ const styles = StyleSheet.create({
     top: -30,
   },
   eventImage: {
-    width: 140,
-    height: '100%',
+    width: '35%',
+    height: '90%',
     resizeMode: 'contain',
+    borderRadius: 15,
   },
   eventTitle: {
     fontSize: 16,

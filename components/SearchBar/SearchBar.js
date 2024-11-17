@@ -5,19 +5,11 @@ import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 import styles from './styles';
 
-const SearchBar = ({ setIsCitiesOpen }) => {
+const SearchBar = ({ onCityChange }) => {
   const navigation = useNavigation();
-  const [city, setCity] = useState('Москва');
+  const [city, setCity] = useState('Москва'); 
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
-
-  const handlePeoplePress = () => {
-    navigation.navigate('MyProfile');
-  };
-
-  const handleEarthPress = () => {
-    navigation.navigate('EventCardInsideScreen');
-  };
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -25,7 +17,7 @@ const SearchBar = ({ setIsCitiesOpen }) => {
         const response = await axios.get(`http://${API_URL}:8083/v1/events/cities`, {
           headers: tokens.accessToken ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
         });
-        const sortedCities = response.data.sort((a, b) => a.localeCompare(b));
+        const sortedCities = response.data.sort((a, b) => a.localeCompare(b)); 
         setCities(sortedCities);
       } catch (error) {
         console.error('Ошибка при получении списка городов:', error);
@@ -35,24 +27,23 @@ const SearchBar = ({ setIsCitiesOpen }) => {
     fetchCities();
   }, []);
 
-  const handleCitySelection = (city) => {
-    setCity(city);
-    setOpen(false);
-    setIsCitiesOpen(false);
+  const handleCitySelection = (selectedCity) => {
+    setCity(selectedCity); 
+    setOpen(false); 
+    onCityChange(selectedCity); 
   };
 
-  const handlePlanetPress = () => {
-    setOpen(prevState => !prevState);
-    setIsCitiesOpen(prevState => !prevState);
+  const toggleDropDown = () => {
+    setOpen((prevState) => !prevState);
   };
 
   return (
     <View style={styles.searchContainer}>
-      <TouchableOpacity onPress={handlePeoplePress}>
+      <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
         <Image source={require('../../assets/icons/people.png')} style={styles.icon} />
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={handlePlanetPress}>
+      <TouchableOpacity onPress={toggleDropDown}>
         <View style={styles.planetContainer}>
           <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
           <Text style={[styles.cityText, styles.interBold]}>{city}</Text>
@@ -76,11 +67,11 @@ const SearchBar = ({ setIsCitiesOpen }) => {
 
       <TextInput
         style={[styles.searchInput, { backgroundColor: '#f0f0f0' }]}
+        placeholder="Поиск мероприятий"
       />
       <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
     </View>
   );
 };
-
 
 export default SearchBar;

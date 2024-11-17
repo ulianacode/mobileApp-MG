@@ -7,6 +7,13 @@ const styles = StyleSheet.create({
     padding: 0, // Ensure no padding is applied
     margin: 0, // Ensure no margin is applied
   },
+  noEventsText: {
+    fontSize: 20,
+    fontFamily: 'Inter_700Bold', 
+    opacity: 0.6,
+    textAlign: 'center',
+    top: 40,
+  },
 });
 
 export default styles;

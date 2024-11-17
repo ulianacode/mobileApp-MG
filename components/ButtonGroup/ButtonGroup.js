@@ -12,6 +12,10 @@ const ButtonGroup = () => {
     setShowStatusBar(!showStatusBar);
   };
 
+  const handleRecommendationsPress = () => {
+    navigation.navigate('Recommendations');
+};
+
   return (
     <View style={styles.conteiner}>
 <View style={styles.buttonContainer}>
@@ -21,6 +25,7 @@ const ButtonGroup = () => {
           selectedButton === 'recommendations' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
         ]}
         onPress={() => {
+            handleRecommendationsPress;
             setSelectedButton('recommendations');
             setShowImage(false);
             setShowStatusBar(false);

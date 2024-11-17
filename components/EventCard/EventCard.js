@@ -7,13 +7,13 @@ import EventCardParticipants from './EventCardParticipants';
 import EventCardDate from './EventCardDate.js';
 import styles from './styles';
 
-const EventCard = ({ title, description, imageSource }) => {
+const EventCard = ({ title, description, imageSource, count, date, creatorText, rating}) => {
   return (
     <View style={styles.eventContainer}>
-      <EventCardHeader creatorText="T-Bank" rating={4.5} style={styles} />
+      <EventCardHeader creatorText={creatorText} rating={rating} style={styles} />
       <EventCardDetails title={title} description={description} imageSource={imageSource} style={styles} />
-      <EventCardParticipants count="1344" style={styles} />
-      <EventCardDate date="12.09.2024" style={styles} />
+      <EventCardParticipants count={count} style={styles} />
+      <EventCardDate date={date} style={styles} />
     </View>
   );
 };

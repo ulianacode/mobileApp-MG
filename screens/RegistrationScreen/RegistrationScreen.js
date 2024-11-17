@@ -58,7 +58,7 @@ const RegistrationScreen = () => {
     }
 
     try {
-      const response = await axios.post(`http://${API_URL}:8082/v1/users`, {
+      const response = await axios.post(`http://${API_URL}/v1/users`, {
         email,
         username,
         password,
