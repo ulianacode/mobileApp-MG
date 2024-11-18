@@ -33,8 +33,35 @@ const RecommendationsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [selectedCity, setSelectedCity] = useState('Москва');
   const [searchQuery, setSearchQuery] = useState(''); 
+
+  const [userData, setUserData] = useState("");
+
+  const [selectedCity, setSelectedCity] = useState("Москва");
+  
+  const fetchUserData = async () => {
+    if (!tokens.accessToken) {
+      return;  
+    }
+
+    try { 
+      const username = tokens.username;
+      const response = await axios.get(`http://${API_URL}/v1/users/${username}`, { 
+        headers: { 
+          Authorization: `Bearer ${tokens.accessToken}`, 
+        }, 
+      }); 
+      setUserData(response.data);
+      setSelectedCity(response.data.city); 
+      console.log(response.data.city)
+    } catch (error) { 
+      console.error('Ошибка при получении данных профиля:', error); 
+    } 
+  };
+
+useEffect(() => {
+    fetchUserData();
+}, []); 
 
   const fetchEvents = async (reset = false) => {
     if (reset) {
@@ -104,6 +131,10 @@ const RecommendationsScreen = () => {
     setSearchQuery(query);
   };
 
+  const handleCityChange = (city) => {
+    setSelectedCity(city);  
+  };
+
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
     Inter_700Bold,
@@ -112,14 +143,20 @@ const RecommendationsScreen = () => {
   if (!fontsLoaded) {
     return null;
   }
+  const avatarSource = userData.profileImage && userData.profileImage !== ""
+    ? { uri: userData.profileImage }
+    : require("../../assets/account_circle.png");
+
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
         <ButtonGroup />
         <SearchBar 
-          onCityChange={(city) => setSelectedCity(city)} 
+          onCityChange={handleCityChange}
           onSearchChange={handleSearch}
+          avatarSource={avatarSource}
+          citySourse={selectedCity}
 
         />
         <ScrollView

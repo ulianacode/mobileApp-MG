@@ -11,7 +11,7 @@ import { API_URL, tokens} from '../../variables/ip';
 
 const MyProfileScreen = ({ route }) => {
     const navigation = useNavigation();
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState("");
 
     const fetchUserData = async () => {
         try {
@@ -31,6 +31,7 @@ const MyProfileScreen = ({ route }) => {
                 },
             });
             setUserData(response.data);
+            console.log(userData.profileImage);
         } catch (error) {
             console.error('Ошибка при получении данных профиля:', error);
         }

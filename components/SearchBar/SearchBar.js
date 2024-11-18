@@ -5,12 +5,16 @@ import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 import styles from './styles';
 
-const SearchBar = ({ onCityChange, onSearchChange }) => {
+const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) => {
   const navigation = useNavigation();
-  const [city, setCity] = useState('Москва');
+  const [city, setCity] = useState(citySourse);
   const [searchText, setSearchText] = useState(''); 
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
+  
+  useEffect(() => {
+    setCity(citySourse); 
+  }, [citySourse]);
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -29,7 +33,6 @@ const SearchBar = ({ onCityChange, onSearchChange }) => {
   }, []);
 
   const handleCitySelection = (selectedCity) => {
-    setCity(selectedCity);
     setOpen(false);
     onCityChange(selectedCity);
   };
@@ -39,19 +42,21 @@ const SearchBar = ({ onCityChange, onSearchChange }) => {
   };
 
   const handleSearchPress = () => {
-    onSearchChange(searchText); 
+    if (onSearchChange) {
+      onSearchChange(searchText);
+    }
   };
  
   return (
     <View style={styles.searchContainer}>
       <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
-        <Image source={require('../../assets/icons/people.png')} style={styles.icon} />
+        <Image source={avatarSource} style={styles.iconUser} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={toggleDropDown}>
         <View style={styles.planetContainer}>
-          <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
-          <Text style={[styles.cityText, styles.interBold]}>{city}</Text>
+          <Image source={require('../../assets/icons/planet.png')}  style={styles.icon} />
+          <Text style={[styles.cityText, styles.interBold]}>{citySourse}</Text>
         </View>
       </TouchableOpacity>
 
