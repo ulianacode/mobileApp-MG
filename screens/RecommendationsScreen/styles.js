@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Inter_700Bold', 
     opacity: 0.6,
     textAlign: 'center',
-    top: 40,
+    top: 300,
   },
 });
 

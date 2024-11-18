@@ -1,11 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {
-  View,
-  Text,
-  ScrollView,
-  KeyboardAvoidingView,
-  ActivityIndicator,
-} from 'react-native';
+import React, { useEffect, useState } from 'react'; 
+import { View, Text, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
@@ -40,6 +34,7 @@ const RecommendationsScreen = () => {
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
   const [selectedCity, setSelectedCity] = useState('Москва');
+  const [searchQuery, setSearchQuery] = useState(''); 
 
   const fetchEvents = async (reset = false) => {
     if (reset) {
@@ -55,7 +50,7 @@ const RecommendationsScreen = () => {
         `http://${API_URL}/v1/events/recommended`,
         {
           cityName: selectedCity,
-          searchQuery: '',
+          searchQuery: searchQuery, 
         },
         {
           params: {
@@ -87,7 +82,17 @@ const RecommendationsScreen = () => {
 
   useEffect(() => {
     fetchEvents(true); 
-  }, [selectedCity]); 
+  }, [selectedCity, searchQuery]); 
+
+  const handleScroll = ({ nativeEvent }) => {
+    const scrollPosition = nativeEvent.contentOffset.y;
+    const totalHeight = nativeEvent.contentSize.height;
+    const visibleHeight = nativeEvent.layoutMeasurement.height;
+
+    if (scrollPosition > totalHeight * 0.33 - visibleHeight && hasMore && !loading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
 
   useEffect(() => {
     if (page > 0) {
@@ -95,10 +100,8 @@ const RecommendationsScreen = () => {
     }
   }, [page]);
 
-  const handleLoadMore = () => {
-    if (hasMore && !loading) {
-      setPage((prevPage) => prevPage + 1);
-    }
+  const handleSearch = (query) => {
+    setSearchQuery(query);
   };
 
   const [fontsLoaded] = useFonts({
@@ -111,30 +114,22 @@ const RecommendationsScreen = () => {
   }
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-    >
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
         <ButtonGroup />
-        <SearchBar onCityChange={(city) => setSelectedCity(city)} />
+        <SearchBar 
+          onCityChange={(city) => setSelectedCity(city)} 
+          onSearchChange={handleSearch}
+
+        />
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
-          onScroll={({ nativeEvent }) => {
-            const isBottom =
-              nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y >=
-              nativeEvent.contentSize.height;
-            if (isBottom) {
-              handleLoadMore();
-            }
-          }}
+          onScroll={handleScroll} 
           scrollEventThrottle={400}
         >
           <EventList events={events} />
-          {!loading && events.length === 0 && (
-            <Text style={styles.noEventsText}>В этом городе нет мероприятий </Text>
-          )}
+          {!loading && events.length === 0 && <Text style={styles.noEventsText}>В этом городе нет мероприятий</Text>}
           {loading && <ActivityIndicator size="large" color="#0000ff" />}
           {hasMore && !loading && <Text style={styles.loadingText}></Text>}
         </ScrollView>
@@ -144,4 +139,6 @@ const RecommendationsScreen = () => {
 };
 
 export default RecommendationsScreen;
+
+
 

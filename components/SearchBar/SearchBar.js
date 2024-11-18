@@ -5,9 +5,10 @@ import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 import styles from './styles';
 
-const SearchBar = ({ onCityChange }) => {
+const SearchBar = ({ onCityChange, onSearchChange }) => {
   const navigation = useNavigation();
-  const [city, setCity] = useState('Москва'); 
+  const [city, setCity] = useState('Москва');
+  const [searchText, setSearchText] = useState(''); 
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
 
@@ -17,8 +18,8 @@ const SearchBar = ({ onCityChange }) => {
         const response = await axios.get(`http://${API_URL}:8083/v1/events/cities`, {
           headers: tokens.accessToken ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
         });
-        const sortedCities = response.data.sort((a, b) => a.localeCompare(b)); 
-        setCities(sortedCities);
+        const sortedCities = response.data.sort((a, b) => a.localeCompare(b));
+        setCities(['Все', ...sortedCities]);
       } catch (error) {
         console.error('Ошибка при получении списка городов:', error);
       }
@@ -28,15 +29,19 @@ const SearchBar = ({ onCityChange }) => {
   }, []);
 
   const handleCitySelection = (selectedCity) => {
-    setCity(selectedCity); 
-    setOpen(false); 
-    onCityChange(selectedCity); 
+    setCity(selectedCity);
+    setOpen(false);
+    onCityChange(selectedCity);
   };
 
   const toggleDropDown = () => {
     setOpen((prevState) => !prevState);
   };
 
+  const handleSearchPress = () => {
+    onSearchChange(searchText); 
+  };
+ 
   return (
     <View style={styles.searchContainer}>
       <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
@@ -68,8 +73,12 @@ const SearchBar = ({ onCityChange }) => {
       <TextInput
         style={[styles.searchInput, { backgroundColor: '#f0f0f0' }]}
         placeholder="Поиск мероприятий"
+        value={searchText}
+        onChangeText={setSearchText}
       />
-      <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
+      <TouchableOpacity onPress={handleSearchPress(searchText)}> 
+        <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
+      </TouchableOpacity>
     </View>
   );
 };
