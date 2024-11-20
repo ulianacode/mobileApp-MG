@@ -4,7 +4,7 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   
   eventContainer: {
-    height: 220,
+    height: 235,
     width: '100%',
     borderRadius: 10,
     marginBottom: -20,
@@ -28,19 +28,20 @@ const styles = StyleSheet.create({
   textBackground: {
     backgroundColor: '#FFFFFF',
     padding: 10,
-    borderRadius: 5,
-    marginRight: 20,
-    top: -45,
+    borderRadius: 20,
+    marginRight: 10,
+    top: -51,
  
   },
   eventImage: {
-    width: '35%',
-    height: '90%',
-    resizeMode: 'contain',
-    borderRadius: 15,
-  },
+    width: '40%',
+    height: '85%',
+    resizeMode: 'stretch',
+    borderRadius: 20,
+    marginTop: -20,
+  },  
   eventTitle: {
-    fontSize: 16,
+    fontSize: 20,
     color: '#000000',
     numberOfLines: 2,
     top: 10,
@@ -49,7 +50,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   eventDescription: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#FFFFFF',
     numberOfLines: 3,
     top: 35,
@@ -68,9 +69,9 @@ const styles = StyleSheet.create({
   },
   creatorText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 18,
     position: 'absolute',
-    top: 7,
+    top: 3,
     left: 15,
   },
   ratingContainer: {
@@ -82,24 +83,27 @@ const styles = StyleSheet.create({
   },
   starsText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 16,
     right: 10,
+    top: -2,
   },
   starIcon: {
-    width: 15,
-    height: 15,
-    marginRight: 13,
+    width: 20,
+    height: 20,
+    marginRight: 15,
+    top: -2,
   },
   dateText: {
     color: '#FFFFFF',
-    fontSize: 14,
-    left: -160,
+    fontSize: 16,
+    right: 3,
+    top: 3
   },
   iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 10,
+    bottom: 6,
     left: 10,
   },
   iconItem: {
@@ -108,12 +112,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   icon: {
-    width: 20,
-    height: 20,
+    width: 25,
+    height: 25,
     marginRight: 5,
   },
   iconText: {
-    fontSize: 14,
+    fontSize: 16,
     color: '#FFFFFF',
   },
   dateContainer: {

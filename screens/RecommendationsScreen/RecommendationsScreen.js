@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'; 
+import React, { useEffect, useState, useCallback } from 'react'; 
 import { View, Text, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
+import { useNavigationState, useFocusEffect } from '@react-navigation/native';
 import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import EventCard from '../../components/EventCard/EventCard';
@@ -34,32 +35,44 @@ const RecommendationsScreen = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
-  const [searchQuery, setSearchQuery] = useState(''); 
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userData, setUserData] = useState('');
+  const [selectedCity, setSelectedCity] = useState('Москва');
+  const navigationState = useNavigationState((state) => state);
+  const previousScreen = navigationState?.routes[navigationState.index]?.name;
 
-  const [userData, setUserData] = useState("");
-
-  const [selectedCity, setSelectedCity] = useState("Москва");
-  
   const fetchUserData = async () => {
+    try {
+      const { username, accessToken } = tokens;
 
-    try { 
-      const username = tokens.username;
-      const response = await axios.get(`http://${API_URL}/v1/users/${username}`, { 
-        headers: { 
-          Authorization: `Bearer ${tokens.accessToken}`, 
-        }, 
-      }); 
+      if (!username || !accessToken) {
+        setUserData({
+          profileImage: '',
+          city: 'Москва',
+        });
+        return;
+      }
+
+      const response = await axios.get(`http://${API_URL}/v1/users/${username}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
       setUserData(response.data);
-      setSelectedCity(response.data.city); 
-      console.log(response.data.city)
-    } catch (error) { 
-      console.error('Ошибка при получении данных профиля:', error); 
-    } 
+      if (previousScreen === 'Login') {
+        setSelectedCity(response.data.city);
+      }
+    } catch (error) {
+      console.error('Ошибка при получении данных профиля:', error);
+    }
   };
 
-useEffect(() => {
-    fetchUserData();
-}, []); 
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [previousScreen])
+  );
 
   const fetchEvents = async (reset = false) => {
     if (reset) {
@@ -75,7 +88,7 @@ useEffect(() => {
         `http://${API_URL}/v1/events/recommended`,
         {
           cityName: selectedCity,
-          searchQuery: searchQuery, 
+          searchQuery: searchQuery,
         },
         {
           params: {
@@ -89,7 +102,6 @@ useEffect(() => {
       );
 
       const data = response.data.content;
-      console.log(data);
 
       setEvents((prevEvents) => {
         const eventIds = new Set(prevEvents.map((e) => e.id));
@@ -106,8 +118,14 @@ useEffect(() => {
   };
 
   useEffect(() => {
-    fetchEvents(true); 
-  }, [selectedCity, searchQuery]); 
+    fetchEvents(true);
+  }, [searchQuery, selectedCity]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+    }, [])
+  );
 
   const handleScroll = ({ nativeEvent }) => {
     const scrollPosition = nativeEvent.contentOffset.y;
@@ -121,7 +139,7 @@ useEffect(() => {
 
   useEffect(() => {
     if (page > 0) {
-      fetchEvents(false); 
+      fetchEvents(false);
     }
   }, [page]);
 
@@ -130,7 +148,7 @@ useEffect(() => {
   };
 
   const handleCityChange = (city) => {
-    setSelectedCity(city);  
+    setSelectedCity(city);
   };
 
   const [fontsLoaded] = useFonts({
@@ -141,30 +159,33 @@ useEffect(() => {
   if (!fontsLoaded) {
     return null;
   }
-  const avatarSource = userData.profileImage && userData.profileImage !== ""
-    ? { uri: userData.profileImage }
-    : require("../../assets/account_circle.png");
 
+  const avatarSource =
+    userData.profileImage && userData.profileImage !== ''
+      ? { uri: userData.profileImage }
+      : require('../../assets/account_circle.png');
 
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
         <ButtonGroup />
-        <SearchBar 
+        <SearchBar
           onCityChange={handleCityChange}
           onSearchChange={handleSearch}
           avatarSource={avatarSource}
           citySourse={selectedCity}
-
+          searchQuery={searchQuery}
         />
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
-          onScroll={handleScroll} 
+          onScroll={handleScroll}
           scrollEventThrottle={400}
         >
           <EventList events={events} />
-          {!loading && events.length === 0 && <Text style={styles.noEventsText}>В этом городе нет мероприятий</Text>}
+          {!loading && events.length === 0 && (
+            <Text style={styles.noEventsText}>В этом городе нет мероприятий</Text>
+          )}
           {loading && <ActivityIndicator size="large" color="#0000ff" />}
           {hasMore && !loading && <Text style={styles.loadingText}></Text>}
         </ScrollView>
@@ -174,6 +195,3 @@ useEffect(() => {
 };
 
 export default RecommendationsScreen;
-
-
-

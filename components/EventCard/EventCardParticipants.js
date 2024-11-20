@@ -7,7 +7,7 @@ const EventCardParticipants = ({ count, style }) => {
     <View style={style.iconContainer}>
       <View style={style.iconItem}>
         <Image source={require('../../assets/icons/person_check.png')} style={style.icon} />
-        <Text style={[style.iconText, style.interRegular]}>{count}</Text>
+        <Text style={[style.iconText, style.interBold]}>{count}</Text>
       </View>
     </View>
   );

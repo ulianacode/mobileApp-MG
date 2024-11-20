@@ -46,10 +46,8 @@ const LoginScreen = () => {
                 console.log('role: ',tokens.role);
                 console.log('Auth Status: ', auth.status);
 
-                // Schedule the token refresh
                 scheduleTokenRefresh(expiresIn, refreshExpiresIn);
 
-                Alert.alert('Вы успешно вошли!', `Вы вошли в аккаунт ${username}`);
                 navigation.navigate('Recommendations');
             } else {
                 Alert.alert('Ошибка входа', 'Во время входа возникла ошибка, нам уже известно о проблеме и мы работаем над решением');

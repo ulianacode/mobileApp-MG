@@ -3,9 +3,11 @@ import { API_URL, tokens, auth } from '../variables/ip';
 
 const refreshTokens = async () => {
   try {
+    if(auth.status===true){
     const response = await axios.post(`http://${API_URL}/v1/auth/refresh`, {
       refreshToken: tokens.refreshToken,
     });
+  }
 
     if (response.status === 200) {
       const { accessToken, expiresIn, refreshToken, refreshExpiresIn, username, role  } = response.data;

@@ -16,9 +16,6 @@ import { useNavigation } from "@react-navigation/native";
 import { API_URL, tokens } from "../../variables/ip";
 import { useRoute } from '@react-navigation/native';
 
-
-
-
 const EventCardInsideScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
   const navigation = useNavigation();
@@ -127,17 +124,6 @@ const EventCardInsideScreen = () => {
     const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
 
     try {
-      const accessToken = tokens.accessToken;
-      const response = await axios.post(
-        `http://${API_URL}/v1/events/${eventId}`,
-        { eventId, userStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
       setParticipantStatus(userStatus);
       setIsChecked(!isChecked);
       await fetchEventData();
@@ -152,7 +138,9 @@ const EventCardInsideScreen = () => {
 
       const response = await axios.get(`http://${API_URL}/v1/events/${eventId}`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          headers: tokens.accessToken
+          ? { Authorization: `Bearer ${tokens.accessToken}` }
+          : {},
         },
       });
 

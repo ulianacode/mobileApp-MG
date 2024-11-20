@@ -6,7 +6,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import ExitButton from '../../components/ExitButton/ExitButton';
 import BackButton from '../../components/BackButton/BackButton';
 import axios from 'axios'; 
-import { API_URL, tokens} from '../../variables/ip';
+import { API_URL, tokens, auth} from '../../variables/ip';
 
 
 const MyProfileScreen = ({ route }) => {
@@ -52,6 +52,13 @@ const MyProfileScreen = ({ route }) => {
     };
 
     const handleExitPress = () => {
+        tokens.accessToken = null;
+        tokens.expiresIn = null;
+        tokens.refreshToken = null;
+        tokens.refreshExpiresIn = null;
+        tokens.username = null;
+        tokens.role = null;
+        auth.status = false;
         navigation.navigate('Login');
     };
 

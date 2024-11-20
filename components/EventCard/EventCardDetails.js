@@ -8,7 +8,7 @@ const EventCardDetails = ({ title, description, imageSource, style }) => {
       <View style={style.textContainer}>
         <View style={style.textBackground}>
           <Text style={[style.eventTitle, style.interBold]} numberOfLines={2} ellipsizeMode="tail">{title}</Text>
-          <Text style={[style.eventDescription, style.interRegular]} numberOfLines={3} ellipsizeMode="tail">{description}</Text>
+          <Text style={[style.eventDescription, style.interBold]} numberOfLines={3} ellipsizeMode="tail">{description}</Text>
         </View>
       </View>
       <Image source={imageSource} style={style.eventImage} />

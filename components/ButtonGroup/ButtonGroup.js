@@ -4,7 +4,7 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import styles from './styles';
 
 const ButtonGroup = () => {
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedButton, setSelectedButton] = useState('recommendations');
   const [showImage, setShowImage] = useState(false);
   const [showStatusBar, setShowStatusBar] = useState(false);
 

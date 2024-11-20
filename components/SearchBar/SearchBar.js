@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import { View, Text, TextInput, Image, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 import styles from './styles';
 
-const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) => {
+const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, searchQuery }) => {
   const navigation = useNavigation();
   const [localCity, setLocalCity] = useState(citySourse);
-  const [searchText, setSearchText] = useState(''); 
+  const [searchText, setSearchText] = useState(searchQuery);
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
-  
+  const [typingTimeout, setTypingTimeout] = useState(null);
+
   useEffect(() => {
     setLocalCity(citySourse);
   }, [citySourse]);
@@ -33,36 +34,55 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) =
   }, []);
 
   const handleCitySelection = (selectedCity) => {
-    setLocalCity(selectedCity); 
+    setLocalCity(selectedCity);
     setOpen(false);
-    setTimeout(() => {
-      if (selectedCity !== citySourse) {
-        onCityChange(selectedCity);
-      }
-    }, 0);
+    if (selectedCity !== citySourse) {
+      onCityChange(selectedCity);
+    }
   };
+
+  useEffect(() => {
+    setSearchText(searchQuery);
+  }, [searchQuery]);
 
   const toggleDropDown = () => {
     setOpen((prevState) => !prevState);
   };
 
-  const handleSearchPress = () => {
-    setTimeout(() => {
+  const handleSearchInput = (text) => {
+    setSearchText(text);
+
+    if (typingTimeout) {
+      clearTimeout(typingTimeout);
+    }
+
+    const timeout = setTimeout(() => {
       if (onSearchChange) {
-        onSearchChange(searchText);
+        onSearchChange(text);
       }
-    }, 0);
+    }, 300);
+
+    setTypingTimeout(timeout);
   };
- 
+
+  const resetSearch = () => {
+    setOpen(false);
+  };
+
+  const navigateToProfile = () => {
+    resetSearch();
+    navigation.navigate('MyProfile');
+  };
+
   return (
     <View style={styles.searchContainer}>
-      <TouchableOpacity onPress={() => navigation.navigate('MyProfile')}>
+      <TouchableOpacity onPress={navigateToProfile}>
         <Image source={avatarSource} style={styles.iconUser} />
       </TouchableOpacity>
 
       <TouchableOpacity onPress={toggleDropDown}>
         <View style={styles.planetContainer}>
-          <Image source={require('../../assets/icons/planet.png')}  style={styles.icon} />
+          <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
           <Text style={[styles.cityText, styles.interBold]}>{localCity}</Text>
         </View>
       </TouchableOpacity>
@@ -84,11 +104,11 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) =
 
       <TextInput
         style={[styles.searchInput, { backgroundColor: '#f0f0f0' }]}
-        placeholder="Поиск мероприятий"
+        placeholder="Поиск"
         value={searchText}
-        onChangeText={setSearchText}
+        onChangeText={handleSearchInput}
       />
-      <TouchableOpacity onPress={handleSearchPress(searchText)}> 
+      <TouchableOpacity onPress={() => onSearchChange(searchText)}>
         <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
       </TouchableOpacity>
     </View>
