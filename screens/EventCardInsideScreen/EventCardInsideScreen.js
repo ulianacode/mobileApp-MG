@@ -14,6 +14,7 @@ import axios from "axios";
 import BackButton from "../../components/BackButton/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import { API_URL, tokens } from "../../variables/ip";
+import { useRoute } from '@react-navigation/native';
 
 const EventCardInsideScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -31,6 +32,14 @@ const EventCardInsideScreen = () => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const route = useRoute();
+  const { eventId } = route.params;
+
+
+  const accessToken = tokens.accessToken;
+
+  const isUserAuthenticated = !!accessToken;
+
   const convertToISO = (dateString) => {
     const [datePart, timePart] = dateString.split(" ");
 
@@ -40,6 +49,10 @@ const EventCardInsideScreen = () => {
   };
 
   const handleChatPress = () => {
+    if (!isUserAuthenticated) {
+      Alert.alert("Ошибка", "Пожалуйста, авторизуйтесь для доступа к чату.");
+      return;
+    }
     navigation.navigate("ChatScreen", {
       eventTitle: eventData.title,
       eventId: eventData.id,
@@ -47,6 +60,10 @@ const EventCardInsideScreen = () => {
   };
 
   const handleRatingPress = (star) => {
+    if (!isUserAuthenticated) {
+      Alert.alert("Ошибка", "Пожалуйста, авторизуйтесь для оценки мероприятия.");
+      return;
+    }
     setRating(star);
     fetchEventData();
   };
@@ -59,6 +76,7 @@ const EventCardInsideScreen = () => {
     submitRating();
     fetchEventData();
   };
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -99,21 +117,13 @@ const EventCardInsideScreen = () => {
   };
 
   const handleParticipationToggle = async () => {
+    if (!isUserAuthenticated) {
+      Alert.alert("Ошибка", "Пожалуйста, авторизуйтесь для участия в мероприятии.");
+      return;
+    }
     const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
-    const eventId = 10;
 
     try {
-      const accessToken = tokens.accessToken;
-      const response = await axios.post(
-        `http://${API_URL}:8083/v1/events/4`,
-        { eventId, userStatus },
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
       setParticipantStatus(userStatus);
       setIsChecked(!isChecked);
       await fetchEventData();
@@ -122,13 +132,15 @@ const EventCardInsideScreen = () => {
     }
   };
 
+
   const fetchEventData = async () => {
     try {
-      const accessToken = tokens.accessToken;
 
-      const response = await axios.get(`http://${API_URL}:8083/v1/events/4`, {
+      const response = await axios.get(`http://${API_URL}/v1/events/${eventId}`, {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          headers: tokens.accessToken
+          ? { Authorization: `Bearer ${tokens.accessToken}` }
+          : {},
         },
       });
 
@@ -154,7 +166,6 @@ const EventCardInsideScreen = () => {
   const submitRating = async () => {
     try {
       const accessToken = tokens.accessToken;
-      const eventId = 10;
       const score = rating;
       console.log(score);
 
@@ -175,9 +186,10 @@ const EventCardInsideScreen = () => {
     }
   };
 
+
   useEffect(() => {
     fetchEventData();
-  }, []);
+  }, [eventId]);
 
   const currentDate = getCurrentDateInMoscowTimezone();
   const eventStartDate = eventData?.startDateTime

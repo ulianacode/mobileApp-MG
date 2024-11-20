@@ -3,7 +3,6 @@ import { SafeAreaView, StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoadingScreen from './screens/LoadingScreen/LoadingScreen';
-import FeedScreen from './screens/FeedScreen/FeedScreen';
 import RegistrationScreen from './screens/RegistrationScreen/RegistrationScreen';
 import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
@@ -13,6 +12,7 @@ import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import EventCardInsideScreen from './screens/EventCardInsideScreen/EventCardInsideScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
+import RecommendationsScreen from './screens/RecommendationsScreen/RecommendationsScreen';
 import {TextEncoder} from 'text-encoding';
 
 global.TextEncoder = TextEncoder;
@@ -38,8 +38,7 @@ export default function App() {
         <LoadingScreen />
       ) : (
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="Feed" screenOptions= {{headerShown: false}}>
-            <Stack.Screen name="Feed" component={FeedScreen} />
+          <Stack.Navigator initialRouteName="Recommendations" screenOptions= {{headerShown: false}}>
             <Stack.Screen name="Registration" component={RegistrationScreen} />
             <Stack.Screen name="Login" component={LoginScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
@@ -48,6 +47,8 @@ export default function App() {
             <Stack.Screen name="MyProfileEdit" component={MyProfileEdit} />
             <Stack.Screen name="EventCardInsideScreen" component={EventCardInsideScreen} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
+            <Stack.Screen name="Recommendations" component={RecommendationsScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       )}

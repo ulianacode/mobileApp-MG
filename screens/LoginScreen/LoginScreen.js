@@ -13,7 +13,7 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('');
 
     const handleBackPress = () => {
-        navigation.navigate('Feed');
+        navigation.navigate('Recommendations');
     };
 
     const handleRegistrationPress = () => {
@@ -22,7 +22,7 @@ const LoginScreen = () => {
 
     const handleLogin = async () => {
         try {
-            const response = await axios.post(`http://${API_URL}:8082/v1/auth`, {
+            const response = await axios.post(`http://${API_URL}/v1/auth`, {
                 username,
                 password
             });
@@ -46,11 +46,9 @@ const LoginScreen = () => {
                 console.log('role: ',tokens.role);
                 console.log('Auth Status: ', auth.status);
 
-                // Schedule the token refresh
                 scheduleTokenRefresh(expiresIn, refreshExpiresIn);
 
-                Alert.alert('Вы успешно вошли!', `Вы вошли в аккаунт ${username}`);
-                navigation.navigate('Feed');
+                navigation.navigate('Recommendations');
             } else {
                 Alert.alert('Ошибка входа', 'Во время входа возникла ошибка, нам уже известно о проблеме и мы работаем над решением');
             }

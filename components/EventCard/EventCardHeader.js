@@ -7,7 +7,7 @@ const EventCardHeader = ({ creatorText, rating, style }) => {
     <View style={style.backgroundEventContainer}>
       <Text style={[style.creatorText, style.interBold]}>{creatorText}</Text>
       <View style={style.ratingContainer}>
-        <Image source={require('../../assets/icons/star.png')} style={style.starIcon} />
+        <Image source={require('../../assets/whiteStar.png')} style={style.starIcon} />
         <Text style={[style.starsText, style.interBold]}>{rating}</Text>
       </View>
     </View>

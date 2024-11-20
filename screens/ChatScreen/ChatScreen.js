@@ -31,7 +31,7 @@ export default function ChatScreen() {
 
   const fetchChatHistory = async () => {
     try {
-      const response = await axios.get(`http://${API_URL}:8083/chat/history`, {
+      const response = await axios.get(`http://${API_URL}/chat/history`, {
         params: { eventId: eventId },
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,

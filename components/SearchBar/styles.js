@@ -15,6 +15,14 @@ const styles = StyleSheet.create({
     height: 40,
     left: 10,
     marginRight: 10,
+  
+  },
+  iconUser: {
+    width: 35,
+    height: 35,
+    left: 10,
+    marginRight: 10,
+    borderRadius: 20,
   },
   searchInput: {
     flex: 1,

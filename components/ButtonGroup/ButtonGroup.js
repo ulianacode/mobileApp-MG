@@ -4,13 +4,17 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 import styles from './styles';
 
 const ButtonGroup = () => {
-  const [selectedButton, setSelectedButton] = useState(null);
+  const [selectedButton, setSelectedButton] = useState('recommendations');
   const [showImage, setShowImage] = useState(false);
   const [showStatusBar, setShowStatusBar] = useState(false);
 
   const handleMenuPress = () => {
     setShowStatusBar(!showStatusBar);
   };
+
+  const handleRecommendationsPress = () => {
+    navigation.navigate('Recommendations');
+};
 
   return (
     <View style={styles.conteiner}>
@@ -21,6 +25,7 @@ const ButtonGroup = () => {
           selectedButton === 'recommendations' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
         ]}
         onPress={() => {
+            handleRecommendationsPress;
             setSelectedButton('recommendations');
             setShowImage(false);
             setShowStatusBar(false);

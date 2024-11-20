@@ -39,7 +39,7 @@ const AddingEventCard = () => {
     const fetchCities = async () => {
       try {
         const response = await axios.get(
-          `http://${API_URL}:8083/v1/events/cities`,
+          `http://${API_URL}/v1/events/cities`,
           {
             headers: {
               Authorization: `Bearer ${tokens.accessToken}`,
