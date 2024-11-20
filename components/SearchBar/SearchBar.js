@@ -7,13 +7,13 @@ import styles from './styles';
 
 const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) => {
   const navigation = useNavigation();
-  const [city, setCity] = useState(citySourse);
+  const [localCity, setLocalCity] = useState(citySourse);
   const [searchText, setSearchText] = useState(''); 
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
   
   useEffect(() => {
-    setCity(citySourse); 
+    setLocalCity(citySourse);
   }, [citySourse]);
 
   useEffect(() => {
@@ -33,8 +33,13 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) =
   }, []);
 
   const handleCitySelection = (selectedCity) => {
+    setLocalCity(selectedCity); 
     setOpen(false);
-    onCityChange(selectedCity);
+    setTimeout(() => {
+      if (selectedCity !== citySourse) {
+        onCityChange(selectedCity);
+      }
+    }, 0);
   };
 
   const toggleDropDown = () => {
@@ -42,9 +47,11 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) =
   };
 
   const handleSearchPress = () => {
-    if (onSearchChange) {
-      onSearchChange(searchText);
-    }
+    setTimeout(() => {
+      if (onSearchChange) {
+        onSearchChange(searchText);
+      }
+    }, 0);
   };
  
   return (
@@ -56,7 +63,7 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse }) =
       <TouchableOpacity onPress={toggleDropDown}>
         <View style={styles.planetContainer}>
           <Image source={require('../../assets/icons/planet.png')}  style={styles.icon} />
-          <Text style={[styles.cityText, styles.interBold]}>{citySourse}</Text>
+          <Text style={[styles.cityText, styles.interBold]}>{localCity}</Text>
         </View>
       </TouchableOpacity>
 

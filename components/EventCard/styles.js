@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 5,
     marginRight: 20,
-    top: -30,
+    top: -45,
+ 
   },
   eventImage: {
     width: '35%',
@@ -42,7 +43,10 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#000000',
     numberOfLines: 2,
+    top: 10,
     ellipsizeMode: 'tail',
+    textAlign: 'center', 
+    justifyContent: 'center',
   },
   eventDescription: {
     fontSize: 14,

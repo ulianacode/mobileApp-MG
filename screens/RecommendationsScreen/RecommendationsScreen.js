@@ -15,6 +15,7 @@ const EventList = ({ events }) => {
       {events.map((event) => (
         <EventCard
           key={event.id}
+          id={event.id}
           title={event.title}
           description={event.description}
           imageSource={{ uri: event.eventImage }}
@@ -40,9 +41,6 @@ const RecommendationsScreen = () => {
   const [selectedCity, setSelectedCity] = useState("Москва");
   
   const fetchUserData = async () => {
-    if (!tokens.accessToken) {
-      return;  
-    }
 
     try { 
       const username = tokens.username;
