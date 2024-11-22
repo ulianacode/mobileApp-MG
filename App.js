@@ -12,7 +12,9 @@ import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import EventCardInsideScreen from './screens/EventCardInsideScreen/EventCardInsideScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
+import UsersScreen from './screens/UsersScreen/UsersScreen';
 import RecommendationsScreen from './screens/RecommendationsScreen/RecommendationsScreen';
+import MyEventsScreen from './screens/MyEventsScreen/MyEvents';
 import {TextEncoder} from 'text-encoding';
 
 global.TextEncoder = TextEncoder;
@@ -48,7 +50,8 @@ export default function App() {
             <Stack.Screen name="EventCardInsideScreen" component={EventCardInsideScreen} />
             <Stack.Screen name="ChatScreen" component={ChatScreen} />
             <Stack.Screen name="Recommendations" component={RecommendationsScreen} />
-
+            <Stack.Screen name="Users" component={UsersScreen} />
+            <Stack.Screen name="MyEvents" component={MyEventsScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

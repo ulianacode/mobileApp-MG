@@ -30,7 +30,7 @@ const EventList = ({ events }) => {
   );
 };
 
-const RecommendationsScreen = () => {
+const RecommendationsScreen = (route) => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -38,6 +38,7 @@ const RecommendationsScreen = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [userData, setUserData] = useState('');
   const [selectedCity, setSelectedCity] = useState('Москва');
+  const [selectedButton, setSelectedButton] = useState(route.params?.selectedButton || 'recommendations');
   const navigationState = useNavigationState((state) => state);
   const previousScreen = navigationState?.routes[navigationState.index]?.name;
 
@@ -124,7 +125,8 @@ const RecommendationsScreen = () => {
   useFocusEffect(
     useCallback(() => {
       fetchUserData();
-    }, [])
+      setSelectedButton(route.params?.selectedButton || 'recommendations');
+    }, [route.params?.selectedButton, previousScreen])
   );
 
   const handleScroll = ({ nativeEvent }) => {
@@ -168,7 +170,7 @@ const RecommendationsScreen = () => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
-        <ButtonGroup />
+      <ButtonGroup selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
         <SearchBar
           onCityChange={handleCityChange}
           onSearchChange={handleSearch}
