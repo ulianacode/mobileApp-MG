@@ -11,7 +11,6 @@ import {
 } from "react-native";
 import styles from "./styles";
 import axios from "axios";
-import BackButton from "../../components/BackButton/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import { API_URL, tokens } from "../../variables/ip";
 import { useRoute } from "@react-navigation/native";
@@ -33,9 +32,8 @@ const EventCardInsideScreen = () => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [latitude, setLatitude] = useState(55.751244); // Координаты Москвы
-const [longitude, setLongitude] = useState(37.618423);
-
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
 
   const route = useRoute();
   const { eventId } = route.params;
@@ -135,9 +133,29 @@ const [longitude, setLongitude] = useState(37.618423);
     try {
       setParticipantStatus(userStatus);
       setIsChecked(!isChecked);
-      await fetchEventData();
+      await approveEvent(userStatus);
     } catch (error) {
       console.error("Ошибка при обновлении статуса участия:", error);
+    }
+  };
+
+  const approveEvent = async (status) => {
+    try {
+      const response = await axios.post(
+        `http://${API_URL}/v1/events/${eventId}`,
+        { status: status },
+        {
+          headers: {
+            Authorization: `Bearer ${tokens.accessToken}`,
+          },
+        }
+      );
+      console.log("Статус мероприятия успешно обновлен:", response.data);
+    } catch (error) {
+      console.error(
+        "Ошибка при отправке запроса на утверждение мероприятия:",
+        error
+      );
     }
   };
 
@@ -146,30 +164,29 @@ const [longitude, setLongitude] = useState(37.618423);
       const response = await axios.get(
         `http://${API_URL}/v1/events/${eventId}`,
         {
-          headers: {
-            headers: tokens.accessToken
-              ? { Authorization: `Bearer ${tokens.accessToken}` }
-              : {},
-          },
+          headers: tokens.accessToken
+            ? { Authorization: `Bearer ${tokens.accessToken}` }
+            : {},
         }
       );
 
       setEventData(response.data);
-      const { userStatus, userGrade, userProfile } = response.data;
+      const { userStatus, userGrade, userProfile, city } = response.data;
       const { averageRating } = userProfile;
       const { username } = userProfile;
       const { profileImage } = userProfile;
 
       setUserName(username);
       userProfileImage(profileImage);
-      setIsChecked(userStatus === "APPROVED");
       setParticipantStatus(userStatus);
+      setIsChecked(userStatus === "APPROVED");
       setAverageRating(averageRating);
       setUserGrade(userGrade);
 
-    setLatitude(latitude);
-    setLongitude(longitude);
-      
+      if (city && city.latitude && city.longitude) {
+        setLatitude(city.latitude);
+        setLongitude(city.longitude);
+      }
     } catch (error) {
       console.error("Ошибка при получении данных мероприятия", error);
     } finally {
@@ -246,12 +263,45 @@ const [longitude, setLongitude] = useState(37.618423);
       : require("../../assets/nonavatar.png");
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={[styles.header, { backgroundColor: headerBackgroundColor }]}>
-        <Text style={styles.headerText}>{headerText}</Text>
+    <ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      style={styles.container}
+    >
+      <View
+        style={[
+          styles.header,
+          {
+            backgroundColor: headerBackgroundColor,
+            flexDirection: "row",
+            alignItems: "center",
+          },
+        ]}
+      >
+        <TouchableOpacity
+          onPress={handleBackPress}
+          style={{
+            width: 35,
+            height: 35,
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft:5,
+          }}
+        >
+          <Image
+            source={require("../../assets/icons/backarrow.png")}
+            style={{
+              width: 35,
+              height: 35,
+              marginBottom: 10,
+              marginLeft:5,
+              resizeMode: "contain",
+            }}
+          />
+        </TouchableOpacity>
+        <Text style={[styles.headerText, { flex: 1, textAlign: "center" }]}>
+          {headerText}
+        </Text>
       </View>
-
-      <BackButton onPress={handleBackPress} />
 
       <View style={styles.dater}>
         <Text style={styles.dateText}>
@@ -264,44 +314,46 @@ const [longitude, setLongitude] = useState(37.618423);
       </View>
 
       <View style={styles.imagesContainer}>
-      <View style={styles.mapAndImageContainer}>
-  {latitude && longitude ? (
-    <View style={styles.mapWrapper}>
-      <View style={styles.mapContainer}>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            latitude: latitude,
-            longitude: longitude,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
-          }}
-        >
-          <Marker coordinate={{ latitude, longitude }} title={eventData.title || "Место проведения"} />
-        </MapView>
+        <View style={styles.mapAndImageContainer}>
+          {latitude && longitude ? (
+            <View style={styles.mapWrapper}>
+              <View style={styles.mapContainer}>
+                <MapView
+                  style={{ ...styles.map, backgroundColor: "transparent" }}
+                  initialRegion={{
+                    latitude: latitude,
+                    longitude: longitude,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                  }}
+                >
+                  <Marker
+                    coordinate={{ latitude, longitude }}
+                    title={eventData.title || "Место проведения"}
+                  />
+                </MapView>
+              </View>
+            </View>
+          ) : (
+            <Text style={styles.mapErrorText}>Координаты недоступны</Text>
+          )}
+          <Image source={avatarSource} style={styles.image} />
+        </View>
       </View>
-    </View>
-  ) : (
-    <Text style={styles.mapErrorText}>Координаты недоступны</Text>
-  )}
-  <Image source={avatarSource} style={styles.image} />
-</View>
-
-</View>
 
       <View style={styles.infoContainer}>
         <View style={styles.infoNumAndRating}>
           <View style={styles.infoNum}>
             <Image
-              source={require("../../assets/aprove.png")}
-              style={styles.miniicon}
+              source={require("../../assets/icons/aprove.png")}
+              style={styles.miniiconaprove}
             />
             <Text style={styles.infoTextAprove}>{eventData.approvalCount}</Text>
           </View>
           <View style={styles.infoRating}>
             <Image
-              source={require("../../assets/aprove.png")}
-              style={styles.miniicon}
+              source={require("../../assets/icons/starfill.png")}
+              style={styles.miniiconstar}
             />
             <Text style={styles.infoTextRating}>
               {averageRating.toFixed(1)}
@@ -320,7 +372,7 @@ const [longitude, setLongitude] = useState(37.618423);
         <View style={styles.participationContainer}>
           <Pressable
             onPress={handleParticipationToggle}
-            style={styles.checkboxContainer}
+            style={[styles.checkboxContainer, { backgroundColor: "white" }]}
           >
             <Text style={styles.label}>Участвую</Text>
             <View
@@ -350,11 +402,7 @@ const [longitude, setLongitude] = useState(37.618423);
             style={styles.checkboxContainer}
           >
             <Text style={styles.label}>Участвую</Text>
-            <View
-              style={[styles.checkbox, isChecked && styles.checkboxChecked]}
-            >
-              {isChecked && <Text style={styles.checkboxText}>✔️</Text>}
-            </View>
+            <CheckBox value={isChecked} onValueChange={setIsChecked} />
           </Pressable>
           {participantStatus === "APPROVED" && (
             <TouchableOpacity

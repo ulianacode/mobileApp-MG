@@ -14,12 +14,15 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#D9D9D9",
     borderRadius: 0,
-    height: 40,
+    height: 45,
   },
   headerText: {
-    fontSize: 16,
+    fontSize: 18,
     justifyContent: "center",
     color: "#000",
+    fontWeight: "bold",
+    marginTop: -10,
+    marginRight: 30,
   },
   dater: {
     alignItems: "center",
@@ -31,28 +34,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8936E",
     borderRadius: 10,
   },
-
   dateText: {
-    fontSize: 14,
+    fontSize: 18,
     color: "#000",
-    marginTop: -2,
+    marginTop: 0,
     fontWeight: "bold",
   },
-
   namer: {
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 16,
     marginLeft: 10,
-    height: 40,
+    height: 50,
     width: "95%",
     backgroundColor: "#FBF6F4",
-    borderRadius: 10,
+    borderRadius: 15,
   },
-
   title: {
-    fontSize: 18,
-    fontWeight: "semibold",
+    fontSize: 28,
     textAlign: "center",
     paddingTop: 0,
   },
@@ -62,7 +61,6 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     width: "100%",
   },
-
   mapAndImageContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -72,7 +70,7 @@ const styles = StyleSheet.create({
   image: {
     width: "45%",
     height: 190,
-    resizeMode: 'stretch',
+    resizeMode: "stretch",
     borderRadius: 14,
     marginRight: 10,
   },
@@ -81,18 +79,21 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 16,
-    paddingLeft: 10,
-    paddingRight: 10,
-    height: 35,
+    marginHorizontal: 10,
+  },
+  infoNumAndRating: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
+    width: "47.5%",
   },
   infoTextAprove: {
-    fontSize: 16,
+    fontSize: 24,
     color: "#000",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
-    borderRadius: 10,
+    borderRadius: 15,
     textAlign: "center",
-    fontWeight: "semibold",
+    fontWeight: "bold",
+    marginLeft: 5,
+    height: 35,
   },
   mapWrapper: {
     width: "45%",
@@ -100,77 +101,89 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     overflow: "hidden",
     marginLeft: 10,
+    backgroundColor: "#D3D3D3",
   },
   mapContainer: {
     flex: 1,
     borderRadius: 14,
     overflow: "hidden",
+    backgroundColor: "#D3D3D3",
   },
   map: {
     flex: 1,
     borderRadius: 14,
   },
   infoTextRating: {
-    fontSize: 16,
+    fontSize: 22,
     color: "#000",
-    paddingHorizontal: 10,
-    paddingVertical: 5,
     borderRadius: 10,
     textAlign: "center",
-    fontWeight: "semibold",
+    fontWeight: "bold",
+    marginLeft: 6,
+    marginTop: -1,
   },
-
   infoTextTitle: {
-    fontSize: 16,
+    fontSize: 24,
     color: "#000",
-    width: 155,
-    paddingVertical: 5,
-    backgroundColor: "#FBF6F4",
     borderRadius: 10,
     textAlign: "center",
-    fontWeight: "semibold",
-  },
-
+    fontWeight: "bold",
+    marginTop: -3,
+    marginRight: 15,
+    paddingVertical: 10,
+    width: "100%",
+    alignSelf: "center",
+    flex: 1,
+  },  
   infoNum: {
     backgroundColor: "#FBF6F4",
+    flex: 2,
     flexDirection: "row",
-    borderRadius: 10,
+    borderRadius: 15,
+    alignItems: "center",
+    height: 50,
   },
   infoRating: {
     backgroundColor: "#FBF6F4",
+    flex: 2,
     flexDirection: "row",
-    borderRadius: 10,
-    marginLeft: 20,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    marginLeft: 16,
+    height: 50,
   },
-
-  infoNumAndRating: {
-    flexDirection: "row",
-  },
-
   infoTitle: {
     backgroundColor: "#FBF6F4",
     flexDirection: "row",
-    borderRadius: 10,
+    borderRadius: 17,
+    width: "47.5%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "flex-start",
   },
-
-  miniicon: {
-    width: 18,
-    height: 13,
-    marginLeft: 13,
-    marginTop: 10,
+  miniiconaprove: {
+    marginLeft: 6,
+    width: "40%",
+    height: "60%",
+    resizeMode: "contain",
   },
-
+  miniiconstar: {
+    marginLeft: 2,
+    width: "40%",
+    height: "100%",
+    resizeMode: "contain",
+  },
   miniicontitle: {
-    width: 20,
-    height: 20,
-    marginLeft: 13,
-    marginTop: 5,
+    marginLeft: 10,
+    width: 40,
+    height: 40,
+    borderRadius: 25,
   },
-
   description: {
     paddingHorizontal: 15,
     paddingVertical: 5,
-    fontSize: 14,
+    fontSize: 22,
     lineHeight: 20,
     color: "#FBF6F4",
     marginBottom: 16,
@@ -182,7 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   participationText: {
-    fontSize: 16,
+    fontSize: 18,
     marginRight: 8,
   },
   checkboxContainer: {
@@ -199,27 +212,32 @@ const styles = StyleSheet.create({
   checkbox: {
     width: 24,
     height: 24,
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: "#000",
     backgroundColor: "#FFF",
     alignItems: "center",
     justifyContent: "center",
     marginRight: 45,
     borderRadius: 4,
+    overflow: "hidden",
   },
   checkboxChecked: {
-    backgroundColor: "#F26430",
+    backgroundColor: "#FFF",
   },
   checkboxText: {
-    color: "#FFF",
-    fontSize: 16,
+    fontSize: 14,
+    marginLeft: 1,
+    color: "black",
     fontWeight: "bold",
+    textAlignVertical: "center",
+    marginBottom: 1,
   },
   label: {
-    fontSize: 20,
+    fontSize: 22,
     paddingRight: 10,
     color: "#000",
-    fontWeight: "semibold",
+    fontWeight: "bold",
+    marginBottom: 3,
   },
   chatContainer: {
     flexDirection: "row",
@@ -244,7 +262,7 @@ const styles = StyleSheet.create({
   },
   rateButtonText: {
     color: "#FFF",
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
   },
 
@@ -260,7 +278,7 @@ const styles = StyleSheet.create({
     marginVertical: 50,
   },
   ratingText: {
-    fontSize: 20,
+    fontSize: 22,
     marginBottom: 5,
     marginLeft: 50,
     color: "#000",
@@ -314,7 +332,7 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   ratingNumber: {
-    fontSize: 14,
+    fontSize: 20,
     fontWeight: "bold",
     color: "#FBF6F4",
     left: -24,
@@ -328,14 +346,21 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     height: 35,
     width: 220,
-    alignSelf: "center", // Центрирует по горизонтали
-    marginBottom: 20, // Отступ от нижней границы экрана
+    alignSelf: "center",
+    marginBottom: 20,
   },
   nonParticipationText: {
-    fontSize: 18,
+    fontSize: 20,
     marginBottom: 5,
     color: "#000",
     fontWeight: "600",
+  },
+  scrollContainer: {
+    flex: 1,
+  },
+  footerContainer: {
+    marginTop: 'auto',
+    paddingBottom: 20,
   },
 });
 
