@@ -54,19 +54,21 @@ const MyProfileEdit = ({ route }) => {
             },
           }
         );
-
-        const sortedCities = response.data.sort((a, b) => a.localeCompare(b));
-
+  
+        const sortedCities = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+  
         const formattedCities = sortedCities.map((city) => ({
-          label: city,
-          value: city,
+          label: city.name,
+          value: city.name,
         }));
-
+  
         setCities(formattedCities);
       } catch (error) {
         console.error("Ошибка при получении списка городов:", error);
       }
-    };
+    };  
 
     fetchUserData();
     fetchCities();

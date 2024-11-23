@@ -1,11 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Image, TouchableOpacity, FlatList } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { API_URL, tokens } from '../../variables/ip';
-import axios from 'axios';
-import styles from './styles';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  Image,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { API_URL, tokens } from "../../variables/ip";
+import axios from "axios";
+import styles from "./styles";
 
-const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, searchQuery }) => {
+const SearchBar = ({
+  onCityChange,
+  onSearchChange,
+  avatarSource,
+  citySourse,
+  searchQuery,
+}) => {
   const navigation = useNavigation();
   const [localCity, setLocalCity] = useState(citySourse);
   const [searchText, setSearchText] = useState(searchQuery);
@@ -20,13 +33,17 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get(`http://${API_URL}:8083/v1/events/cities`, {
-          headers: tokens.accessToken ? { Authorization: `Bearer ${tokens.accessToken}` } : {},
+        const response = await axios.get(`http://${API_URL}/v1/events/cities`, {
+          headers: tokens.accessToken
+            ? { Authorization: `Bearer ${tokens.accessToken}` }
+            : {},
         });
-        const sortedCities = response.data.sort((a, b) => a.localeCompare(b));
-        setCities(['Все', ...sortedCities]);
+        const sortedCities = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
+        );
+        setCities([{ name: "Все" }, ...sortedCities]);
       } catch (error) {
-        console.error('Ошибка при получении списка городов:', error);
+        console.error("Ошибка при получении списка городов:", error);
       }
     };
 
@@ -34,10 +51,10 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
   }, []);
 
   const handleCitySelection = (selectedCity) => {
-    setLocalCity(selectedCity);
+    setLocalCity(selectedCity.name);
     setOpen(false);
-    if (selectedCity !== citySourse) {
-      onCityChange(selectedCity);
+    if (selectedCity.name !== citySourse) {
+      onCityChange(selectedCity.name);
     }
   };
 
@@ -71,7 +88,7 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
 
   const navigateToProfile = () => {
     resetSearch();
-    navigation.navigate('MyProfile');
+    navigation.navigate("MyProfile");
   };
 
   return (
@@ -82,7 +99,10 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
 
       <TouchableOpacity onPress={toggleDropDown}>
         <View style={styles.planetContainer}>
-          <Image source={require('../../assets/icons/planet.png')} style={styles.icon} />
+          <Image
+            source={require("../../assets/icons/planet.png")}
+            style={styles.icon}
+          />
           <Text style={[styles.cityText, styles.interBold]}>{localCity}</Text>
         </View>
       </TouchableOpacity>
@@ -92,8 +112,11 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
           <FlatList
             data={cities}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.item} onPress={() => handleCitySelection(item)}>
-                <Text style={styles.itemText}>{item}</Text>
+              <TouchableOpacity
+                style={styles.item}
+                onPress={() => handleCitySelection(item)}
+              >
+                <Text style={styles.itemText}>{item.name}</Text>
               </TouchableOpacity>
             )}
             keyExtractor={(item, index) => index.toString()}
@@ -103,13 +126,16 @@ const SearchBar = ({ onCityChange, onSearchChange, avatarSource, citySourse, sea
       )}
 
       <TextInput
-        style={[styles.searchInput, { backgroundColor: '#f0f0f0' }]}
+        style={[styles.searchInput, { backgroundColor: "#f0f0f0" }]}
         placeholder="Поиск"
         value={searchText}
         onChangeText={handleSearchInput}
       />
       <TouchableOpacity onPress={() => onSearchChange(searchText)}>
-        <Image source={require('../../assets/icons/search.png')} style={styles.endIcon} />
+        <Image
+          source={require("../../assets/icons/search.png")}
+          style={styles.endIcon}
+        />
       </TouchableOpacity>
     </View>
   );

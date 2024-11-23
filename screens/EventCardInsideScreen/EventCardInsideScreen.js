@@ -14,7 +14,8 @@ import axios from "axios";
 import BackButton from "../../components/BackButton/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import { API_URL, tokens } from "../../variables/ip";
-import { useRoute } from '@react-navigation/native';
+import { useRoute } from "@react-navigation/native";
+import MapView, { Marker } from "react-native-maps";
 
 const EventCardInsideScreen = () => {
   const [isChecked, setIsChecked] = useState(false);
@@ -32,9 +33,12 @@ const EventCardInsideScreen = () => {
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [latitude, setLatitude] = useState(55.751244); // Координаты Москвы
+const [longitude, setLongitude] = useState(37.618423);
+
+
   const route = useRoute();
   const { eventId } = route.params;
-
 
   const accessToken = tokens.accessToken;
 
@@ -61,7 +65,10 @@ const EventCardInsideScreen = () => {
 
   const handleRatingPress = (star) => {
     if (!isUserAuthenticated) {
-      Alert.alert("Ошибка", "Пожалуйста, авторизуйтесь для оценки мероприятия.");
+      Alert.alert(
+        "Ошибка",
+        "Пожалуйста, авторизуйтесь для оценки мероприятия."
+      );
       return;
     }
     setRating(star);
@@ -76,7 +83,6 @@ const EventCardInsideScreen = () => {
     submitRating();
     fetchEventData();
   };
-
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -118,7 +124,10 @@ const EventCardInsideScreen = () => {
 
   const handleParticipationToggle = async () => {
     if (!isUserAuthenticated) {
-      Alert.alert("Ошибка", "Пожалуйста, авторизуйтесь для участия в мероприятии.");
+      Alert.alert(
+        "Ошибка",
+        "Пожалуйста, авторизуйтесь для участия в мероприятии."
+      );
       return;
     }
     const userStatus = isChecked ? "NOT_APPROVED" : "APPROVED";
@@ -132,17 +141,18 @@ const EventCardInsideScreen = () => {
     }
   };
 
-
   const fetchEventData = async () => {
     try {
-
-      const response = await axios.get(`http://${API_URL}/v1/events/${eventId}`, {
-        headers: {
-          headers: tokens.accessToken
-          ? { Authorization: `Bearer ${tokens.accessToken}` }
-          : {},
-        },
-      });
+      const response = await axios.get(
+        `http://${API_URL}/v1/events/${eventId}`,
+        {
+          headers: {
+            headers: tokens.accessToken
+              ? { Authorization: `Bearer ${tokens.accessToken}` }
+              : {},
+          },
+        }
+      );
 
       setEventData(response.data);
       const { userStatus, userGrade, userProfile } = response.data;
@@ -156,6 +166,10 @@ const EventCardInsideScreen = () => {
       setParticipantStatus(userStatus);
       setAverageRating(averageRating);
       setUserGrade(userGrade);
+
+    setLatitude(latitude);
+    setLongitude(longitude);
+      
     } catch (error) {
       console.error("Ошибка при получении данных мероприятия", error);
     } finally {
@@ -185,7 +199,6 @@ const EventCardInsideScreen = () => {
       console.error("Ошибка при отправке рейтинга:", error);
     }
   };
-
 
   useEffect(() => {
     fetchEventData();
@@ -251,12 +264,31 @@ const EventCardInsideScreen = () => {
       </View>
 
       <View style={styles.imagesContainer}>
-        <Image
-          source={require("../../assets/icons/example.png")}
-          style={styles.image}
-        />
-        <Image source={avatarSource} style={styles.image} />
+      <View style={styles.mapAndImageContainer}>
+  {latitude && longitude ? (
+    <View style={styles.mapWrapper}>
+      <View style={styles.mapContainer}>
+        <MapView
+          style={styles.map}
+          initialRegion={{
+            latitude: latitude,
+            longitude: longitude,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
+          }}
+        >
+          <Marker coordinate={{ latitude, longitude }} title={eventData.title || "Место проведения"} />
+        </MapView>
       </View>
+    </View>
+  ) : (
+    <Text style={styles.mapErrorText}>Координаты недоступны</Text>
+  )}
+  <Image source={avatarSource} style={styles.image} />
+</View>
+
+</View>
+
       <View style={styles.infoContainer}>
         <View style={styles.infoNumAndRating}>
           <View style={styles.infoNum}>
