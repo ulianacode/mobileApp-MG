@@ -38,18 +38,17 @@ const AddingEventCard = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await axios.get(
-          `http://${API_URL}/v1/events/cities`,
-          {
-            headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
-            },
-          }
+        const response = await axios.get(`http://${API_URL}/v1/events/cities`, {
+          headers: {
+            Authorization: `Bearer ${tokens.accessToken}`,
+          },
+        });
+        const sortedCities = response.data.sort((a, b) =>
+          a.name.localeCompare(b.name)
         );
-        const sortedCities = response.data.sort((a, b) => a.localeCompare(b));
         const formattedCities = sortedCities.map((city) => ({
-          label: city,
-          value: city,
+          label: city.name,
+          value: city.name,
         }));
         setCities(formattedCities);
       } catch (error) {

@@ -39,7 +39,6 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
             handleRecommendationsPress();
             setShowImage(false);
             setShowStatusBar(false);
-            console.log('reki', selectedButton);
           }}
         >
           <Text style={[styles.buttonText, styles.interBold]}>Рекомендации</Text>
