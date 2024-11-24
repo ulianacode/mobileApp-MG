@@ -10,7 +10,6 @@ import axios from 'axios';
 const UserComplaintScreen = () => {
   const navigation = useNavigation();
   const [description, setDescription] = useState('');
-  const [lineCount, setLineCount] = useState(1);
 
 const handleBackPress = () => {
   navigation.navigate('MyProfile');
@@ -33,7 +32,7 @@ const handleComlaint = async () => {
       if (response.status === 200) {
          navigation.navigate('MyProfile');
       } else {
-          Alert.alert('Ошибка');
+          Alert.alert('Ошибка отправки жалобы');
       }
   } catch (error) {
       if (error.response) {
@@ -67,8 +66,7 @@ const handleComlaint = async () => {
             value={description}
             onChangeText={setDescription}
           />
-            </View>
-
+            </View> 
             <TouchableOpacity onPress={handleComlaint} style={styles.bottomBoxContainer}>
             <Text style={styles.bottomBoxText}>Отправить</Text>
         </TouchableOpacity>
