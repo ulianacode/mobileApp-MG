@@ -78,13 +78,13 @@ const LoginScreen = () => {
                 <View style={styles.fieldContainer}>
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/man.png')} style={styles.miniicon} />
-                        <Text style={styles.label}>Логин</Text>
+                        <Text style={styles.label}>Логин или почта</Text>
                     </View>
                     <View style={styles.inputContainer}>
                         <TextInput
                             maxLength={24}
                             style={styles.input}
-                            placeholder="Введите логин"
+                            placeholder="Введите логин или почту"
                             value={username}
                             onChangeText={setUsername}
                         />

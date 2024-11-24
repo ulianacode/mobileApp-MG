@@ -48,6 +48,7 @@ const styles = StyleSheet.create({
   fontSize: 20,
   marginBottom: 0,
   lineHeight: 20,
+  fontFamily: 'Inter_700Bold',
  },
  miniiconmail: {
     marginRight: 5,

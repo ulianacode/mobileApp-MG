@@ -85,6 +85,8 @@ const MyProfileScreen = ({ route }) => {
 
     const avatarSource = userData.profileImage && userData.profileImage !== '' ? { uri: userData.profileImage } : require('../../assets/nonavatar.png');
 
+    const genderText = userData.gender === 'MALE' ? 'Мужчина' : (userData.gender === 'FEMALE' ? 'Женщина' : '-');
+
     return (
         <View style={styles.container}>
             <View style={styles.headerContainer}> 
@@ -145,7 +147,7 @@ const MyProfileScreen = ({ route }) => {
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/gender.png')} style={styles.miniicongender} />
-                        <Text style={styles.label}>{userData.gender || '-'}</Text>
+                        <Text style={styles.label}>{genderText}</Text>
                     </View>
                 </View>
 

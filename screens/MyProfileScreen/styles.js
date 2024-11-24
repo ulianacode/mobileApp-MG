@@ -47,8 +47,9 @@ const styles = StyleSheet.create({
  },
  label: {
   fontSize: 20,
-  marginBottom: 0,
+  marginBottom: -5,
   lineHeight: 20,
+  fontFamily: 'Inter_700Bold',
  },
  miniiconmail: {
     marginRight: 5,
@@ -133,8 +134,8 @@ bottomBoxContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
-    height: 'auto', // Ajust everithing to phone screen size
-    width: '90%', // Adjust the width as needed
+    height: 'auto',
+    width: '90%',
     backgroundColor: 'white',
     borderWidth: 10,
     borderColor: '#F26430'
@@ -142,7 +143,7 @@ bottomBoxContainer: {
   bottomBoxText: {
     bottom: 2,
     fontSize: 22,
-    fontFamily: 'Inter_700Bold', // Ensure you have this font loaded
+    fontFamily: 'Inter_700Bold',
   },
   headerContainer: {
     width: '100%',
