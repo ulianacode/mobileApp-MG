@@ -16,6 +16,7 @@ import UsersScreen from './screens/UsersScreen/UsersScreen';
 import RecommendationsScreen from './screens/RecommendationsScreen/RecommendationsScreen';
 import MyEvents from './screens/MyEventsScreen/MyEvents';
 import UserComplaintScreen from './screens/UserComplaintScreen/UserComplaintScreen';
+import EventComplaintScreen from './screens/EventComplaintScreen/EventComplaintScreen';
 import {TextEncoder} from 'text-encoding';
 
 global.TextEncoder = TextEncoder;
@@ -54,6 +55,7 @@ export default function App() {
             <Stack.Screen name="Users" component={UsersScreen} />
             <Stack.Screen name="MyEvents" component={MyEvents} />
             <Stack.Screen name="UserComplaint" component={UserComplaintScreen} />
+            <Stack.Screen name="EventComplaint" component={EventComplaintScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

@@ -10,7 +10,7 @@ import axios from 'axios';
 const UserComplaintScreen = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { reported } = route.params; 
+  const { eventId, reported } = route.params; 
 
   const [description, setDescription] = useState('');
 
@@ -18,10 +18,11 @@ const handleBackPress = () => {
   navigation.goBack();
 };
 const handleComlaint = async () => {
-  
+    
   try {
+        console.log(reported, eventId, description);
       const response = await axios.post(`http://${API_URL}/v1/complaints`, 
-        { reported, description},
+        { reported, eventId, description},
         {
           headers: {
             Authorization: `Bearer ${tokens.accessToken}`,
@@ -29,9 +30,10 @@ const handleComlaint = async () => {
         }
         );
 
-      console.log(description);
+        console.log(reported, eventId, description);
       if (response.status === 200) {
-         navigation.goBack();
+         navigation.navigate('MyProfile');
+         console.log('Работает');
       } else {
           Alert.alert('Ошибка отправки жалобы.');
       }
@@ -42,6 +44,7 @@ const handleComlaint = async () => {
           } 
       }
       console.error(error);
+      console.log(reported, eventId, description);
   }
 };
 
@@ -55,7 +58,7 @@ const handleComlaint = async () => {
         <View style={styles.fieldContainer}>
             <View style={styles.labelContainer}>
               <Text style={[styles.label, styles.interBold]}>Жалоба на</Text>
-              <Text style={[styles.label, styles.interBold]}>пользователя</Text>
+              <Text style={[styles.label, styles.interBold]}>мероприятие</Text>
             </View>
             <View style={styles.inputContainer}>
             <TextInput
