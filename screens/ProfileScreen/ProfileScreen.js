@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Alert, TouchableOpacity } from 'react-native';
 import styles from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import ExitButton from '../../components/ExitButton/ExitButton';
 import BackButton from '../../components/BackButton/BackButton';
 import axios from 'axios'; 
 import { API_URL, tokens} from '../../variables/ip';
 
 
-const ProfileScreen = ({ route }) => {
+const ProfileScreen = () => {
     const navigation = useNavigation();
     const [userData, setUserData] = useState(null);
+    const route = useRoute();
+    const { username } = route.params; 
 
     useEffect(() => {
-        const username = route?.params?.username || tokens.username;
         if (!username) {
             navigation.navigate('MyProfile');
             return;
@@ -34,7 +35,7 @@ const ProfileScreen = ({ route }) => {
         };
 
         fetchUserData();
-    }, [navigation, route?.params?.username]);
+    }, [navigation, username]);
 
     const handleBackPress = () => {
         navigation.goBack();
@@ -45,7 +46,7 @@ const ProfileScreen = ({ route }) => {
     };
 
     const handleComplaintPress = () => {
-        Alert.alert('Жалоба');
+        navigation.navigate('UserComplaint', { reported: username }); 
     };
 
     if (!userData) {

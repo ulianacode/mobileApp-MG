@@ -27,6 +27,10 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
     navigation.navigate('MyEvents');
   };
 
+  const handleNotificationsPress = () => {
+    setSelectedButton('notifications');
+  };
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.buttonContainer}>
@@ -80,6 +84,7 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
             selectedButton === 'notifications' ? { backgroundColor: '#F8936E' } : { backgroundColor: '#ADA5A1' }
           ]}
           onPress={() => {
+            handleNotificationsPress();
             setSelectedButton('notifications');
             setShowImage(false);
             setShowStatusBar(false);

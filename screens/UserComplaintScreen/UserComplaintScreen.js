@@ -2,23 +2,24 @@ import {React, useState} from 'react';
 import { View, TouchableOpacity, Text, Image, StyleSheet, StatusBar, TextInput } from 'react-native';
 import styles from './styles';
 import BackButton from '../../components/BackButton/BackButton';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 
 
 const UserComplaintScreen = () => {
   const navigation = useNavigation();
+  const route = useRoute();
+  const { reported } = route.params; 
+
   const [description, setDescription] = useState('');
 
 const handleBackPress = () => {
-  navigation.navigate('MyProfile');
+  navigation.goBack();
 };
 const handleComlaint = async () => {
   
   try {
-    const reported = 'user6';
-    
       const response = await axios.post(`http://${API_URL}/v1/complaints`, 
         { reported, description},
         {
@@ -30,7 +31,7 @@ const handleComlaint = async () => {
 
       console.log(description);
       if (response.status === 200) {
-         navigation.navigate('MyProfile');
+         navigation.goBack();
       } else {
           Alert.alert('Ошибка отправки жалобы.');
       }
