@@ -77,6 +77,10 @@ const EventCardInsideScreen = () => {
     navigation.goBack();
   };
 
+  const handleComplaintPress = () => {
+    navigation.navigate('EventComplaint', { eventId: eventData.id, reported: username }); 
+  };
+
   const handleOkRatingPress = () => {
     submitRating();
     fetchEventData();
@@ -298,6 +302,31 @@ const EventCardInsideScreen = () => {
             }}
           />
         </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={handleComplaintPress}
+          style={{
+            width: 35,
+            height: 35,
+            justifyContent: "center",
+            alignItems: "center",
+            marginLeft:5,
+            position: 'absolute',
+            right: 0,
+          }}
+        >
+          <Image
+            source={require("../../assets/complaintEvent.png")}
+            style={{
+              width: 35,
+              height: 35,
+              marginBottom: 10,
+              marginRight:5,
+              resizeMode: "contain",
+            }}
+          />
+        </TouchableOpacity>
+
         <Text style={[styles.headerText, { flex: 1, textAlign: "center" }]}>
           {headerText}
         </Text>
