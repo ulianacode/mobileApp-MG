@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { ActivityIndicator, Alert, View, Text, Image, TouchableOpacity, TextInput } from "react-native";
-import DropDownPicker from "react-native-dropdown-picker";
+import {
+  ActivityIndicator,
+  Alert,
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  TextInput,
+} from "react-native";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
 import ExitButton from "../../components/ExitButton/ExitButton";
@@ -18,6 +26,8 @@ const MyProfileEdit = ({ route }) => {
   const [gender, setGender] = useState("");
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [genderOpen, setGenderOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -46,29 +56,26 @@ const MyProfileEdit = ({ route }) => {
     const fetchCities = async () => {
       try {
         const accessToken = tokens.accessToken;
-        const response = await axios.get(
-          `http://${API_URL}/v1/events/cities`,
-          {
-            headers: {
-              Authorization: `Bearer ${accessToken}`,
-            },
-          }
-        );
-  
+        const response = await axios.get(`http://${API_URL}/v1/events/cities`, {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+
         const sortedCities = response.data.sort((a, b) =>
           a.name.localeCompare(b.name)
         );
-  
+
         const formattedCities = sortedCities.map((city) => ({
           label: city.name,
           value: city.name,
         }));
-  
+
         setCities(formattedCities);
       } catch (error) {
         console.error("Ошибка при получении списка городов:", error);
       }
-    };  
+    };
 
     fetchUserData();
     fetchCities();
@@ -91,7 +98,11 @@ const MyProfileEdit = ({ route }) => {
 
   const selectNewImage = () => {
     ImagePicker.launchImageLibrary({ mediaType: "photo" }, (response) => {
-      if (!response.didCancel && response.assets && response.assets.length > 0) {
+      if (
+        !response.didCancel &&
+        response.assets &&
+        response.assets.length > 0
+      ) {
         setUserData((prevUserData) => ({
           ...prevUserData,
           profileImage: response.assets[0].uri,
@@ -133,7 +144,10 @@ const MyProfileEdit = ({ route }) => {
         Alert.alert("Не удалось сохранить данные на сервере.");
       }
     } catch (error) {
-      console.error("Ошибка при сохранении данных:", error.response?.data || error.message);
+      console.error(
+        "Ошибка при сохранении данных:",
+        error.response?.data || error.message
+      );
       Alert.alert("Ошибка при сохранении данных на сервере.");
     }
   };
@@ -143,7 +157,11 @@ const MyProfileEdit = ({ route }) => {
       <View style={styles.container}>
         <BackButton onPress={handleBackPress} />
         <ExitButton onPress={handleExitPress} />
-        <ActivityIndicator size="large" color="#0000ff" style={styles.loadingIndicator} />
+        <ActivityIndicator
+          size="large"
+          color="#0000ff"
+          style={styles.loadingIndicator}
+        />
       </View>
     );
   }
@@ -152,6 +170,24 @@ const MyProfileEdit = ({ route }) => {
     userData.profileImage && userData.profileImage !== ""
       ? { uri: userData.profileImage }
       : require("../../assets/nonavatar.png");
+
+  const handleSelectCity = (city) => {
+    setCity(city);
+    setOpen(false);
+  };
+
+  const handleSelectGender = (gender) => {
+    setGender(gender);
+    setGenderOpen(false);
+  };
+
+  const toggleDropDown = () => {
+    setOpen(!open);
+  };
+
+  const toggleGenderDropDown = () => {
+    setGenderOpen(!genderOpen);
+  };
 
   return (
     <View style={styles.container}>
@@ -201,7 +237,7 @@ const MyProfileEdit = ({ route }) => {
             <TextInput
               maxLength={32}
               style={styles.label}
-              placeholder="Имя и фамилия"
+              placeholder="Отображаемое имя"
               value={displayName}
               onChangeText={setDisplayName}
               keyboardType="default"
@@ -233,45 +269,29 @@ const MyProfileEdit = ({ route }) => {
               source={require("../../assets/icons/planet.png")}
               style={styles.miniiconplanet}
             />
-            <DropDownPicker
-              open={open}
-              value={city}
-              items={cities}
-              setOpen={setOpen}
-              setValue={setCity}
-              placeholder={city || "Выберите город"}
-              containerStyle={styles.dropDownPickerContainer}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              style={styles.dropDownPickerStyle}
-              arrowStyle={styles.arrowStyle}
-              labelStyle={styles.dropDownLabelStyle}
-              selectedItemLabelStyle={styles.dropDownSelectedItemLabelStyle}
-              placeholderStyle={styles.placeholderStyle}
-              listMode="SCROLLVIEW"
-              itemStyle={styles.dropDownItemStyle}
-              renderListItem={(item) => (
-                <View
-                  style={[styles.dropDownItemStyle, { borderBottomWidth: 1, borderBottomColor: "#D3D3D3" }]}
-                >
-                  <TouchableOpacity
-                    style={{ flex: 1 }}
-                    onPress={() => {
-                      setCity(item.value);
-                      setOpen(false);
-                    }}
-                  >
-                    <Text
-                      style={[styles.dropDownLabelStyle, { marginLeft: 10 }]}
-                    >
-                      {item.label}
-                    </Text>
-                  </TouchableOpacity>
-                  <View style={{ flex: 1 }} />
-                </View>
-              )}
-            />
+            <TouchableOpacity onPress={toggleDropDown}>
+              <Text style={styles.label}>{city || "Выберите город"}</Text>
+            </TouchableOpacity>
           </View>
         </View>
+
+        {open && (
+          <View style={styles.dropDownPickerContainer}>
+            <FlatList
+              data={cities}
+              renderItem={({ item }) => (
+                <TouchableOpacity
+                  style={styles.dropDownItem}
+                  onPress={() => handleSelectCity(item.value)}
+                >
+                  <Text style={styles.dropDownItemText}>{item.label}</Text>
+                </TouchableOpacity>
+              )}
+              keyExtractor={(item) => item.value}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        )}
 
         <View style={styles.fieldContainer}>
           <View style={styles.line} />
@@ -280,15 +300,34 @@ const MyProfileEdit = ({ route }) => {
               source={require("../../assets/icons/gender.png")}
               style={styles.miniicongender}
             />
-            <TextInput
-              maxLength={24}
-              style={styles.label}
-              placeholder="Гендер"
-              value={gender}
-              onChangeText={setGender}
-            />
+            <TouchableOpacity onPress={toggleGenderDropDown}>
+              <Text style={[styles.label, { marginTop: -7, marginLeft: 35 }]}>
+                {gender === "MALE"
+                  ? "Мужчина"
+                  : gender === "FEMALE"
+                  ? "Женщина"
+                  : "Выберите гендер"}
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
+
+        {genderOpen && (
+          <View style={styles.dropDownGenderContainer}>
+            <TouchableOpacity
+              style={styles.dropDownGenderItem}
+              onPress={() => handleSelectGender("MALE")}
+            >
+              <Text style={styles.dropDownGenderItemText}>Мужчина</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.dropDownGenderItem}
+              onPress={() => handleSelectGender("FEMALE")}
+            >
+              <Text style={styles.dropDownGenderItemText}>Женщина</Text>
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
     </View>
   );

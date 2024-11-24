@@ -61,6 +61,8 @@ const ProfileScreen = () => {
 
     const avatarSource = userData.profileImage && userData.profileImage !== '' ? { uri: userData.profileImage } : require('../../assets/nonavatar.png');
 
+    const genderText = userData.gender === 'MALE' ? 'Мужчина' : (userData.gender === 'FEMALE' ? 'Женщина' : '-');
+
     return (
         <View style={styles.container}>
             <BackButton onPress={handleBackPress} />
@@ -111,7 +113,7 @@ const ProfileScreen = () => {
                     <View style={styles.line} />
                     <View style={styles.labelContainer}>
                         <Image source={require('../../assets/icons/gender.png')} style={styles.miniicongender} />
-                        <Text style={styles.label}>{userData.gender || '-'}</Text>
+                        <Text style={styles.label}>{genderText}</Text>
                     </View>
                 </View>
 
