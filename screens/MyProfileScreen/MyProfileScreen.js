@@ -48,7 +48,7 @@ const MyProfileScreen = ({ route }) => {
     );
 
     const handleBackPress = () => {
-        navigation.goBack();
+        navigation.navigate('Recommendations');
     };
 
     const handleExitPress = () => {
