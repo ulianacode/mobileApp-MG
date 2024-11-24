@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
   
   },
   iconUser: {
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     left: 10,
     marginRight: 5,
     borderRadius: 20,
