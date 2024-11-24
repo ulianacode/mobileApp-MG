@@ -32,7 +32,7 @@ const handleComlaint = async () => {
       if (response.status === 200) {
          navigation.navigate('MyProfile');
       } else {
-          Alert.alert('Ошибка отправки жалобы');
+          Alert.alert('Ошибка отправки жалобы.');
       }
   } catch (error) {
       if (error.response) {
