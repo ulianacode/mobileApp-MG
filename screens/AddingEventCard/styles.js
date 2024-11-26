@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
     flex: 1,
-    paddingTop: '13%',
+    paddingTop: '30%',
     paddingBottom: '10%',
     paddingLeft: '5%',
     paddingRight: '5%',
@@ -15,13 +15,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     borderRadius: 30,
+    height: "auto",
     width: '100%',
     backgroundColor: 'white',
-    paddingBottom: 15,
+    paddingBottom: 0,
     paddingLeft: '5%',
     paddingRight: '5%',
     marginBottom: 50,
-    marginTop: 20,
+    marginTop: 0,
     flex: 1,
   },
   bottomBoxContainer: {
@@ -29,13 +30,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
+    height: "auto",
     width: '80%',
     backgroundColor: 'white',
     borderWidth: 10,
     borderColor: '#F26430',
     marginLeft: 40,
-    marginTop: 80,
-    marginBottom: -70,
+    marginTop: 60,
+    marginBottom: -50,
   },
   bottomBoxText: {
     bottom: 2,
@@ -62,11 +64,34 @@ const styles = StyleSheet.create({
   labelContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 10,
+  },
+
+
+  labelContainerPhoto:{
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 10,
+  left: 50,
+  top: 20,
+  },
+
+  fieldContainerDate: {
+    marginLeft: '20%',
+    width: '100%',
+    marginVertical: 3,
+    top: 35,
+    
+  },
+  labelContainerDate: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginBottom: 0,
   },
+
   label: {
-    fontSize: 20,
-    marginBottom: 0,
+    fontSize: 16,
+    marginBottom: 5,
   },
   labelPhotoContainer: {
     flexDirection:'row',
@@ -74,7 +99,7 @@ const styles = StyleSheet.create({
     top: 45,
   },
   labelPhoto: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#F26430',
   },
 
@@ -82,7 +107,7 @@ const styles = StyleSheet.create({
     marginLeft: 0,
     width: '100%',
     marginVertical: 5,
-    top: 30,
+    top: 20,
   },
   inputContainer: {
     flexDirection: 'row',
@@ -97,17 +122,12 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
 
-  input: {
-    flex: 1,
-    fontSize: 16,
-    paddingVertical: 25,
-  },
   line: {
     height: 1,
     width: '80%',
     backgroundColor: '#000000',
     marginTop: 0,
-    bottom: 20,
+    bottom: 50,
   },
   loginLinkContainer: {
     marginBottom: 0,
@@ -141,6 +161,40 @@ const styles = StyleSheet.create({
   closeButtonText: {
     color: 'white',
     fontSize: 16,
+  },
+
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between', 
+    marginBottom: 15,
+    width: '100%',
+  },
+  halfFieldContainer: {
+    flex: 1,
+    paddingHorizontal: 0,
+    paddingVertical: 0,
+    top: 25,
+  },
+  separator: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 5,
+  },
+  labelPhotoadd:{
+    marginRight: 4,
+  },
+  addEventText: {
+    fontSize: 24,
+    bottom: 13,
+    color: '#FFFFFF',
+  },
+
+  interBold: {
+    fontFamily: 'Inter_700Bold',
+  },
+  interRegular: {
+    fontFamily: 'Inter_400Regular',
   },
 });
 
