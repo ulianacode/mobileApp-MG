@@ -6,7 +6,6 @@ import {
   Alert,
   TouchableOpacity,
   Image,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -30,6 +29,15 @@ const AddingEventCard = () => {
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
+
+  const [visibility, setVisibility] = useState(null);
+  const [visibilityOptions] = useState([
+    { label: "Открытое", value: "OPEN" },
+    { label: "Закрытое", value: "CLOSED" },
+    { label: "Для друзей", value: "FRIENDS_ONLY" },
+  ]);
+
+  const [openVisibility, setOpenVisibility] = useState(false);
 
   const handleBackPress = () => {
     navigation.goBack();
@@ -94,7 +102,7 @@ const AddingEventCard = () => {
       );
 
       if (response.status === 200) {
-        Alert.alert("Успешно", "Событие обновлено!");
+        Alert.alert("Успешно", "Событие добавлено!");
         setEventName("");
         setStartDate("");
         setEndDate("");
@@ -130,115 +138,137 @@ const AddingEventCard = () => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      contentInsetAdjustmentBehavior="never"
+    <KeyboardAvoidingView
+      style={{ flex: 1 }}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      <BackButton onPress={handleBackPress} />
-      <IconButtons />
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-      >
-        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-          <View style={styles.boxContainer}>
-            {[
-              { label: "Название *", value: title, setter: setEventName },
-              {
-                label: "Дата начала (ДД.ММ.ГГГГ чч:мм) *",
-                value: startDateTime,
-                setter: setStartDate,
-              },
-              {
-                label: "Дата конца (ДД.ММ.ГГГГ чч:мм) *",
-                value: endDateTime,
-                setter: setEndDate,
-              },
-              { label: "Адрес *", value: address, setter: setAddress },
-            ].map((field, index) => (
-              <View key={index} style={styles.fieldContainer}>
-                <View style={styles.labelContainer}>
-                  <Text style={styles.label}>{field.label}</Text>
-                </View>
-                <View style={styles.inputContainer}>
-                  <TextInput
-                    maxLength={24}
-                    style={styles.input}
-                    value={field.value}
-                    onChangeText={field.setter}
-                  />
-                </View>
-                <View style={styles.line} />
-              </View>
-            ))}
+      <View style={styles.container}>
+        <BackButton onPress={handleBackPress} />
 
-            <View style={styles.fieldContainer}>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Город *</Text>
+        <Text style={[styles.addEventText, styles.interBold]}> Создание мероприятия </Text>
+        <View style={styles.boxContainer}>
+          {[{ label: "Название", value: title, setter: setEventName }].map(
+            (field, index) => (
+              <View key={index} style={styles.fieldContainer}>
+                <Text style={[styles.label, styles.interBold]}>
+                  {field.label}
+                </Text>
+                <TextInput
+                  style={styles.input}
+                  value={field.value}
+                  onChangeText={field.setter}
+                  placeholder={`Введите ${field.label.toLowerCase()}`}
+                />
               </View>
-              <DropDownPicker
-                open={open}
-                value={city}
-                items={cities}
-                setOpen={setOpen}
-                setValue={setCity}
-                setItems={setCities}
-                placeholder="Выберите город"
-                containerStyle={styles.dropDownPickerContainer}
-                dropDownContainerStyle={styles.dropDownContainerStyle}
-                style={styles.dropDownPickerStyle}
-                arrowStyle={styles.arrowStyle}
-                labelStyle={styles.dropDownLabelStyle}
-                selectedItemLabelStyle={styles.dropDownSelectedItemLabelStyle}
-                placeholderStyle={styles.placeholderStyle}
-                listMode="SCROLLVIEW"
+            )
+          )}
+
+          <View style={styles.rowContainer}>
+            <View style={styles.halfFieldContainer}>
+              <Text style={[styles.label, styles.interBold]}>Начало</Text>
+              <TextInput
+                style={styles.input}
+                value={startDateTime}
+                onChangeText={setStartDate}
+                placeholder="ДД.ММ.ГГГГ чч:мм"
               />
             </View>
 
-            <View style={styles.fieldContainer}>
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Описание</Text>
-              </View>
-              <View style={styles.inputContainer}>
-                <TextInput
-                  maxLength={150}
-                  style={styles.input}
-                  value={description}
-                  onChangeText={setDescription}
-                  multiline
-                />
-              </View>
-              <View style={styles.line} />
+            <View style={styles.separator}></View>
+            <View style={styles.halfFieldContainer}>
+              <Text style={[styles.label, styles.interBold]}>Конец</Text>
+              <TextInput
+                style={styles.input}
+                value={endDateTime}
+                onChangeText={setEndDate}
+                placeholder="ДД.ММ.ГГГГ чч:мм"
+              />
             </View>
-
-            <TouchableOpacity
-              onPress={handleImageUpload}
-              style={styles.fieldContainer}
-            >
-              <View style={styles.labelContainer}>
-                <Text style={styles.label}>Загрузить изображение</Text>
-              </View>
-            </TouchableOpacity>
-            <View style={styles.imageContainer}>
-              {eventImage && (
-                <Image
-                  source={{ uri: eventImage }}
-                  style={styles.iconeyeandprofile}
-                />
-              )}
-            </View>
-
-            <TouchableOpacity
-              onPress={handleCreateEvent}
-              style={styles.bottomBoxContainer}
-            >
-              <Text style={styles.bottomBoxText}>Создать мероприятие</Text>
-            </TouchableOpacity>
-            <View style={{ marginBottom: 20 }} />
           </View>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </ScrollView>
+
+          <View style={styles.fieldContainer}>
+            <View style={styles.labelContainer}>
+              <Text style={[styles.label, styles.interBold]}>Город</Text>
+            </View>
+            <DropDownPicker
+              open={open}
+              value={city}
+              items={cities}
+              setOpen={setOpen}
+              setValue={setCity}
+              setItems={setCities}
+              placeholder="Выберите город"
+              containerStyle={styles.dropDownPickerContainer}
+              dropDownContainerStyle={styles.dropDownContainerStyle}
+              style={styles.dropDownPickerStyle}
+              arrowStyle={styles.arrowStyle}
+              labelStyle={styles.dropDownLabelStyle}
+              selectedItemLabelStyle={styles.dropDownSelectedItemLabelStyle}
+              placeholderStyle={styles.placeholderStyle}
+              listMode="SCROLLVIEW"
+            />
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, styles.interBold]}>Адрес</Text>
+            <TextInput
+              style={styles.input}
+              value={address}
+              onChangeText={setAddress}
+              placeholder="Введите адрес"
+            />
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, styles.interBold]}>
+              Дополнительная информация
+            </Text>
+            <TextInput
+              style={styles.input}
+              value={description}
+              onChangeText={setDescription}
+              placeholder="Введите описание"
+            />
+          </View>
+
+          <View style={styles.fieldContainer}>
+            <Text style={[styles.label, styles.interBold]}>Видимость</Text>
+            <DropDownPicker
+              open={openVisibility}
+              value={visibility}
+              items={visibilityOptions}
+              setOpen={setOpenVisibility}
+              setValue={setVisibility}
+              placeholder="Выберите видимость"
+              containerStyle={styles.dropDownPickerContainer}
+            />
+          </View>
+
+          <TouchableOpacity onPress={handleImageUpload} style={styles.fieldContainer}>
+            <View style={styles.labelContainerPhoto}>
+              <Image
+                source={require("../../assets/photosend.png")}
+                style={styles.labelPhotoadd}
+              />
+              <Text style={[styles.labelPhoto, styles.interBold]}>Загрузить изображение</Text>
+            </View>
+          </TouchableOpacity>
+          <View style={styles.imageContainer}>
+            {eventImage && (
+              <Image
+                source={{ uri: eventImage }}
+                style={styles.iconeyeandprofile}
+              />
+            )}
+          </View>
+
+          <TouchableOpacity onPress={handleCreateEvent} style={styles.bottomBoxContainer}>
+            <Text style={styles.bottomBoxText}>Создать</Text>
+          </TouchableOpacity>
+          <View style={{ marginBottom: 20 }} />
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
