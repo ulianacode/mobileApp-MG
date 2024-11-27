@@ -69,10 +69,18 @@ const styles = StyleSheet.create({
   },
   creatorText: {
     color: '#FFFFFF',
-    fontSize: 18,
+    fontSize: 16,
     position: 'absolute',
-    top: 3,
+    top: 5,
     left: 15,
+  },
+  cityText: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    position: 'absolute',
+    top: 5,
+    left: '43%',
+    textAlign: 'center',
   },
   ratingContainer: {
     flexDirection: 'row',
@@ -81,6 +89,20 @@ const styles = StyleSheet.create({
     top: 7,
     right: 0,
   },
+  visibilityIcon: {
+    width: 20,
+    height: 20,
+    position: 'absolute',
+    top: 6,
+    left: 65,
+  },  
+  visibilityIconDown: {
+    width: 22,
+    height: 22,
+    position: 'absolute',
+    top: 2,
+    left: 50,
+  },  
   starsText: {
     color: '#FFFFFF',
     fontSize: 16,
