@@ -28,7 +28,7 @@ const LoginScreen = () => {
   };
 
   const handleForgotPasswordPress = () => {
-    Alert.alert("Forgot Password");
+     navigation.navigate("ResetPasswordRequest");
   };
 
   const handleLogin = async () => {
@@ -109,7 +109,7 @@ const LoginScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <TextInput
-              maxLength={24}
+              maxLength={64}
               style={styles.input}
               placeholder="Введите логин или почту"
               value={username}
@@ -128,7 +128,7 @@ const LoginScreen = () => {
           </View>
           <View style={styles.inputContainer}>
             <TextInput
-              maxLength={24}
+              maxLength={64}
               style={styles.input}
               placeholder="Введите пароль"
               secureTextEntry
