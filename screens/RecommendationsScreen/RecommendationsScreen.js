@@ -24,6 +24,8 @@ const EventList = ({ events }) => {
           date={event.startDateTime}
           creatorText={event.userProfile.username}
           rating={event.userProfile.averageRating }
+          city={event.city.name}
+          visibilityStatus={event.visibilityStatus} 
         />
       ))}
     </>
