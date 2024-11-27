@@ -64,22 +64,13 @@ const RegistrationScreen = () => {
         password,
       });
       if (response.status === 200) {
-        Alert.alert("Ваш аккаунт зарегистрирован!", "");
-        navigation.navigate("Login");
+        navigation.navigate("EmailVerification", { email });
       } else {
         Alert.alert("Ошибка регистрации", "Неизвестная ошибка");
       }
     } catch (error) {
-      //Bug (error status == undefined)
-      console.log(error.status);
-      if (error.status == undefined) {
-        Alert.alert(
-          "Ошибка регистрации",
-          "Проверьте правильность введённых данных"
-        );
-      }
       if (error.response) {
-        if (error.response.status === 400) {
+        if (error.response.status === 409) {
           Alert.alert(
             "Ошибка регистрации",
             "Пользователь с таким логином или почтой уже существует"
@@ -92,6 +83,11 @@ const RegistrationScreen = () => {
         } else {
           Alert.alert("Ошибка регистрации", `Ошибка ${error.response.status}`);
         }
+      } else {
+        Alert.alert(
+          "Ошибка регистрации",
+          "Проверьте правильность введённых данных"
+        );
       }
     }
   };
@@ -106,7 +102,7 @@ const RegistrationScreen = () => {
         <View style={styles.fieldContainer}>
           <View style={styles.labelContainer}>
             <Image
-              source={require("../../assets/icons/mail.png")}
+              source={require("../../assets/icons/mail2.png")}
               style={styles.miniiconmail}
             />
             <Text style={styles.label}>Почта</Text>
@@ -171,12 +167,12 @@ const RegistrationScreen = () => {
           ) : null}
         </View>
 
-        <TouchableOpacity
-          onPress={handleLoginPress}
-          style={styles.loginLinkContainer}
-        >
-          <Text style={styles.loginLinkText}>Уже есть аккаунт? Войти</Text>
-        </TouchableOpacity>
+        <View style={styles.loginLinkContainer}>
+          <Text style={styles.loginLinkText}>Уже есть аккаунт? </Text>
+          <TouchableOpacity onPress={handleLoginPress}>
+            <Text style={styles.loginLinkTextClickable}>Войти</Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           onPress={handleRegistration}
           style={styles.bottomBoxContainer}
