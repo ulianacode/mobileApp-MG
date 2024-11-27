@@ -8,7 +8,6 @@ import LoginScreen from './screens/LoginScreen/LoginScreen';
 import ProfileScreen from './screens/ProfileScreen/ProfileScreen';
 import MyProfileScreen from './screens/MyProfileScreen/MyProfileScreen';
 import MyProfileEdit from './screens/MyProfileEdit/MyProfileEdit';
-import { auth } from './variables/ip';
 import AddingEventCard from './screens/AddingEventCard/AddingEventCard';
 import EventCardInsideScreen from './screens/EventCardInsideScreen/EventCardInsideScreen';
 import ChatScreen from './screens/ChatScreen/ChatScreen';
@@ -18,6 +17,8 @@ import MyEvents from './screens/MyEventsScreen/MyEvents';
 import UserComplaintScreen from './screens/UserComplaintScreen/UserComplaintScreen';
 import EventComplaintScreen from './screens/EventComplaintScreen/EventComplaintScreen';
 import EmailVerificationScreen from "./screens/EmailVerificationScreen/EmailVerificationScreen";
+import ResetPasswordRequestScreen from './screens/ResetPasswordRequestScreen/ResetPasswordRequestScreen';
+import ResetPasswordConfirmScreen from './screens/ResetPasswordConfirmScreen/ResetPasswordConfirmScreen';
 import {TextEncoder} from 'text-encoding';
 
 global.TextEncoder = TextEncoder;
@@ -58,6 +59,8 @@ export default function App() {
             <Stack.Screen name="UserComplaint" component={UserComplaintScreen} />
             <Stack.Screen name="EventComplaint" component={EventComplaintScreen} />
             <Stack.Screen name="EmailVerification" component={EmailVerificationScreen} />
+            <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequestScreen} />
+            <Stack.Screen name="ResetPasswordConfirm" component={ResetPasswordConfirmScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}

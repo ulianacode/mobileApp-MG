@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  ActivityIndicator,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { View, Text, Image, TouchableOpacity, TextInput } from "react-native";
 import axios from "axios";
 import styles from "./styles";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -98,7 +91,9 @@ const EmailVerificationScreen = () => {
           style={styles.bottomBoxContainer}
           disabled={isLoading}
         >
-          <Text style={styles.bottomBoxText}>Подтвердить</Text>
+          <Text style={styles.bottomBoxText}>
+            {isLoading ? "Загрузка..." : "Подтвердить"}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>

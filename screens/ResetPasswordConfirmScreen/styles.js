@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 20,
-    height: 135,
+    height: 400,
     width: "90%",
     backgroundColor: "white",
     paddingHorizontal: 15,
@@ -84,19 +84,33 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   miniicon: {
-    marginTop: 2,
-    height: 17,
+    marginTop: -5,
+    height: 25,
     width: 25,
+    marginLeft: -2,
     marginRight: 10,
   },
+  miniiconmail: {
+    marginRight: 10,
+    width: 22,
+    height: 17,
+  },
   loginLinkContainer: {
-    marginTop: 20,
-    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   loginLinkText: {
-    fontSize: 20,
+    marginTop: 5,
+    fontSize: 18,
+    fontFamily: "Inter_700Bold",
+    marginBottom: 15,
+  },
+  loginLinkTextClickable: {
+    marginTop: 5,
+    fontSize: 18,
     color: "#F26430",
     textDecorationLine: "underline",
+    fontFamily: "Inter_700Bold",
   },
 });
 
