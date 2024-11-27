@@ -17,6 +17,7 @@ import RecommendationsScreen from './screens/RecommendationsScreen/Recommendatio
 import MyEvents from './screens/MyEventsScreen/MyEvents';
 import UserComplaintScreen from './screens/UserComplaintScreen/UserComplaintScreen';
 import EventComplaintScreen from './screens/EventComplaintScreen/EventComplaintScreen';
+import EmailVerificationScreen from "./screens/EmailVerificationScreen/EmailVerificationScreen";
 import {TextEncoder} from 'text-encoding';
 
 global.TextEncoder = TextEncoder;
@@ -29,7 +30,7 @@ export default function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2000); // Display LoadingScreen for 2 seconds
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -56,6 +57,7 @@ export default function App() {
             <Stack.Screen name="MyEvents" component={MyEvents} />
             <Stack.Screen name="UserComplaint" component={UserComplaintScreen} />
             <Stack.Screen name="EventComplaint" component={EventComplaintScreen} />
+            <Stack.Screen name="EmailVerification" component={EmailVerificationScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       )}
