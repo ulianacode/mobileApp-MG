@@ -8,7 +8,7 @@ const UserInformation = ({ imageSource, name, city, username, style }) => {
       <View style={style.nameAndCityContainer}>
       <View style={style.nameContainer}>
         <Text style={[style.nameText, style.interBold]}>{name}</Text>
-        <Text style={[style.userNameText, style.interBold]}>{username}</Text>
+        <Text style={[style.userNameText, style.interBold]}>@{username}</Text>
         </View>
         <Text style={[style.cityText, style.interRegular]}>{city}</Text>
       </View>

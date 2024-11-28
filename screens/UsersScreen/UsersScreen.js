@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Image, TouchableOpacity, Text, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { useNavigationState, useFocusEffect } from '@react-navigation/native';
 import ButtonGroup from '../../components/ButtonGroup/ButtonGroup';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import User from '../../components/User/User';
@@ -10,54 +10,197 @@ import styles from './styles';
 import { API_URL, tokens } from '../../variables/ip';
 import axios from 'axios';
 
-const UsersScreen = ({ route }) => {
-  const [showImage, setShowImage] = useState(true);
-  const [showStatusBar, setShowStatusBar] = useState(false);
-  const [selectedButton, setSelectedButton] = useState(route.params?.selectedButton || 'users');
+const UserList = ({ users }) => {
+  return (
+    <>
+      {users.map((user) => (
+        <User
+          key={user.id}
+          id={user.id}
+          name={user.displayName || 'Неизвестный'}
+          imageSource={{ uri: user.profileImage || '../../assets/account_circle_user.png' }}
+          city={user.city || 'Не указан'}
+          username={user.username || 'Не указан'}
+          rating={user.averageRating || 0}
+          friendStatus={user.friendStatus}
+        />
+      ))}
+    </>
+  );
+};
 
-  const handleMenuPress = () => {
-    setShowStatusBar(!showStatusBar);
+const UsersScreen = (route) => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [userData, setUserData] = useState('');
+  const [selectedCity, setSelectedCity] = useState('Москва');
+  const [selectedButton, setSelectedButton] = useState(route.params?.selectedButton || 'users');
+  const navigationState = useNavigationState((state) => state);
+  const previousScreen = navigationState?.routes[navigationState.index]?.name;
+
+  const fetchUserData = async () => {
+    try {
+      const { username, accessToken } = tokens;
+
+      if (!username || !accessToken) {
+        setUserData({
+          profileImage: '',
+          city: 'Москва',
+        });
+        return;
+      }
+
+      const response = await axios.get(`http://${API_URL}/v1/users/${username}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      setUserData(response.data);
+      if (previousScreen === 'Login') {
+        setSelectedCity(response.data.city);
+      }
+    } catch (error) {
+      console.error('Ошибка при получении данных профиля:', error);
+    }
   };
+
   useFocusEffect(
     useCallback(() => {
-      setSelectedButton(route.params?.selectedButton || 'users');
-    }, [route.params?.selectedButton])
+      fetchUserData();
+    }, [previousScreen])
   );
-  const name = "Иван Иванов";
-  const city = "Воронеж";
-  const username = "@logiin";
+
+  const fetchUsers = async (reset = false) => {
+    if (reset) {
+      setUsers([]);
+      setPage(0);
+      setHasMore(true);
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        `http://${API_URL}/v1/users/feed`,         {
+          cityName: selectedCity,
+          searchQuery: searchQuery,
+          feedType: "ALL",
+        },
+        {
+          params: {
+            page: reset ? 0 : page,
+            size: 10,
+          },
+          headers: tokens.accessToken
+            ? { Authorization: `Bearer ${tokens.accessToken}` }
+            : {},
+        }
+      );
+
+      console.log(searchQuery);
+      const data = response.data.content;
+      console.log(userData.friendStatus);
+      setUsers((prevUsers) => {
+        const userIds = new Set(prevUsers.map((u) => u.id));
+        const uniqueUsers = data.filter((u) => !userIds.has(u.id));
+        return reset ? uniqueUsers : [...prevUsers, ...uniqueUsers];
+      });
+
+      setHasMore(data.length > 0);
+    } catch (error) {
+      console.error('Ошибка загрузки пользователей:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  console.log('Request Data:', {
+    cityName: selectedCity,
+    searchQuery: searchQuery,
+    userData: userData.friendStatus,
+  });
+  console.log('Headers:', {
+    Authorization: `Bearer ${tokens.accessToken}`,
+  });
+
+  useEffect(() => {
+    fetchUsers(true);
+  }, [searchQuery, selectedCity]);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchUserData();
+      setSelectedButton(route.params?.selectedButton || 'users');
+    }, [route.params?.selectedButton, previousScreen])
+  );
+
+  const handleScroll = ({ nativeEvent }) => {
+    const scrollPosition = nativeEvent.contentOffset.y;
+    const totalHeight = nativeEvent.contentSize.height;
+    const visibleHeight = nativeEvent.layoutMeasurement.height;
+
+    if (scrollPosition > totalHeight * 0.33 - visibleHeight && hasMore && !loading) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    if (page > 0) {
+      fetchUsers(false);
+    }
+  }, [page]);
+
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const handleCityChange = (city) => {
+    setSelectedCity(city);
+  };
+
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_700Bold,
+  });
+
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  const avatarSource =
+    userData.profileImage && userData.profileImage !== ''
+      ? { uri: userData.profileImage }
+      : require('../../assets/account_circle.png');
 
   return (
-    <View style={styles.container}>
-      <ButtonGroup selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
-      <SearchBar />
-      <User
-        id={1}
-        name={name}
-        imageSource={require('../../assets/account_circle_user.png')}
-        city={city}
-        username={username}
-        rating={10}
-        friendCheck={3}
-      />
-      <View style={styles.conteinerStatusBar}>
-        {showImage && (
-          <TouchableOpacity onPress={handleMenuPress}>
-            <Image
-              source={require('../../assets/icons/menu.png')}
-              style={styles.imageStyle}
-            />
-          </TouchableOpacity>
-        )}
-        {showStatusBar && (
-          <View style={styles.statusBar}>
-            <TouchableOpacity onPress={() => alert('Вы выбрали вариант 1')}>
-              <Text style={styles.statusOption}>Друзья</Text>
-            </TouchableOpacity>
-          </View>
-        )}
+    <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+      <View style={{ flex: 1 }}>
+        <ButtonGroup selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
+        <SearchBar
+          onCityChange={handleCityChange}
+          onSearchChange={handleSearch}
+          avatarSource={avatarSource}
+          citySourse={selectedCity}
+          searchQuery={searchQuery}
+        />
+        <ScrollView
+          contentContainerStyle={styles.container}
+          keyboardShouldPersistTaps="handled"
+          onScroll={handleScroll}
+          scrollEventThrottle={400}
+        >
+          <UserList users={users} />
+          {!loading && users.length === 0 && (
+            <Text style={styles.noUsersText}>В этом городе нет пользователей</Text>
+          )}
+          {loading && <ActivityIndicator size="large" color="#0000ff" />}
+        </ScrollView>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

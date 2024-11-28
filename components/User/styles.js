@@ -2,73 +2,72 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  
     userContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: 10,
+        justifyContent: 'space-between', 
+        paddingBottom: 15,
+        paddingLeft: 10,
         marginBottom: 0,
-
-      },
-      informationContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      padding: 2,
     },
 
-      imageStyle: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        marginRight: 10,
-      },
+    informationContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 2,
+    },
 
-    
-    actionsContainer: {
+    imageStyle: {
+        width: 45,
+        height: 45,
+        borderRadius: 25,
+        marginRight: 10,
+    },
+
+    rightContainer: {
         flexDirection: 'row', 
         alignItems: 'center',
     },
-    nameContainer: {
-        flexDirection: 'row',
+
+    friendIcon: {
+        width: 33,
+        height: 33,
+        marginRight: 10, 
     },
 
-    userNameText:{
-        color: "#ADA5A1",
-        fontSize: 14,
-        paddingLeft: 5,
-    },
-    ratingContainer:{
-        flexDirection: 'row',
-    },
-
-    ratingText: {
-        fontSize: 14,
-        left: 50,
-        top: 0,
-        color: '#000',
+    ratingContainer: {
+        flexDirection: 'row', 
+        alignItems: 'center',
+        paddingRight: 8,
     },
 
     starIcon: {
         width: 20,
         height: 20,
-        left: 45, 
+    },
+    nameContainer: {
+        flexDirection: 'row',
+    },
+    ratingText: {
+        fontSize: 16,
+        color: '#000',
+        marginLeft: 5, 
     },
 
-
-
-    friendIcon: {
-        width: 30,
-        height: 30,
-        marginLeft: 0, 
+    userNameText: {
+        color: "#ADA5A1",
+        fontSize: 16,
+        paddingLeft: 5,
     },
-
+    nameText: {
+        fontSize: 16,
+    },
     interBold: {
-        fontWeight: '700',
-    },
-    interRegular: {
-        fontWeight: '400',
-    },
+        fontFamily: 'Inter_700Bold',
+      },
+      interRegular: {
+        fontFamily: 'Inter_400Regular',
+      },
 });
 
 export default styles;

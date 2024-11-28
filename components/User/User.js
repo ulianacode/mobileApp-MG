@@ -7,13 +7,23 @@ import UserAddFriend from './UserAddFriend.js'
 import styles from './styles';
 import { useNavigation } from "@react-navigation/native";
 
-const User = ({ id, imageSource,  name, username, city, rating, friendCheck}) => {
+const User = ({ id, imageSource,  name, username, city, rating, friendStatus}) => {
+
+  const navigation = useNavigation();
+  const handlePress = () => {
+    navigation.navigate('Profile', { username: username });
+  };
+
   return (
+    <TouchableOpacity onPress={handlePress}>
       <View style={styles.userContainer}>
         <UserInformation imageSource={imageSource} name={name} city={city} username={username} style={styles} />
-        <UserRating rating={rating} style={styles} />
-        <UserAddFriend friendCheck={friendCheck} style={styles} />
+        <View style={styles.rightContainer}>
+          <UserRating rating={rating} style={styles} />
+          <UserAddFriend friendStatus={friendStatus} style={styles} />
+        </View>
       </View>
+      </TouchableOpacity>
   );
 };
 
