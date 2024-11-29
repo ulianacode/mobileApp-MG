@@ -20,7 +20,7 @@ const User = ({ id, imageSource,  name, username, city, rating, friendStatus}) =
         <UserInformation imageSource={imageSource} name={name} city={city} username={username} style={styles} />
         <View style={styles.rightContainer}>
           <UserRating rating={rating} style={styles} />
-          <UserAddFriend friendStatus={friendStatus} style={styles} />
+          <UserAddFriend friendStatus={friendStatus} username={username} style={styles} />
         </View>
       </View>
       </TouchableOpacity>

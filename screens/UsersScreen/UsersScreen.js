@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { View, Text, ScrollView, KeyboardAvoidingView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, KeyboardAvoidingView, Image, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useFonts } from 'expo-font';
 import { Inter_400Regular, Inter_700Bold } from '@expo-google-fonts/inter';
 import { useNavigationState, useFocusEffect } from '@react-navigation/native';
@@ -40,6 +40,8 @@ const UsersScreen = (route) => {
   const [selectedButton, setSelectedButton] = useState(route.params?.selectedButton || 'users');
   const navigationState = useNavigationState((state) => state);
   const previousScreen = navigationState?.routes[navigationState.index]?.name;
+  const [selectedFilter, setSelectedFilter] = useState('ALL');
+  const [showStatusBar, setShowStatusBar] = useState(false);
 
   const fetchUserData = async () => {
     try {
@@ -88,7 +90,7 @@ const UsersScreen = (route) => {
         `http://${API_URL}/v1/users/feed`,         {
           cityName: selectedCity,
           searchQuery: searchQuery,
-          feedType: "ALL",
+          feedType: selectedFilter,
         },
         {
           params: {
@@ -100,8 +102,6 @@ const UsersScreen = (route) => {
             : {},
         }
       );
-
-      console.log(searchQuery);
       const data = response.data.content;
       console.log(userData.friendStatus);
       setUsers((prevUsers) => {
@@ -110,7 +110,7 @@ const UsersScreen = (route) => {
         return reset ? uniqueUsers : [...prevUsers, ...uniqueUsers];
       });
 
-      setHasMore(data.length > 0);
+      setHasMore(data.length === 10);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
     } finally {
@@ -122,14 +122,13 @@ const UsersScreen = (route) => {
     cityName: selectedCity,
     searchQuery: searchQuery,
     userData: userData.friendStatus,
+    feedType: selectedFilter
   });
-  console.log('Headers:', {
-    Authorization: `Bearer ${tokens.accessToken}`,
-  });
+
 
   useEffect(() => {
     fetchUsers(true);
-  }, [searchQuery, selectedCity]);
+  }, [searchQuery, selectedCity, selectedFilter]);
 
   useFocusEffect(
     useCallback(() => {
@@ -143,7 +142,7 @@ const UsersScreen = (route) => {
     const totalHeight = nativeEvent.contentSize.height;
     const visibleHeight = nativeEvent.layoutMeasurement.height;
 
-    if (scrollPosition > totalHeight * 0.33 - visibleHeight && hasMore && !loading) {
+    if (scrollPosition > totalHeight - visibleHeight && hasMore && !loading) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -161,6 +160,15 @@ const UsersScreen = (route) => {
   const handleCityChange = (city) => {
     setSelectedCity(city);
   };
+  const handleFilterChange = (filter) => {
+    setSelectedFilter(filter);
+    setShowStatusBar(false); 
+    fetchUsers(true);
+  };
+
+  const handleMenuPress = () => {
+    setShowStatusBar(!showStatusBar); 
+  };
 
   const [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -170,6 +178,7 @@ const UsersScreen = (route) => {
   if (!fontsLoaded) {
     return null;
   }
+
 
   const avatarSource =
     userData.profileImage && userData.profileImage !== ''
@@ -187,6 +196,32 @@ const UsersScreen = (route) => {
           citySourse={selectedCity}
           searchQuery={searchQuery}
         />
+
+<TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
+            <Image
+              source={require("../../assets/icons/menu.png")}
+              style={styles.imageStyle}
+            />
+          </TouchableOpacity>
+          {showStatusBar && (
+            <View style={styles.containerStatusBar}>
+              <View style={styles.statusBar}>
+                <TouchableOpacity onPress={() => handleFilterChange('ALL')}>
+                  <Text style={[styles.statusOption, selectedFilter === 'ALL' && styles.selectedStatusOption]}>Все</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleFilterChange('FRIENDS')}>
+                  <Text style={[styles.statusOption, selectedFilter === 'FRIENDS' && styles.selectedStatusOption]}>Друзья</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleFilterChange('SENT_BY_ME')}>
+                  <Text style={[styles.statusOption, selectedFilter === 'SENT_BY_ME' && styles.selectedStatusOption]}>Отправленные мной</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => handleFilterChange('SENT_TO_ME')}>
+                  <Text style={[styles.statusOption, selectedFilter === 'SENT_TO_ME' && styles.selectedStatusOption]}>Отправленные мне</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"

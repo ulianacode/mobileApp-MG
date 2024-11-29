@@ -13,36 +13,59 @@ const styles = StyleSheet.create({
     marginRight: -2,
     marginTop: 10,
   },
+  searchBarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 10,
+  },
+  menuButton: {
+    marginLeft: 380,
+    marginTop: -50,
+  },
+  imageStyle: {
+    width: 24,
+    height: 24,
+    tintColor: '#000', 
+  },
+  containerStatusBar: {
+    position: 'absolute',
+    top: 100,
+    left: 400,
+    zIndex: 5,
+  },
   statusBar: {
     position: 'absolute',
-    top: 45,
-    left: -116,
+    top: 0,
+    left: -150,
     width: 150,
-    zIndex: 10, 
+    zIndex: 10,
     backgroundColor: '#FBF6F4',
     borderColor: '#000000',
     borderWidth: 3,
     borderRadius: 0,
     textAlign: 'end',
-    padding: 10, 
+    padding: 10,
+    zIndex: 1,
   },
   statusOption: {
     color: '#000000',
     textAlign: 'right',
-    paddingVertical: 5, 
-    borderBottomWidth: 3, 
-    borderBottomColor: '#000000', 
-  
+    paddingVertical: 5,
+    borderBottomWidth: 3,
+    borderBottomColor: '#000000',
   },
   lastStatusOption: {
     textAlign: 'right',
     borderBottomWidth: 0,
   },
-  conteinerStatusBar: {
-    position: 'absolute', 
-    top: 53, 
-    left: 373,
-    zIndex: 5, 
+  selectedStatusOption: {
+    fontWeight: 'bold',
+    color: '#F26430',
+  },
+  noUsersText: {
+    fontSize: 16,
+    color: '#888',
   },
 });
 
