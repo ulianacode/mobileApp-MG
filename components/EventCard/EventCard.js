@@ -16,7 +16,7 @@ const EventCard = ({ id, title, description, imageSource, count, date, creatorTe
   return (
     <TouchableOpacity onPress={handlePress}>
       <View style={styles.eventContainer}>
-        <EventCardHeader creatorText={creatorText} rating={rating} city={city} style={styles} visibilityStatus={visibilityStatus}  />
+        <EventCardHeader creatorText={creatorText} rating={rating} city={city} style={styles} />
         <EventCardDetails title={title} description={description} imageSource={imageSource} style={styles} />
         <EventCardParticipants count={count} style={styles}  visibilityStatus={visibilityStatus} />
         <EventCardDate date={date} style={styles} />
