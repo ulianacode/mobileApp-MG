@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     textAlign: "center",
+    fontWeight: "bold",
     paddingTop: 0,
   },
   imagesContainer: {
@@ -87,13 +88,13 @@ const styles = StyleSheet.create({
     width: "47.5%",
   },
   infoTextAprove: {
-    fontSize: 24,
+    fontSize: 22,
     color: "#000",
     borderRadius: 15,
     textAlign: "center",
     fontWeight: "bold",
-    marginLeft: 5,
-    height: 35,
+    marginLeft: 4,
+    marginTop: -2,
   },
   mapWrapper: {
     width: "45%",
@@ -116,23 +117,24 @@ const styles = StyleSheet.create({
   infoTextRating: {
     fontSize: 22,
     color: "#000",
-    borderRadius: 10,
+    borderRadius: 15,
     textAlign: "center",
     fontWeight: "bold",
-    marginLeft: 6,
-    marginTop: -1,
+    marginLeft: 3,
+    marginTop: -2,
   },
   infoTextTitle: {
-    fontSize: 24,
+    fontSize: 22,
     color: "#000",
     borderRadius: 10,
     textAlign: "center",
     fontWeight: "bold",
-    marginTop: -3,
-    marginRight: 15,
+    marginTop: -4,
+    marginRight: 30,
     paddingVertical: 10,
     width: "100%",
     alignSelf: "center",
+    textDecorationLine: 'underline',
     flex: 1,
   },  
   infoNum: {
@@ -140,8 +142,8 @@ const styles = StyleSheet.create({
     flex: 2,
     flexDirection: "row",
     borderRadius: 15,
-    alignItems: "center",
-    height: 50,
+    alignItems: "center", 
+    height: 45,
   },
   infoRating: {
     backgroundColor: "#FBF6F4",
@@ -151,19 +153,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-start",
     marginLeft: 16,
-    height: 50,
+    height: 45,
   },
   infoTitle: {
     backgroundColor: "#FBF6F4",
     flexDirection: "row",
     borderRadius: 17,
     width: "47.5%",
-    height: 50,
+    height: 45,
     alignItems: "center",
-    justifyContent: "flex-start",
+    justifyContent: "center",
   },
   miniiconaprove: {
-    marginLeft: 6,
+    marginLeft: 7,
     width: "40%",
     height: "60%",
     resizeMode: "contain",
@@ -176,8 +178,8 @@ const styles = StyleSheet.create({
   },
   miniicontitle: {
     marginLeft: 10,
-    width: 40,
-    height: 40,
+    width: 35,
+    height: 35,
     borderRadius: 25,
   },
   description: {
@@ -192,7 +194,8 @@ const styles = StyleSheet.create({
   participationContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
+    marginTop: 5,
+    marginBottom: 20,
   },
   participationText: {
     fontSize: 18,
@@ -265,7 +268,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
   },
-
   ratingContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -293,7 +295,6 @@ const styles = StyleSheet.create({
     height: 30,
     marginHorizontal: 5,
   },
-
   starOkContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -332,12 +333,11 @@ const styles = StyleSheet.create({
     marginRight: 5,
   },
   ratingNumber: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#FBF6F4",
     left: -24,
   },
-
   nonParticipationContainer: {
     flexDirection: "column",
     alignItems: "center",
@@ -362,6 +362,69 @@ const styles = StyleSheet.create({
     marginTop: 'auto',
     paddingBottom: 20,
   },
+  addressContainer: {
+    marginVertical: 0,
+    paddingHorizontal: 15,
+    paddingVertical: 1,
+    backgroundColor: "#FBF6F4",
+    borderRadius: 15,
+    marginHorizontal: 10,
+  },
+  addressTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 3,
+    color: "#F26430",
+    textAlign: "center",
+  },
+  additionalInfoContainer: {
+    marginVertical: 15,
+    paddingHorizontal: 15,
+    paddingVertical: 1,
+    backgroundColor: "#FBF6F4",
+    borderRadius: 15,
+    marginHorizontal: 10,
+    flex: 1,
+  },
+  descriptionTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 3,
+    color: "#F26430",
+    textAlign: "center",
+  },
+  addressText: {
+    fontSize: 16,
+    color: "#FFFFFF",
+    lineHeight: 15,
+    textAlign: "center",
+  },
+  addressBox: {
+    backgroundColor: '#F26430',
+    borderColor: '#F26430',
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    marginBottom: 12,
+  },
+  additionalInfoBox: {
+    backgroundColor: '#F26430',
+    borderColor: '#F26430',
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 12
+  },
+  descriptionText: {
+    fontSize: 16,
+    color: "#FFFFFF",
+    lineHeight: 15,
+    textAlign: "center",
+  },
+  
 });
 
 export default styles;
