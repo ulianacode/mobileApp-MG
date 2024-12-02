@@ -17,6 +17,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { API_URL, tokens } from "../../variables/ip";
 import axios from "axios";
 import * as ImagePicker from "expo-image-picker";
+import { validateDates } from "../../utils/validation";
 
 const AddingEventCard = () => {
   const navigation = useNavigation();
@@ -29,6 +30,9 @@ const AddingEventCard = () => {
   const [city, setCity] = useState("");
   const [cities, setCities] = useState([]);
   const [open, setOpen] = useState(false);
+  const [startDateError, setStartDateError] = useState("");
+  const [endDateError, setEndDateError] = useState("");
+  const [dateErrors, setDateErrors] = useState("");
 
   const [visibility, setVisibility] = useState(null);
   const [visibilityOptions] = useState([
@@ -72,6 +76,25 @@ const AddingEventCard = () => {
       Alert.alert("Ошибка", "Пожалуйста, заполните все обязательные поля.");
       return;
     }
+
+    setStartDateError("");
+    setEndDateError("");
+    setDateErrors("");
+
+    const { startDateError, endDateError } = validateDates(
+      startDateTime,
+      endDateTime
+    );
+
+    if (startDateError || endDateError) {
+      setStartDateError(startDateError);
+      setEndDateError(endDateError);
+      return;
+    }
+
+    setStartDateError("");
+    setEndDateError("");
+    setDateErrors("");
 
     try {
       const formData = new FormData();
@@ -145,7 +168,10 @@ const AddingEventCard = () => {
       <View style={styles.container}>
         <BackButton onPress={handleBackPress} />
 
-        <Text style={[styles.addEventText, styles.interBold]}> Создание мероприятия </Text>
+        <Text style={[styles.addEventText, styles.interBold]}>
+          {" "}
+          Создание мероприятия{" "}
+        </Text>
         <View style={styles.boxContainer}>
           {[{ label: "Название", value: title, setter: setEventName }].map(
             (field, index) => (
@@ -175,6 +201,7 @@ const AddingEventCard = () => {
             </View>
 
             <View style={styles.separator}></View>
+
             <View style={styles.halfFieldContainer}>
               <Text style={[styles.label, styles.interBold]}>Конец</Text>
               <TextInput
@@ -186,9 +213,20 @@ const AddingEventCard = () => {
             </View>
           </View>
 
+          {(startDateError || endDateError) && (
+            <View style={styles.errorContainer}>
+              {startDateError && (
+                <Text style={styles.errorText}>{startDateError}</Text>
+              )}
+              {endDateError && (
+                <Text style={styles.errorText}>{endDateError}</Text>
+              )}
+            </View>
+          )}
+
           <View style={styles.fieldContainer}>
             <View style={styles.labelContainer}>
-              <Text style={[styles.label, styles.interBold]}>Город</Text>
+              <Text style={[styles.label, styles.interBold, { marginBottom: -5 }]}>Город</Text>
             </View>
             <DropDownPicker
               open={open}
@@ -198,7 +236,7 @@ const AddingEventCard = () => {
               setValue={setCity}
               setItems={setCities}
               placeholder="Выберите город"
-              containerStyle={styles.dropDownPickerContainer}
+              containerStyle={[styles.dropDownPickerContainer, { marginLeft: -2, width: '101%' }]}
               dropDownContainerStyle={styles.dropDownContainerStyle}
               style={styles.dropDownPickerStyle}
               arrowStyle={styles.arrowStyle}
@@ -240,17 +278,22 @@ const AddingEventCard = () => {
               setOpen={setOpenVisibility}
               setValue={setVisibility}
               placeholder="Выберите видимость"
-              containerStyle={styles.dropDownPickerContainer}
+              containerStyle={[styles.dropDownPickerContainer, { marginLeft: -2, width: '101%' }]}
             />
           </View>
 
-          <TouchableOpacity onPress={handleImageUpload} style={styles.fieldContainer}>
+          <TouchableOpacity
+            onPress={handleImageUpload}
+            style={styles.fieldContainer}
+          >
             <View style={styles.labelContainerPhoto}>
               <Image
                 source={require("../../assets/photosend.png")}
                 style={styles.labelPhotoadd}
               />
-              <Text style={[styles.labelPhoto, styles.interBold]}>Загрузить изображение</Text>
+              <Text style={[styles.labelPhoto, styles.interBold]}>
+                Загрузить изображение
+              </Text>
             </View>
           </TouchableOpacity>
           <View style={styles.imageContainer}>
@@ -262,7 +305,10 @@ const AddingEventCard = () => {
             )}
           </View>
 
-          <TouchableOpacity onPress={handleCreateEvent} style={styles.bottomBoxContainer}>
+          <TouchableOpacity
+            onPress={handleCreateEvent}
+            style={styles.bottomBoxContainer}
+          >
             <Text style={styles.bottomBoxText}>Создать</Text>
           </TouchableOpacity>
           <View style={{ marginBottom: 20 }} />
