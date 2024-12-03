@@ -179,8 +179,15 @@ const EventCardInsideScreen = () => {
       );
 
       setEventData(response.data);
-      const { userStatus, userGrade, userProfile, city, eventStatus } =
-        response.data;
+      const {
+        userStatus,
+        userGrade,
+        userProfile,
+        city,
+        eventStatus,
+        latitude,
+        longitude,
+      } = response.data;
       const { averageRating, username, displayName, profileImage } =
         userProfile;
 
@@ -192,9 +199,9 @@ const EventCardInsideScreen = () => {
       setAverageRating(averageRating);
       setUserGrade(userGrade);
 
-      if (city && city.latitude && city.longitude) {
-        setLatitude(city.latitude);
-        setLongitude(city.longitude);
+      if (latitude && longitude) {
+        setLatitude(latitude);
+        setLongitude(longitude);
       }
     } catch (error) {
       console.error("Ошибка при получении данных мероприятия", error);
