@@ -24,9 +24,9 @@ const ProfileScreen = () => {
             try {
                 const accessToken = tokens.accessToken;
                 const response = await axios.get(`http://${API_URL}/v1/users/${username}`, {
-                    headers: {
-                        Authorization: `Bearer ${accessToken}`, 
-                    },
+                    headers: tokens.accessToken
+                    ? { Authorization: `Bearer ${tokens.accessToken}` }
+                    : {},
                 });
                 setUserData(response.data);
             } catch (error) {

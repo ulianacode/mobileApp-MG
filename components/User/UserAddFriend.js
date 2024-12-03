@@ -8,7 +8,7 @@ const UserAddFriend = ({ friendStatus, style, username }) => {
   let iconSource;
 
   if (friendStatus2 === 'SENT') {
-    iconSource = require('../../assets/friendwithletter.png');
+    iconSource = require('../../assets/friendwithletter 1.png');
   } else if (friendStatus2 === 'ACCEPTED') {
     iconSource = require('../../assets/friendno.png');
   } else if (friendStatus2 === 'NOT_FRIENDS') {

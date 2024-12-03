@@ -5,13 +5,13 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     padding: 0,
-    margin: 0, 
   },
   imageStyle: {
     width: 40,
     height: 40,
     marginRight: -2,
-    marginTop: 10,
+    marginTop: 0,
+    zIndex: 1000,
   },
   searchBarContainer: {
     flexDirection: 'row',

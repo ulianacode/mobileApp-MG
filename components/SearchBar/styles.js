@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   searchContainer: {
-    top: 0,
+    top: -10,
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: 0,
     alignItems: 'center',
   },
   planetContainer: {

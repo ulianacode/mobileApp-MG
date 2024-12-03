@@ -17,7 +17,7 @@ const UserList = ({ users }) => {
         <User
           key={user.id}
           id={user.id}
-          name={user.displayName || 'Неизвестный'}
+          name={user.displayName || user.username}
           imageSource={{ uri: user.profileImage || '../../assets/account_circle_user.png' }}
           city={user.city || 'Не указан'}
           username={user.username || 'Не указан'}
@@ -38,10 +38,10 @@ const UsersScreen = (route) => {
   const [userData, setUserData] = useState('');
   const [selectedCity, setSelectedCity] = useState('Москва');
   const [selectedButton, setSelectedButton] = useState(route.params?.selectedButton || 'users');
-  const navigationState = useNavigationState((state) => state);
-  const previousScreen = navigationState?.routes[navigationState.index]?.name;
   const [selectedFilter, setSelectedFilter] = useState('ALL');
   const [showStatusBar, setShowStatusBar] = useState(false);
+  const navigationState = useNavigationState((state) => state);
+  const previousScreen = navigationState?.routes[navigationState.index]?.name;
 
   const fetchUserData = async () => {
     try {
@@ -87,7 +87,8 @@ const UsersScreen = (route) => {
 
     try {
       const response = await axios.post(
-        `http://${API_URL}/v1/users/feed`,         {
+        `http://${API_URL}/v1/users/feed`,
+        {
           cityName: selectedCity,
           searchQuery: searchQuery,
           feedType: selectedFilter,
@@ -95,36 +96,28 @@ const UsersScreen = (route) => {
         {
           params: {
             page: reset ? 0 : page,
-            size: 10,
+            size: 20,
           },
           headers: tokens.accessToken
             ? { Authorization: `Bearer ${tokens.accessToken}` }
             : {},
         }
       );
+
       const data = response.data.content;
-      console.log(userData.friendStatus);
       setUsers((prevUsers) => {
         const userIds = new Set(prevUsers.map((u) => u.id));
         const uniqueUsers = data.filter((u) => !userIds.has(u.id));
         return reset ? uniqueUsers : [...prevUsers, ...uniqueUsers];
       });
 
-      setHasMore(data.length === 10);
+      setHasMore(data.length > 0);
     } catch (error) {
       console.error('Ошибка загрузки пользователей:', error);
     } finally {
       setLoading(false);
     }
   };
-
-  console.log('Request Data:', {
-    cityName: selectedCity,
-    searchQuery: searchQuery,
-    userData: userData.friendStatus,
-    feedType: selectedFilter
-  });
-
 
   useEffect(() => {
     fetchUsers(true);
@@ -138,11 +131,14 @@ const UsersScreen = (route) => {
   );
 
   const handleScroll = ({ nativeEvent }) => {
-    const scrollPosition = nativeEvent.contentOffset.y;
-    const totalHeight = nativeEvent.contentSize.height;
-    const visibleHeight = nativeEvent.layoutMeasurement.height;
+    if (!nativeEvent) return;
+    const { contentOffset, contentSize, layoutMeasurement } = nativeEvent;
+    const scrollPosition = contentOffset.y;
+    const totalHeight = contentSize.height;
+    const visibleHeight = layoutMeasurement.height;
 
-    if (scrollPosition > totalHeight - visibleHeight && hasMore && !loading) {
+
+    if (scrollPosition > totalHeight * 0.95 - visibleHeight && hasMore && !loading) {
       setPage((prevPage) => prevPage + 1);
     }
   };
@@ -160,14 +156,18 @@ const UsersScreen = (route) => {
   const handleCityChange = (city) => {
     setSelectedCity(city);
   };
+
   const handleFilterChange = (filter) => {
     setSelectedFilter(filter);
-    setShowStatusBar(false); 
-    fetchUsers(true);
+    setShowStatusBar(false);
+    setUsers([]); 
+    setPage(0); 
+    setHasMore(true); 
+    fetchUsers(true); 
   };
 
   const handleMenuPress = () => {
-    setShowStatusBar(!showStatusBar); 
+    setShowStatusBar(!showStatusBar);
   };
 
   const [fontsLoaded] = useFonts({
@@ -179,7 +179,6 @@ const UsersScreen = (route) => {
     return null;
   }
 
-
   const avatarSource =
     userData.profileImage && userData.profileImage !== ''
       ? { uri: userData.profileImage }
@@ -189,15 +188,15 @@ const UsersScreen = (route) => {
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
         <ButtonGroup selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
-        <SearchBar
-          onCityChange={handleCityChange}
-          onSearchChange={handleSearch}
-          avatarSource={avatarSource}
-          citySourse={selectedCity}
-          searchQuery={searchQuery}
-        />
-
-<TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
+        <View style={styles.searchBarContainer}>
+          <SearchBar
+            onCityChange={handleCityChange}
+            onSearchChange={handleSearch}
+            avatarSource={avatarSource}
+            citySourse={selectedCity}
+            searchQuery={searchQuery}
+          />
+          <TouchableOpacity onPress={handleMenuPress} style={styles.menuButton}>
             <Image
               source={require("../../assets/icons/menu.png")}
               style={styles.imageStyle}
@@ -221,7 +220,7 @@ const UsersScreen = (route) => {
               </View>
             </View>
           )}
-
+        </View>
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps="handled"
@@ -233,6 +232,7 @@ const UsersScreen = (route) => {
             <Text style={styles.noUsersText}>В этом городе нет пользователей</Text>
           )}
           {loading && <ActivityIndicator size="large" color="#0000ff" />}
+          {hasMore && !loading && <Text style={styles.loadingText}></Text>}
         </ScrollView>
       </View>
     </KeyboardAvoidingView>
@@ -240,3 +240,4 @@ const UsersScreen = (route) => {
 };
 
 export default UsersScreen;
+

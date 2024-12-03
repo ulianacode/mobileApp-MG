@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between', 
         paddingBottom: 15,
-        top: 20,
+        top: 0,
         paddingLeft: 10,
         marginBottom: 0,
     },
@@ -31,15 +31,16 @@ const styles = StyleSheet.create({
     },
 
     friendIcon: {
-        width: 33,
-        height: 33,
+        width: 31,
+        height: 31,
         marginRight: 10, 
     },
 
     ratingContainer: {
         flexDirection: 'row', 
         alignItems: 'center',
-        paddingRight: 8,
+        justifyContent: 'flex-end',
+        paddingRight: 10,
     },
 
     starIcon: {
@@ -53,12 +54,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#000',
         marginLeft: 5, 
+        textAlign: 'left',
+        minWidth: 25,
     },
 
     userNameText: {
         color: "#ADA5A1",
         fontSize: 16,
         paddingLeft: 5,
+        maxWidth: 80,
+        textOverflow: 'ellipsis',
     },
     nameText: {
         fontSize: 16,
