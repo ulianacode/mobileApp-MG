@@ -27,6 +27,7 @@ const EventCardInsideScreen = () => {
   const [userGrade, setUserGrade] = useState(0);
 
   const [username, setUserName] = useState(null);
+  const [displayName, setDisplayName] = useState(null);
   const [profileImage, userProfileImage] = useState(null);
 
   const [eventData, setEventData] = useState(null);
@@ -78,7 +79,10 @@ const EventCardInsideScreen = () => {
   };
 
   const handleComplaintPress = () => {
-    navigation.navigate('EventComplaint', { eventId: eventData.id, reported: username }); 
+    navigation.navigate("EventComplaint", {
+      eventId: eventData.id,
+      reported: username,
+    });
   };
 
   const handleOkRatingPress = () => {
@@ -175,21 +179,29 @@ const EventCardInsideScreen = () => {
       );
 
       setEventData(response.data);
-      const { userStatus, userGrade, userProfile, city } = response.data;
-      const { averageRating } = userProfile;
-      const { username } = userProfile;
-      const { profileImage } = userProfile;
+      const {
+        userStatus,
+        userGrade,
+        userProfile,
+        city,
+        eventStatus,
+        latitude,
+        longitude,
+      } = response.data;
+      const { averageRating, username, displayName, profileImage } =
+        userProfile;
 
       setUserName(username);
+      setDisplayName(displayName);
       userProfileImage(profileImage);
       setParticipantStatus(userStatus);
       setIsChecked(userStatus === "APPROVED");
       setAverageRating(averageRating);
       setUserGrade(userGrade);
 
-      if (city && city.latitude && city.longitude) {
-        setLatitude(city.latitude);
-        setLongitude(city.longitude);
+      if (latitude && longitude) {
+        setLatitude(latitude);
+        setLongitude(longitude);
       }
     } catch (error) {
       console.error("Ошибка при получении данных мероприятия", error);
@@ -250,12 +262,22 @@ const EventCardInsideScreen = () => {
     headerBackgroundColor = "#ADA5A1";
   }
 
+  const formatCityInfo = (city) => {
+    return city
+      ? `${city.name}, ${city.details || "Без дополнительной информации"}`
+      : "Город не указан";
+  };
+
   if (loading) {
     return <ActivityIndicator size="large" color="#0000ff" />;
   }
   if (!eventData) {
     return <Text style={styles.errorText}>Данные мероприятия недоступны</Text>;
   }
+
+  const navigateToProfile = () => {
+    navigation.navigate("Profile", { username });
+  };
 
   const avatarSource =
     eventData.eventImage && eventData.eventImage !== ""
@@ -288,7 +310,7 @@ const EventCardInsideScreen = () => {
             height: 35,
             justifyContent: "center",
             alignItems: "center",
-            marginLeft:5,
+            marginLeft: 5,
           }}
         >
           <Image
@@ -297,7 +319,7 @@ const EventCardInsideScreen = () => {
               width: 35,
               height: 35,
               marginBottom: 10,
-              marginLeft:5,
+              marginLeft: 5,
               resizeMode: "contain",
             }}
           />
@@ -310,8 +332,8 @@ const EventCardInsideScreen = () => {
             height: 35,
             justifyContent: "center",
             alignItems: "center",
-            marginLeft:5,
-            position: 'absolute',
+            marginLeft: 5,
+            position: "absolute",
             right: 0,
           }}
         >
@@ -321,7 +343,7 @@ const EventCardInsideScreen = () => {
               width: 35,
               height: 35,
               marginBottom: 10,
-              marginRight:5,
+              marginRight: 5,
               resizeMode: "contain",
             }}
           />
@@ -389,13 +411,33 @@ const EventCardInsideScreen = () => {
             </Text>
           </View>
         </View>
-        <View style={styles.infoTitle}>
+        <TouchableOpacity onPress={navigateToProfile} style={styles.infoTitle}>
           <Image source={avatarProfileSource} style={styles.miniicontitle} />
-          <Text style={styles.infoTextTitle}>{username}</Text>
+          <Text style={styles.infoTextTitle}>
+            {displayName ? displayName : username}
+          </Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={styles.addressContainer}>
+        <Text style={styles.addressTitle}>Как добраться:</Text>
+        <View style={styles.addressBox}>
+          <Text style={styles.addressText}>
+            {eventData.address
+              ? `Город: ${eventData.city.name}\n\n${eventData.address}`
+              : "Нет дополнительной информации."}
+          </Text>
         </View>
       </View>
 
-      <Text style={styles.description}>{eventData.description}</Text>
+      <View style={styles.additionalInfoContainer}>
+        <Text style={styles.descriptionTitle}>Дополнительная информация:</Text>
+        <View style={styles.additionalInfoBox}>
+          <Text style={styles.descriptionText}>
+            {eventData.description || "Нет дополнительной информации."}
+          </Text>
+        </View>
+      </View>
 
       {eventStartDate > currentDate && (
         <View style={styles.participationContainer}>
@@ -410,17 +452,18 @@ const EventCardInsideScreen = () => {
               {isChecked && <Text style={styles.checkboxText}>✔️</Text>}
             </View>
           </Pressable>
-          {participantStatus === "APPROVED" && (
-            <TouchableOpacity
-              onPress={handleChatPress}
-              style={styles.chatContainer}
-            >
-              <Image
-                source={require("../../assets/icons/chat.png")}
-                style={styles.chatIcon}
-              />
-            </TouchableOpacity>
-          )}
+          {participantStatus === "APPROVED" &&
+            eventData.eventStatus === "STARTED" && (
+              <TouchableOpacity
+                onPress={handleChatPress}
+                style={styles.chatContainer}
+              >
+                <Image
+                  source={require("../../assets/icons/chat.png")}
+                  style={styles.chatIcon}
+                />
+              </TouchableOpacity>
+            )}
         </View>
       )}
 

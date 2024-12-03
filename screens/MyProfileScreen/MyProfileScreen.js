@@ -8,6 +8,27 @@ import BackButton from '../../components/BackButton/BackButton';
 import axios from 'axios'; 
 import { API_URL, tokens, auth} from '../../variables/ip';
 
+const EventList = ({ events }) => {
+    return (
+      <>
+        {events.map((event) => (
+          <EventCard
+            key={event.id}
+            id={event.id}
+            title={event.title}
+            description={event.description}
+            imageSource={{ uri: event.eventImage }}
+            count={event.approvalCount}
+            date={event.startDateTime}
+            creatorText={event.userProfile.username}
+            rating={event.userProfile.averageRating }
+            city={event.city.name}
+            visibilityStatus={event.visibilityStatus} 
+          />
+        ))}
+      </>
+    );
+  };
 
 const MyProfileScreen = ({ route }) => {
     const navigation = useNavigation();

@@ -22,7 +22,7 @@ const EventList = ({ events }) => {
           imageSource={{ uri: event.eventImage }}
           count={event.approvalCount}
           date={event.startDateTime}
-          creatorText={event.userProfile.username}
+          creatorText={event.userProfile.displayName || event.userProfile.username}
           rating={event.userProfile.averageRating }
           city={event.city.name}
           visibilityStatus={event.visibilityStatus} 
