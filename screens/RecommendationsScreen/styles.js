@@ -4,8 +4,8 @@ import { StyleSheet } from 'react-native';
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    padding: 0, // Ensure no padding is applied
-    margin: 0, // Ensure no margin is applied
+    padding: 0,
+    margin: 0,
   },
   noEventsText: {
     fontSize: 20,

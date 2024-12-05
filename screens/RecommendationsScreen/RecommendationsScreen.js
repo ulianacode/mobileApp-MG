@@ -67,7 +67,7 @@ const RecommendationsScreen = (route) => {
         setSelectedCity(response.data.city);
       }
     } catch (error) {
-      console.error('Ошибка при получении данных профиля:', error);
+      console.error('Ошибка при получении данных мероприятия:', error);
     }
   };
 
