@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, Alert } from 'react-native';
+import React, { useState, useMemo } from 'react';
+import { View, Image, TouchableOpacity, Alert, Modal, Text, TouchableWithoutFeedback } from 'react-native';
 import axios from 'axios';
 import { API_URL, tokens } from '../../variables/ip';
+import styles from './styles'; // Импортируем стили из отдельного файла
 
-const UserAddFriend = ({ friendStatus, style, username }) => {
+const UserAddFriend = ({ friendStatus, style, username, displayName  }) => {
   const [friendStatus2, setFriendStatus] = useState(friendStatus);
-  let iconSource;
+  const [modalVisible, setModalVisible] = useState(false);
 
-  if (friendStatus2 === 'SENT') {
-    iconSource = require('../../assets/friendwithletter 1.png');
-  } else if (friendStatus2 === 'ACCEPTED') {
-    iconSource = require('../../assets/friendno.png');
-  } else if (friendStatus2 === 'NOT_FRIENDS') {
-    iconSource = require('../../assets/friendyes.png');
-  }
-  else if (friendStatus2 === 'PENDING') {
-    iconSource = require('../../assets/friendpending.png');
-  }
+  const iconSource = useMemo(() => {
+    if (friendStatus2 === 'SENT') {
+      return require('../../assets/friendwithletter.png');
+    } else if (friendStatus2 === 'ACCEPTED') {
+      return require('../../assets/friendno.png');
+    } else if (friendStatus2 === 'NOT_FRIENDS') {
+      return require('../../assets/friendyes.png');
+    } else if (friendStatus2 === 'PENDING') {
+      return require('../../assets/friendpending.png');
+    }
+  }, [friendStatus2]);
 
-  console.log(friendStatus);
- 
   const handlePress = async () => {
     if (friendStatus2 === 'NOT_FRIENDS') {
       try {
@@ -36,8 +36,7 @@ const UserAddFriend = ({ friendStatus, style, username }) => {
         );
 
         if (response.status === 200) {
-          Alert.alert('Успешно', 'Запрос на дружбу отправлен.');
-          setFriendStatus('SENT'); 
+          setFriendStatus('SENT');
         } else {
           Alert.alert('Ошибка', 'Не удалось отправить запрос на дружбу.');
         }
@@ -57,40 +56,15 @@ const UserAddFriend = ({ friendStatus, style, username }) => {
         );
 
         if (response.status === 200) {
-          Alert.alert('Успешно', 'Пользователь удален из друзей.');
-          setFriendStatus('NOT_FRIENDS'); 
+          setFriendStatus('NOT_FRIENDS');
         } else {
           Alert.alert('Ошибка', 'Не удалось удалить пользователя из друзей.');
         }
       } catch (error) {
-        Alert.alert('Ошибка', 'Произошла ошибка при удалении пользователя.');
         console.error(error);
       }
     } else if (friendStatus2 === 'PENDING') {
-      try {
-        const response = await axios.put(
-          `http://${API_URL}/v1/friendships/decision`,
-          {
-            senderUsername: username,
-            decision: 'ACCEPTED',
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${tokens.accessToken}`,
-            },
-          }
-        );
-
-        if (response.status === 200) {
-          Alert.alert('Успешно', 'Запрос отправлено.');
-          setFriendStatus('ACCEPTED');
-        } else {
-          Alert.alert('Ошибка', 'Не удалось отправить запрос.');
-        }
-      } catch (error) {
-        Alert.alert('Ошибка', 'Произошла ошибка при отправке запроса.');
-        console.error(error);
-      }
+      setModalVisible(true);
     } else if (friendStatus2 === 'SENT') {
       try {
         const response = await axios.post(
@@ -106,7 +80,6 @@ const UserAddFriend = ({ friendStatus, style, username }) => {
         );
 
         if (response.status === 200) {
-          Alert.alert('Успешно', 'Запрос отменен.');
           setFriendStatus('NOT_FRIENDS');
         } else {
           Alert.alert('Ошибка', 'Не удалось отправить запрос.');
@@ -118,18 +91,103 @@ const UserAddFriend = ({ friendStatus, style, username }) => {
     } else {
       Alert.alert('Информация', 'Действие недоступно для текущего статуса.');
     }
-
   };
 
+  const handleAccept = async () => {
+    try {
+      const response = await axios.put(
+        `http://${API_URL}/v1/friendships/decision`,
+        {
+          senderUsername: username,
+          decision: 'ACCEPTED',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tokens.accessToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setFriendStatus('ACCEPTED');
+        setModalVisible(false);
+      } else {
+        Alert.alert('Ошибка', 'Не удалось принять запрос.');
+      }
+    } catch (error) {
+      Alert.alert('Ошибка', 'Произошла ошибка при принятии запроса.');
+      console.error(error);
+    }
+  };
+
+  const handleDecline = async () => {
+    try {
+      const response = await axios.put(
+        `http://${API_URL}/v1/friendships/decision`,
+        {
+          senderUsername: username,
+          decision: 'DECLINED',
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${tokens.accessToken}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        setFriendStatus('NOT_FRIENDS');
+        setModalVisible(false);
+      } else {
+        Alert.alert('Ошибка', 'Не удалось отклонить запрос.');
+      }
+    } catch (error) {
+      Alert.alert('Ошибка', 'Произошла ошибка при отклонении запроса.');
+      console.error(error);
+    }
+  };
+
+ 
   return (
-    
-    <TouchableOpacity onPress={handlePress}>
-      <View style={style.actionsContainer}>
-        <Image source={iconSource} style={style.friendIcon} />
-      </View>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity onPress={handlePress}>
+        <View style={style.actionsContainer}>
+          <Image source={iconSource} style={style.friendIcon} />
+        </View>
+      </TouchableOpacity>
+
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
+          <View style={styles.modalOverlay} />
+        </TouchableWithoutFeedback>
+        <View style={styles.modalView}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalTextContainer}>
+              <Text style={[styles.modalText, styles.interBold, {marginBottom: -30}]}>Входящий запрос в друзья</Text>
+              <Text style={[styles.modalText, styles.interBold]}>
+                от {displayName ? displayName : username}
+              </Text>
+            </View>
+          </View>
+          <View style={styles.modalButtons}>
+            <TouchableOpacity style={[styles.button, styles.acceptButton]} onPress={handleAccept}>
+              <Text style={styles.textStyle}>Подтвердить</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={[styles.button, styles.declineButton]} onPress={handleDecline}>
+              <Text style={styles.textStyle}>Отклонить</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+    </View>
   );
 };
 
 export default UserAddFriend;
-

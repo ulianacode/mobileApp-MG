@@ -1,15 +1,14 @@
-// src/components/EventCard/EventCard.js
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import UserInformation from './UserInformation.js'
-import UserRating from './UserRating.js'
-import UserAddFriend from './UserAddFriend.js'
+import { View, TouchableOpacity } from 'react-native';
+import UserInformation from './UserInformation';
+import UserRating from './UserRating';
+import UserAddFriend from './UserAddFriend';
 import styles from './styles';
 import { useNavigation } from "@react-navigation/native";
 
-const User = ({ id, imageSource,  name, username, city, rating, friendStatus}) => {
-
+const User = ({ id, imageSource, name, username, city, rating, friendStatus, displayName }) => {
   const navigation = useNavigation();
+
   const handlePress = () => {
     navigation.navigate('Profile', { username: username });
   };
@@ -20,10 +19,10 @@ const User = ({ id, imageSource,  name, username, city, rating, friendStatus}) =
         <UserInformation imageSource={imageSource} name={name} city={city} username={username} style={styles} />
         <View style={styles.rightContainer}>
           <UserRating rating={rating} style={styles} />
-          <UserAddFriend friendStatus={friendStatus} username={username} style={styles} />
+          <UserAddFriend friendStatus={friendStatus} username={username} style={styles} displayName={displayName} />
         </View>
       </View>
-      </TouchableOpacity>
+    </TouchableOpacity>
   );
 };
 
