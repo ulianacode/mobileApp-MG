@@ -34,6 +34,9 @@ const MyProfileScreen = ({ route }) => {
     const navigation = useNavigation();
     const [userData, setUserData] = useState("");
 
+
+    
+
     const fetchUserData = async () => {
         try {
             const accessToken = tokens.accessToken;

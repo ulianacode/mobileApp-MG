@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   TextInput,
+  launchImageLibrary,
 } from "react-native";
 import styles from "./styles";
 import { useNavigation } from "@react-navigation/native";
@@ -15,7 +16,7 @@ import ExitButton from "../../components/ExitButton/ExitButton";
 import BackButton from "../../components/BackButton/BackButton";
 import axios from "axios";
 import { API_URL, tokens } from "../../variables/ip";
-import * as ImagePicker from "react-native-image-picker";
+import * as ImagePicker from "expo-image-picker";
 
 const MyProfileEdit = ({ route }) => {
   const navigation = useNavigation();
@@ -28,6 +29,7 @@ const MyProfileEdit = ({ route }) => {
   const [open, setOpen] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [genderOpen, setGenderOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -48,6 +50,9 @@ const MyProfileEdit = ({ route }) => {
         setAboutMe(user.aboutMe);
         setCity(user.city);
         setGender(user.gender);
+
+        setProfileImage(user.profileImage || null);
+
       } catch (error) {
         console.error("Ошибка при получении данных профиля:", error);
       }
@@ -90,12 +95,10 @@ const MyProfileEdit = ({ route }) => {
   };
 
   const handleDeleteImage = () => {
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      profileImage: null,
-    }));
+    setProfileImage(null); 
   };
 
+  
   const selectNewImage = () => {
     ImagePicker.launchImageLibrary({ mediaType: "photo" }, (response) => {
       if (
@@ -119,14 +122,15 @@ const MyProfileEdit = ({ route }) => {
       formData.append("aboutMe", aboutMe);
       formData.append("city", city);
       formData.append("gender", gender);
-      if (userData.profileImage) {
+  
+      if (profileImage) {
         formData.append("profileImage", {
-          uri: userData.profileImage,
+          uri: profileImage,
           type: "image/jpeg",
-          name: "profile.jpg",
+          name: "profile.jpg", 
         });
       }
-
+  
       const response = await axios.patch(
         `http://${API_URL}/v1/users`,
         formData,
@@ -137,7 +141,12 @@ const MyProfileEdit = ({ route }) => {
           },
         }
       );
+  
       if (response.status === 200) {
+        setUserData((prev) => ({
+          ...prev,
+          profileImage: profileImage, 
+        }));
         navigation.navigate("MyProfile");
       } else {
         console.error("Ошибка при сохранении данных на сервере:", response);
@@ -151,6 +160,7 @@ const MyProfileEdit = ({ route }) => {
       Alert.alert("Ошибка при сохранении данных на сервере.");
     }
   };
+  
 
   if (!userData) {
     return (
@@ -166,10 +176,8 @@ const MyProfileEdit = ({ route }) => {
     );
   }
 
-  const avatarSource =
-    userData.profileImage && userData.profileImage !== ""
-      ? { uri: userData.profileImage }
-      : require("../../assets/nonavatar.png");
+  const avatarSource = profileImage ? { uri: profileImage } : require("../../assets/defaultavatar.jpg");
+
 
   const handleSelectCity = (city) => {
     setCity(city);
@@ -188,6 +196,28 @@ const MyProfileEdit = ({ route }) => {
   const toggleGenderDropDown = () => {
     setGenderOpen(!genderOpen);
   };
+
+  
+  const handleImageUpload = async () => {
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      Alert.alert("Ошибка", "Разрешение на доступ к галерее не получено.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setProfileImage(result.assets[0].uri);
+    }
+    
+  };
+
 
   return (
     <View style={styles.container}>
@@ -216,15 +246,29 @@ const MyProfileEdit = ({ route }) => {
 
         <View style={styles.avatarContainer}>
           <Image source={avatarSource} style={styles.avatar} />
+
           <TouchableOpacity
-            onPress={selectNewImage}
-            style={styles.uploadIconContainer}
+            onPress={handleImageUpload}
+            
+            style={styles.fieldContainer}
           >
+            <View style={styles.labelContainerPhoto}>
+              {profileImage && (
+              <Image source={{ uri: profileImage }} style={styles.labelPhotoadd} />
+            )}
             <Image
               source={require("../../assets/photoedit.png")}
               style={styles.uploadIcon}
             />
+              
+            </View>
           </TouchableOpacity>
+          <TouchableOpacity onPress={handleDeleteImage} style={styles.deleteIconContainer}>
+          <Image
+            source={require("../../assets/photodelete.png")}
+            style={styles.deleteIcon}
+          />
+        </TouchableOpacity>
         </View>
 
         <View style={styles.fieldContainer}>
