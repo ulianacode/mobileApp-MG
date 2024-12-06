@@ -142,9 +142,11 @@ const UsersScreen = (route) => {
     }
   };
 
-  useEffect(() => {
-    fetchAllUsers();
-  }, [searchQuery, selectedCity, selectedFilter]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchAllUsers();
+    }, [searchQuery, selectedCity, selectedFilter])
+  );
 
   useFocusEffect(
     useCallback(() => {

@@ -59,6 +59,7 @@ const ResetPasswordRequestScreen = () => {
               value={identifier}
               onChangeText={setIdentifier}
               placeholder="Введите ваш логин или почту"
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
