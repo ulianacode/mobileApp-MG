@@ -285,6 +285,7 @@ const MyProfileEdit = ({ route }) => {
               value={displayName}
               onChangeText={setDisplayName}
               keyboardType="default"
+              cursorColor="#000"
             />
           </View>
         </View>
@@ -302,6 +303,7 @@ const MyProfileEdit = ({ route }) => {
               placeholder="Обо мне"
               value={aboutMe}
               onChangeText={setAboutMe}
+              cursorColor="#000"
             />
           </View>
         </View>
@@ -340,10 +342,24 @@ const MyProfileEdit = ({ route }) => {
         <View style={styles.fieldContainer}>
           <View style={styles.line} />
           <View style={styles.labelContainer}>
-            <Image
-              source={require("../../assets/icons/gender.png")}
-              style={styles.miniicongender}
-            />
+            {gender === "MALE" && (
+              <Image
+                source={require("../../assets/male.png")} // Путь к иконке для мужчин
+                style={styles.miniicongender}
+              />
+            )}
+            {gender === "FEMALE" && (
+              <Image
+                source={require("../../assets/female.png")}
+                style={styles.miniicongender}
+              />
+            )}
+            {gender === null && (
+              <Image
+                source={require("../../assets/male.png")} // Путь к иконке по умолчанию
+                style={styles.miniicongender}
+              />
+            )}
             <TouchableOpacity onPress={toggleGenderDropDown}>
               <Text style={[styles.label, { marginTop: -7, marginLeft: 35 }]}>
                 {gender === "MALE"

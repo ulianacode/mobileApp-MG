@@ -254,6 +254,7 @@ const AddingEventCard = () => {
                   value={field.value}
                   onChangeText={field.setter}
                   placeholder={`Введите ${field.label.toLowerCase()}`}
+                  cursorColor="#000"
                 />
               </View>
             )
@@ -274,6 +275,7 @@ const AddingEventCard = () => {
                 value={startDateTime}
                 onChangeText={setStartDate}
                 placeholder="ДД.ММ.ГГГГ чч:мм"
+                cursorColor="#000"
               />
             </View>
 
@@ -295,6 +297,7 @@ const AddingEventCard = () => {
                 value={endDateTime}
                 onChangeText={setEndDate}
                 placeholder="ДД.ММ.ГГГГ чч:мм"
+                cursorColor="#000"
               />
             </View>
           </View>
@@ -377,6 +380,7 @@ const AddingEventCard = () => {
                 value={address}
                 onChangeText={setAddress}
                 placeholder="Введите адрес"
+                cursorColor="#000"
               />
               <TouchableOpacity
                 onPress={handleMapPress}
@@ -399,6 +403,7 @@ const AddingEventCard = () => {
               value={description}
               onChangeText={setDescription}
               placeholder="Введите описание"
+              cursorColor="#000"
             />
           </View>
 

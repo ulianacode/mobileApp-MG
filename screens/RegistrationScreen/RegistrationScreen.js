@@ -113,6 +113,7 @@ const RegistrationScreen = () => {
               placeholder="Введите почту"
               value={email}
               onChangeText={setEmail}
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
@@ -135,6 +136,7 @@ const RegistrationScreen = () => {
               placeholder="Введите логин"
               value={username}
               onChangeText={setUsername}
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
@@ -159,6 +161,7 @@ const RegistrationScreen = () => {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />

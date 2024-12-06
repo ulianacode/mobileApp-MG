@@ -1,6 +1,64 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  modalOverlay: {
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    alignSelf: "center",
+    marginVertical: "70%",
+    backgroundColor: "white",
+    borderRadius: 20,
+    alignItems: "center",
+    width: "90%",
+  },
+  modalContent: {
+    alignItems: "center",
+    paddingBottom: 20,
+    width: "100%",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    width: "100%",
+    overflow: "hidden",
+  },
+  button: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 0,
+    padding: 15,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  acceptButton: {
+    borderTopLeftRadius: 0,
+    borderBottomLeftRadius: 20,
+  },
+  declineButton: {
+    borderTopRightRadius: 0,
+    borderBottomRightRadius: 20,
+  },
+  
+  textStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 16,
+  },
+  modalText: {
+    marginTop: 30,
+    marginBottom: 5,
+    textAlign: "center",
+    fontSize: 18,
+  },
  container: {
   backgroundColor: '#F26430',
   alignItems: 'center',
@@ -33,6 +91,14 @@ const styles = StyleSheet.create({
   right: -170, 
   zIndex: 1, 
  },
+
+ iconTopLeft: {
+   position: 'absolute',
+   top: 15, 
+   right: 140, 
+   zIndex: 1, 
+ },
+
  fieldContainer: {
   width: '100%', 
   paddingBottom: 10,
@@ -125,6 +191,29 @@ createEventButtonText: {
     color: '#000000', 
     fontSize: 16,
     fontWeight: 'bold',
+},
+modalBackground: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+},
+modalContainer: {
+  width: 300,
+  padding: 20,
+  backgroundColor: '#fff',
+  borderRadius: 10,
+  alignItems: 'center',
+  shadowColor: '#000',
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.25,
+  shadowRadius: 4,
+  elevation: 5,
+},
+modalTitle: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 15,
 },
 });
 

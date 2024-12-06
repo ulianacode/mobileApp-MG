@@ -96,6 +96,7 @@ const ResetPasswordConfirmScreen = () => {
               onChangeText={setToken}
               placeholder="Введите код подтверждения"
               keyboardType="numeric"
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
@@ -116,6 +117,7 @@ const ResetPasswordConfirmScreen = () => {
               onChangeText={setNewPassword}
               placeholder="Новый пароль"
               secureTextEntry
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
@@ -136,6 +138,7 @@ const ResetPasswordConfirmScreen = () => {
               onChangeText={setConfirmPassword}
               placeholder="Введите новый пароль еще раз"
               secureTextEntry
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
