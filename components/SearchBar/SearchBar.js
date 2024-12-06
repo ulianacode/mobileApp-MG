@@ -130,6 +130,7 @@ const SearchBar = ({
         placeholder="Поиск"
         value={searchText}
         onChangeText={handleSearchInput}
+        cursorColor="#000"
       />
       <TouchableOpacity onPress={() => onSearchChange(searchText)}>
         <Image

@@ -66,6 +66,7 @@ const handleComlaint = async () => {
             maxLength={360}
             value={description}
             onChangeText={setDescription}
+            cursorColor="#000"
           />
             </View> 
             <TouchableOpacity onPress={handleComlaint} style={styles.bottomBoxContainer}>

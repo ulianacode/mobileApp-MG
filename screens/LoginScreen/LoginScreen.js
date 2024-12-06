@@ -114,6 +114,7 @@ const LoginScreen = () => {
               placeholder="Введите логин или почту"
               value={username}
               onChangeText={setUsername}
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
@@ -134,6 +135,7 @@ const LoginScreen = () => {
               secureTextEntry
               value={password}
               onChangeText={setPassword}
+              cursorColor="#000"
             />
           </View>
           <View style={styles.line} />
