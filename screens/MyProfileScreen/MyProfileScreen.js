@@ -121,7 +121,7 @@ const MyProfileScreen = ({ route }) => {
   const avatarSource =
     userData.profileImage && userData.profileImage !== ""
       ? { uri: userData.profileImage }
-      : require("../../assets/nonavatar.png");
+      : require("../../assets/defaultavatar.jpg");
 
   const genderText =
     userData.gender === "MALE"

@@ -167,10 +167,22 @@ const styles = StyleSheet.create({
     right: 10,
     bottom: 25,
   },
+  boxEditDeleteContainer:{
+    position: "absolute",
+    top: -115,
+    right: -40,
+  },
 
   uploadIcon: {
-    width: 25,
-    height: 25,
+    width: 60,
+    height: 60,
+    top: 60,
+  },
+  deleteIcon: {
+    width: 60,
+    height: 60,
+    top: -120,
+    left: 50,
   },
 
   miniiconabout: {
@@ -199,14 +211,14 @@ const styles = StyleSheet.create({
 
   avatarContainer: {
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 0,
     zIndex: 1,
   },
   avatar: {
     width: 142,
     height: 142,
     borderRadius: 50,
-    marginBottom: 10,
+    marginBottom: -100,
     marginTop: 20,
   },
   name: {
@@ -284,6 +296,13 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: '#333',
     fontFamily: 'Inter_700Bold',
+  },
+  labelContainerPhoto: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 0,
+    left: 50,
+    top: 5,
   },
 });
 
