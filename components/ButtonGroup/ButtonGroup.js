@@ -29,6 +29,7 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
 
   const handleNotificationsPress = () => {
     setSelectedButton("notifications");
+    navigation.navigate("Notifications");
   };
 
   useFocusEffect(

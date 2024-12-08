@@ -20,7 +20,8 @@ import EmailVerificationScreen from "./screens/EmailVerificationScreen/EmailVeri
 import ResetPasswordRequestScreen from './screens/ResetPasswordRequestScreen/ResetPasswordRequestScreen';
 import ResetPasswordConfirmScreen from './screens/ResetPasswordConfirmScreen/ResetPasswordConfirmScreen';
 import {TextEncoder} from 'text-encoding';
-
+import NotificationsScreen from './screens/NotificationsScreen/NotificationsScreen';
+import NotificationsCardInsideScreen from './screens/NotificationsCardInsideScreen/NotificationsCardInsideScreen'
 global.TextEncoder = TextEncoder;
 
 const Stack = createStackNavigator();
@@ -61,6 +62,9 @@ export default function App() {
             <Stack.Screen name="EmailVerification" component={EmailVerificationScreen} />
             <Stack.Screen name="ResetPasswordRequest" component={ResetPasswordRequestScreen} />
             <Stack.Screen name="ResetPasswordConfirm" component={ResetPasswordConfirmScreen} />
+            <Stack.Screen name="Notifications" component={NotificationsScreen} />
+            <Stack.Screen name="NotificationsCardInsideScreen" component={NotificationsCardInsideScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       )}
