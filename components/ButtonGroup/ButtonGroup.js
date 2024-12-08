@@ -43,6 +43,21 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
     }, [selectedButton])
   );
 
+  const [filters, setFilters] = useState({
+    participation: false,
+    createdByMe: false,
+    ongoing: false,
+    upcoming: false,
+    past: false,
+  });
+
+  const toggleFilter = (key) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [key]: !prevFilters[key],
+    }));
+  };
+
   return (
     <View style={styles.conteiner}>
       <View style={styles.buttonContainer}>
@@ -124,18 +139,72 @@ const ButtonGroup = ({ selectedButton, setSelectedButton }) => {
           )}
           {showStatusBar && (
             <View style={styles.statusBar}>
-              <TouchableOpacity onPress={() => alert("Вы выбрали вариант 1")}>
-                <Text style={styles.statusOption}>Все</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => alert("Вы выбрали вариант 2")}>
-                <Text style={styles.statusOption}>Созданные мной</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => alert("Вы выбрали вариант 3")}>
-                <Text style={styles.statusOption}>Хочу посетить</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => alert("Вы выбрали вариант 4")}>
-                <Text style={styles.lastStatusOption}>Прошедшие</Text>
-              </TouchableOpacity>
+              <View style={styles.triangleBorder} />
+              <View style={styles.triangle} />
+
+              <View style={styles.rowContainer}>
+                <TouchableOpacity
+                  style={styles.rowItem}
+                  onPress={() => toggleFilter("participation")}
+                >
+                  <Text style={styles.statusOption}>С моим участием</Text>
+                  <View
+                    style={[
+                      styles.checkbox,
+                      filters.participation ? styles.checkboxSelected : null,
+                      { marginRight: -10, marginLeft: 10 }
+                    ]}
+                  >
+                    {filters.participation && <Text style={styles.checkboxText}>✔️</Text>}
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={styles.rowItem}
+                  onPress={() => toggleFilter("createdByMe")}
+                >
+                  <Text style={styles.statusOption}>Созданные мной</Text>
+                  <View
+                    style={[
+                      styles.checkbox,
+                      filters.createdByMe ? styles.checkboxSelected : null,
+                      { marginRight: -10, marginLeft: 10 }
+                    ]}
+                  >
+                    {filters.createdByMe && <Text style={styles.checkboxText}>✔️</Text>}
+                  </View>
+                </TouchableOpacity>
+              </View>
+
+              {["ongoing", "upcoming", "past"].map((key, index) => (
+                <TouchableOpacity
+                  key={key}
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginBottom: index < 2 ? 5 : 0,
+                  }}
+                  onPress={() => toggleFilter(key)}
+                >
+                  <Text style={[styles.statusOption, { textAlign: 'center', flex: 1 }]}>
+                    {key === "ongoing"
+                      ? "Сейчас идёт"
+                      : key === "upcoming"
+                      ? "Ожидается"
+                      : "Уже прошли"}
+                  </Text>
+                  <View
+                    style={[
+                      styles.checkbox,
+                      filters[key] ? styles.checkboxSelected : null,
+                      { marginRight: 50, marginLeft: -50 }
+                    ]}
+                  >
+                    {filters[key] && <Text style={styles.checkboxText}>✔️</Text>}
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
           )}
         </View>

@@ -193,7 +193,10 @@ const UsersScreen = (route) => {
   return (
     <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
       <View style={{ flex: 1 }}>
-      <ButtonGroup selectedButton={selectedButton} setSelectedButton={setSelectedButton} />
+        <ButtonGroup
+          selectedButton={selectedButton}
+          setSelectedButton={setSelectedButton}
+        />
         <View style={styles.searchBarContainer}>
           <SearchBar
             onCityChange={handleCityChange}
@@ -211,7 +214,12 @@ const UsersScreen = (route) => {
           {showStatusBar && (
             <View style={styles.containerStatusBar}>
               <View style={styles.statusBar}>
-                <TouchableOpacity onPress={() => handleFilterChange("ALL")}>
+                <View style={styles.triangleBorder} />
+                <View style={styles.triangle} />
+                <TouchableOpacity
+                  style={styles.rowItem}
+                  onPress={() => handleFilterChange("ALL")}
+                >
                   <Text
                     style={[
                       styles.statusOption,
@@ -220,8 +228,24 @@ const UsersScreen = (route) => {
                   >
                     Все
                   </Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedFilter === "ALL"
+                        ? styles.radioButtonSelected
+                        : null,
+                        {    left: -3}
+                    ]}
+                  >
+                    {selectedFilter === "ALL" && (
+                      <View style={styles.radioButtonInner} />
+                    )}
+                  </View>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => handleFilterChange("FRIENDS")}>
+                <TouchableOpacity
+                  style={styles.rowItem}
+                  onPress={() => handleFilterChange("FRIENDS")}
+                >
                   <Text
                     style={[
                       styles.statusOption,
@@ -231,8 +255,22 @@ const UsersScreen = (route) => {
                   >
                     Друзья
                   </Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedFilter === "FRIENDS"
+                        ? styles.radioButtonSelected
+                        : null,
+                        {    left: -3}
+                    ]}
+                  >
+                    {selectedFilter === "FRIENDS" && (
+                      <View style={styles.radioButtonInner} />
+                    )}
+                  </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={styles.rowItem}
                   onPress={() => handleFilterChange("SENT_BY_ME")}
                 >
                   <Text
@@ -242,10 +280,24 @@ const UsersScreen = (route) => {
                         styles.selectedStatusOption,
                     ]}
                   >
-                    Отправленные мной
+                    Отправленные заявки
                   </Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedFilter === "SENT_BY_ME"
+                        ? styles.radioButtonSelected
+                        : null,
+                        {    left: -3}
+                    ]}
+                  >
+                    {selectedFilter === "SENT_BY_ME" && (
+                      <View style={styles.radioButtonInner} />
+                    )}
+                  </View>
                 </TouchableOpacity>
                 <TouchableOpacity
+                  style={[styles.rowItem, {borderBottomWidth: 0}]}
                   onPress={() => handleFilterChange("SENT_TO_ME")}
                 >
                   <Text
@@ -255,8 +307,21 @@ const UsersScreen = (route) => {
                         styles.selectedStatusOption,
                     ]}
                   >
-                    Отправленные мне
+                    Полученные заявки
                   </Text>
+                  <View
+                    style={[
+                      styles.radioButton,
+                      selectedFilter === "SENT_TO_ME"
+                        ? styles.radioButtonSelected
+                        : null,
+                        {    left: -3}
+                    ]}
+                  >
+                    {selectedFilter === "SENT_TO_ME" && (
+                      <View style={styles.radioButtonInner} />
+                    )}
+                  </View>
                 </TouchableOpacity>
               </View>
             </View>
